@@ -29,6 +29,8 @@ DROP TABLE IF EXISTS user;
 CREATE TABLE user(
 	id INT NOT NULL AUTO_INCREMENT,
 	name VARCHAR(30) NOT NULL,
+    first_lastName VARCHAR(30) NOT NULL,
+    seccond_lastName VARCHAR(30) NOT NULL,
 	adress_street VARCHAR(100),
 	adress_number INT,
 	adress_floor CHAR(20),
