@@ -43,6 +43,31 @@ CREATE TABLE user(
 	PRIMARY KEY (id)
 );
 
+CREATE TABLE `ClueValor` (
+ `Level` enum('Easy','Intermediate','Hard') NOT NULL,
+ `Theme` enum('Terror','Fiction','Fantasy') NOT NULL,
+ `Price` int(11) NOT NULL,
+ `Value` int(11) NOT NULL,
+ `GamePhase` varchar(100) NOT NULL,
+ `Name` varchar(100) NOT NULL,
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `Date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+ PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+CREATE TABLE `Room` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `Name` varchar(100) NOT NULL,
+ `Theme` enum('Terror','Fiction','Fantasy') NOT NULL,
+ `Level` enum('Easy','Intermediate','Hard') NOT NULL,
+ `Status` enum('Available','Not available') NOT NULL,
+ `Max_players` int(11) NOT NULL,
+ `Date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+ PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
 INSERT INTO user (name, adress_street, adress_number, adress_floor, adress_door, city, zip_code, country, phone, mail)
 VALUES 
 ('Ana García', 'Calle Mayor', 123, '3', 'A', 'Madrid', '28001', 'España', '+34612345678', 'ana.garcia@email.com'),
