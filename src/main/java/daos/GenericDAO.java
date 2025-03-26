@@ -1,5 +1,7 @@
 package daos;
 
+import utils.DdBbConnection;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -15,30 +17,8 @@ public abstract class GenericDAO {
     String TABLE_NAME = "";
 
     final Connection getConnection() throws SQLException, ClassNotFoundException {
-
-        String connectionUrl = null;
-        String user = null;
-        String pssw = null;
-
-        Properties properties= new Properties();
-        try {
-            properties.load(new FileInputStream(new File("configuration.properties")));
-
-            Class.forName(properties.getProperty("MYSQL_DRIVER"));
-            connectionUrl = properties.getProperty("CONNECTION_URL");
-            user = properties.getProperty("USER");
-            pssw = properties.getProperty("PASSWORD");
-
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-
-        return DriverManager.getConnection(connectionUrl,user, pssw);
+        DdBbConnection ddBbConnection = new DdBbConnection();
+        return ddBbConnection.getConnection();
     }
 
     public boolean deleteById(Integer id) throws SQLException, ClassNotFoundException {

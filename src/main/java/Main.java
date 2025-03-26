@@ -9,8 +9,6 @@ public class Main {
             + "\n  VIRTUAL ESCAPE ROOM APP \n"
             + "***************************\n***************************";
 
-    private static final Logger log = LogManager.getLogger(Main.class);
-
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         /*
         Tipos de traza disponibles:
