@@ -44,7 +44,7 @@ public class UserForm {
                     break;
                 case 3:
                     try {
-                        userDao.deleteUserById(EntryUtils.llegirInt(scanner, "Type the user id: ", false));
+                        userDao.deleteById(EntryUtils.llegirInt(scanner, "Type the user id: ", false));
                     } catch (SQLException e) {
                         log.error(e);
                     } catch (ClassNotFoundException e) {

@@ -1,11 +1,4 @@
-import daos.ElementDAO;
-import daos.UserDAO;
-import entities.User;
-
-import java.security.Provider;
 import java.sql.*;
-import java.util.List;
-import java.util.Optional;
 import java.util.Scanner;
 
 import org.apache.logging.log4j.LogManager;
