@@ -2,6 +2,10 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
+DROP DATABASE IF EXISTS escape_room_schema;
+CREATE DATABASE escape_room_schema;
+USE escape_room_schema;
+
 CREATE TABLE `clues` (
   `clue_id` int(11) NOT NULL,
   `clue_name` varchar(100) NOT NULL,
