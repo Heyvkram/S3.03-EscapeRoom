@@ -60,6 +60,7 @@ public class UserForm {
     }
 
     public static User newUserForm(Scanner scanner) {
+        System.out.println("\n");
         User user = new User();
         user.setName(EntryUtils.llegirString(scanner, "User name: ", false));
         user.setLastName1(EntryUtils.llegirString(scanner, "First last name: ", false));
