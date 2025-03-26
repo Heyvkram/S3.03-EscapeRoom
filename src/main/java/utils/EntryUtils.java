@@ -42,6 +42,7 @@ public class EntryUtils {
     public static Integer llegirInt(Scanner scanner, String missatge) {
         return llegirInt( scanner, missatge, true);
     }
+
     public static Integer llegirInt(Scanner scanner, String missatge, Boolean isNullable) {
         Integer resultat = null;
         boolean entradaValida = false;
@@ -66,11 +67,11 @@ public class EntryUtils {
 
             if (resultat == null && !isNullable && entradaValida) {
                 System.out.println("    Error: Si us plau, introdueix un número.");
-                entradaValida = false; // Per forçar la repetició si era null i no nullable.
+                entradaValida = false;
             }
 
         } while (!entradaValida);
-        scanner.nextLine();
+        // scanner.nextLine();
         return resultat;
     }
 

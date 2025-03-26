@@ -67,8 +67,10 @@ CREATE TABLE `rooms` (
 
 CREATE TABLE `users` (
   `user_id` int(11) NOT NULL,
+  `user_nick_name` varchar(20) NOT NULL,
   `user_name` varchar(30) NOT NULL,
-  `user_surname` varchar(50) NOT NULL,
+  `user_surname` varchar(100) NOT NULL,
+  `user_idCard` varchar(100) NOT NULL,
   `user_address_street` varchar(100) DEFAULT NULL,
   `user_address_number` int(11) DEFAULT NULL,
   `user_address_floor` char(20) DEFAULT NULL,
@@ -108,7 +110,9 @@ ALTER TABLE `rooms`
   ADD PRIMARY KEY (`room_id`);
 
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`user_id`);
+  ADD PRIMARY KEY (`user_id`),
+  ADD UNIQUE KEY `user_nick_name` (`user_nick_name`),
+  ADD UNIQUE KEY `user_idCard` (`user_idCard`);
 
 
 ALTER TABLE `rooms`

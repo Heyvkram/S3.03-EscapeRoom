@@ -14,11 +14,70 @@ public class UserDAO extends GenericDAO{
     private static final Logger log = LogManager.getLogger(UserDAO.class);
     final String TABLE_NAME="users";
 
-    public Optional<User> getUserById(Integer id) throws SQLException, ClassNotFoundException {
-        if (id == null || id <= 0) {
-            throw new IllegalArgumentException("No user");
+    public Optional<User> getUserBy(Object object, String fieldName, boolean isLikeSearch) throws SQLException, ClassNotFoundException {
+        if (object == null) {
+            return Optional.empty();
         }
-        final String sqlSelectUser = "SELECT * FROM users WHERE id=?";
+        final String sqlSelectUser = "SELECT * FROM users WHERE "+fieldName+"=?";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sqlSelectUser)) {
+
+            if(object instanceof Integer){
+                ps.setInt(1, (Integer) object);
+            }else if(object instanceof String){
+                ps.setString(1, (String) object);
+            }
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return Optional.of(resultSetToUserObject(rs));
+                } else {
+                    return Optional.empty();
+                }
+            }
+        }
+    }
+
+    public Optional<User> getUserById(Integer id) throws SQLException, ClassNotFoundException {
+        return getUserBy( id, "user_id", false);
+    }
+
+    public Optional<User> getUserByIdCard(String idCard) throws SQLException, ClassNotFoundException {
+        return getUserBy( idCard, "user_idCard", false);
+    }
+
+    public Optional<User> getUserByNickName(String nickName) throws SQLException, ClassNotFoundException {
+        return getUserBy( nickName, "nick_name", false);
+    }
+
+    public List<User> getUsersLikeSurName(String pLastname) throws ClassNotFoundException, SQLException {
+        String sqlSelectAllUsers = "SELECT * FROM users WHERE first_lastName LIKE ?";
+        List<User> usersList = new ArrayList<>();
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sqlSelectAllUsers)) {
+
+            ps.setString(1, "%" + pLastname + "%");
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    usersList.add(resultSetToUserObject(rs));
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new SQLException("Error en obtenir usuaris per cognom: " + e.getMessage(), e);
+        }
+
+        return usersList;
+    }
+
+/*
+    @Deprecated
+    public Optional<User> getUserById_(Integer id) throws SQLException, ClassNotFoundException {
+        if (id == null || id <= 0) {
+            return Optional.empty();
+        }
+        final String sqlSelectUser = "SELECT * FROM users WHERE user_id=?";
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sqlSelectUser)) {
 
@@ -33,6 +92,51 @@ public class UserDAO extends GenericDAO{
         }
     }
 
+    @Deprecated
+    public Optional<User> getUserByIdCard_(String idCard) throws SQLException, ClassNotFoundException {
+        if (idCard == null || idCard.isBlank()) {
+            return Optional.empty();
+        }
+        final String sqlSelectUser = "SELECT * FROM users WHERE id=?";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sqlSelectUser)) {
+
+            ps.setString(1, idCard);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return Optional.of(resultSetToUserObject(rs));
+                } else {
+                    return Optional.empty();
+                }
+            }
+        }
+    }
+
+    public Optional<User> getUserByNickName_(String nickname) throws SQLException, ClassNotFoundException {
+        if (nickname == null || nickname.isBlank()) {
+            return Optional.empty();
+        }
+        final String sqlSelectUser = "SELECT * FROM users WHERE id=?";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sqlSelectUser)) {
+
+            ps.setString(1, nickname);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return Optional.of(resultSetToUserObject(rs));
+                } else {
+                    return Optional.empty();
+                }
+            }
+        }
+    }
+*/
+
+    public void printAllUsers() throws ClassNotFoundException, SQLException {
+        System.out.println("Users list ____________________");
+        getAllUsers().forEach(User::printBasicInfoValues);
+    }
+
     public List<User> getAllUsers() throws ClassNotFoundException, SQLException {
         String sqlSelectAllUsers = "SELECT * FROM "+TABLE_NAME;
         List<User> usersList = new ArrayList<>();
@@ -43,7 +147,7 @@ public class UserDAO extends GenericDAO{
                 usersList.add(resultSetToUserObject(rs));
             }
         } catch (SQLException e) {
-            System.out.println(e);
+            log.error(e);
         }
         return usersList;
     }
@@ -51,26 +155,29 @@ public class UserDAO extends GenericDAO{
     public boolean saveOrUpdateUser(User user) {
         if(user == null) return false;
         String resultMsg = "User updated";
-        String sqlStr = "UPDATE users SET name = ?, first_lastName = ?, seccond_lastName = ?, adress_street = ?, adress_number = ?, adress_floor = ?, adress_door = ?, city = ?, zip_code = ?, country = ?, phone = ?, mail = ? WHERE id = ?";
+        String sqlStr = "UPDATE users SET user_nick_name = ?, user_name = ?, user_surname = ?, user_idCard = ?, user_address_street = ?, user_address_number = ?, user_address_floor = ?," +
+                " user_address_door = ?, user_city = ?, user_zip_code = ?, user_country = ?, user_phone = ?, user_mail = ? WHERE id = ?";
         if (user.getId() == null) {
-            sqlStr = "INSERT INTO users (name,first_lastName,seccond_lastName, adress_street, adress_number, adress_floor, adress_door, city, zip_code, country, phone, mail) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            resultMsg = "User inserted";
+            sqlStr = "INSERT INTO users (user_nick_name,user_name,user_surname,user_idCard,user_address_street,user_address_number,user_address_floor," +
+                    "user_address_door,user_city,user_zip_code,user_country,user_phone,user_mail) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            resultMsg = "\nUser inserted";
         }
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sqlStr)) {
             ps.setString(1, user.getName());
-            ps.setString(2, user.getLastName1());
-            ps.setString(3, user.getLastName2());
-            ps.setString(4, user.getAdress_street());
-            ps.setInt(5, user.getAdress_number());
-            ps.setString(6, user.getAdress_floor());
-            ps.setString(7, user.getAdress_door());
-            ps.setString(8, user.getCity());
-            ps.setString(9, user.getZip_code());
-            ps.setString(10, user.getCountry());
-            ps.setString(11, user.getPhone());
-            ps.setString(12, user.getMail());
+            ps.setString(2, user.getSurname());
+            ps.setString(3, user.getNickName());
+            ps.setString(4, user.getAddressStreet());
+            ps.setString(5, user.getIdCard());
+            ps.setInt(6, user.getAddressNumber());
+            ps.setString(7, user.getAddressFloor());
+            ps.setString(8, user.getAddressDoor());
+            ps.setString(9, user.getCity());
+            ps.setString(10, user.getZipCode());
+            ps.setString(11, user.getCountry());
+            ps.setString(12, user.getPhoneNumber());
+            ps.setString(13, user.getMail());
 
             int rowsAffected = ps.executeUpdate();
             if(rowsAffected > 0){
@@ -78,10 +185,7 @@ public class UserDAO extends GenericDAO{
             }
             return rowsAffected > 0;
 
-        } catch (SQLException e) {
-            log.info("Can't save the information\n");
-            log.error("Can't save the information\n",e);
-        } catch (ClassNotFoundException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             log.info("Can't save the information\n");
             log.error("Can't save the information\n",e);
         }
@@ -91,20 +195,19 @@ public class UserDAO extends GenericDAO{
 
     public User resultSetToUserObject(ResultSet rs) throws SQLException {
         User user = new User();
-        user.setId(rs.getLong("id"));
-        user.setName(rs.getString("name"));
-        user.setLastName1(rs.getString("first_lastName"));
-        user.setLastName2(rs.getString("seccond_lastName"));
-        user.setAdress_street(rs.getString("adress_street"));
-        user.setAdress_number(rs.getInt("adress_number"));
-        user.setAdress_floor(rs.getString("adress_floor"));
-        user.setAdress_door(rs.getString("adress_door"));
-        user.setCity(rs.getString("city"));
-        user.setZip_code(rs.getString("zip_code"));
-        user.setCountry(rs.getString("country"));
-        user.setCity(rs.getString("city"));
-        user.setPhone(rs.getString("phone"));
-        user.setMail(rs.getString("mail"));
+        user.setId(rs.getLong("user_id"));
+        user.setName(rs.getString("user_name"));
+        user.setSurname(rs.getString("user_surname"));
+        user.setNickName(rs.getString("user_nick_name"));
+        user.setAddressStreet(rs.getString("user_address_street"));
+        user.setAddressNumber(rs.getInt("user_address_number"));
+        user.setAddressFloor(rs.getString("user_address_floor"));
+        user.setAddressDoor(rs.getString("user_address_door"));
+        user.setCity(rs.getString("user_city"));
+        user.setZipCode(rs.getString("user_zip_code"));
+        user.setCountry(rs.getString("user_country"));
+        user.setPhoneNumber(rs.getString("user_phone"));
+        user.setMail(rs.getString("user_mail"));
         return user;
     }
 

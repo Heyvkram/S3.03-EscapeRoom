@@ -24,7 +24,7 @@ public class DdBbConnection {
         Properties properties= new Properties();
         try {
 
-            properties.load(new FileInputStream(new File("configuration.properties")));
+            properties.load(DdBbConnection.class.getClassLoader().getResourceAsStream("configuration.properties"));
 
             Class.forName(properties.getProperty("MYSQL_DRIVER"));
             connectionUrl = properties.getProperty("CONNECTION_URL");
