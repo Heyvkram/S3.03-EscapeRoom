@@ -8,15 +8,21 @@ USE escape_room;
 
 CREATE TABLE `clues` (
   `clue_id` int(11) NOT NULL,
-  `clue_name` varchar(100) NOT NULL,
+  `clue_title` varchar(100) NOT NULL,
+  `clue_description_user` varchar(300) NOT NULL,
+  `clue_description_admin` varchar(300) NOT NULL,
   `clue_theme` enum('Terror','Fiction','Fantasy') NOT NULL,
   `clue_level` enum('Easy','Intermediate','Hard') NOT NULL,
   `clue_game_phase` varchar(100) NOT NULL,
   `clue_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `clue_price` int(11) NOT NULL,
-  `clue_value` int(11) NOT NULL,
-  `room_id` int(11) NOT NULL
+  `clue_value` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `relation_clue_room` (
+  `clue_id` int(11) NOT NULL,
+  `room_id` int(11) NOT NULL
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; 
 
 CREATE TABLE `decoration_items` (
   `decoration_item_id` int(11) NOT NULL,
@@ -87,6 +93,10 @@ ALTER TABLE `clues`
   ADD PRIMARY KEY (`clue_id`),
   ADD KEY `fk_clues_room` (`room_id`);
 
+ALTER TABLE `relation_clue_room`
+  ADD KEY `fk_clue_id` (`clue_id`),
+  ADD KEY `fk_room_id` (`room_id`);
+  
 ALTER TABLE `decoration_items`
   ADD PRIMARY KEY (`decoration_item_id`),
   ADD UNIQUE KEY `clue_id` (`clue_id`),
@@ -122,8 +132,9 @@ ALTER TABLE `users`
   MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
 
 
-ALTER TABLE `clues`
-  ADD CONSTRAINT `fk_clues_room` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`room_id`);
+ALTER TABLE `relation_clue_room`
+  ADD CONSTRAINT `fk_clue_id` FOREIGN KEY (`clue_id`) REFERENCES `clues` (`clue_id`),
+  ADD CONSTRAINT `fk_room_id` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`room_id`);
 
 ALTER TABLE `decoration_items`
   ADD CONSTRAINT `fk_room_decoration` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`room_id`),
