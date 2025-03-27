@@ -165,9 +165,9 @@ public class UserDAO extends GenericDAO{
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sqlStr)) {
-            ps.setString(1, user.getName());
-            ps.setString(2, user.getSurname());
-            ps.setString(3, user.getNickName());
+            ps.setString(1, user.getNickName());
+            ps.setString(2, user.getName());
+            ps.setString(3, user.getSurname());
             ps.setString(4, user.getAddressStreet());
             ps.setString(5, user.getIdCard());
             ps.setInt(6, user.getAddressNumber());
