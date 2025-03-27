@@ -39,6 +39,27 @@ public class EntryUtils {
         return entrada;
     };
 
+    public static Integer readStringLikeInt(Scanner scanner, String missatge, Boolean isNullable){
+        String entrada = null;
+        Integer sortida = null;
+        do{
+            if(missatge!=null) System.out.print(missatge+" ");
+            entrada = scanner.nextLine();
+            if((entrada.isEmpty() && !isNullable)){
+                System.out.println("  Error: This field is required.");
+            }else if(isInteger(entrada)){
+                    sortida = Integer.valueOf(entrada);
+            }
+        }while(entrada.isEmpty() && !isNullable);
+        return sortida;
+    };
+
+    public static Long llegirIntHasLong(Scanner scanner, String missatge) {
+        Integer resultInt = llegirInt( scanner, missatge, true);
+
+        return null;
+    }
+
     public static Integer llegirInt(Scanner scanner, String missatge) {
         return llegirInt( scanner, missatge, true);
     }
@@ -56,6 +77,11 @@ public class EntryUtils {
                 if (scanner.hasNextInt()) {
                     resultat = scanner.nextInt();
                     entradaValida = true;
+                } else if (isNullable) {
+                    String resultatStr = scanner.nextLine();
+                    if(resultatStr.isEmpty()){
+                        entradaValida = true;
+                    }
                 } else {
                     System.out.println("    Error: Si us plau, introdueix un número.");
                     scanner.nextLine();
@@ -65,7 +91,7 @@ public class EntryUtils {
                 scanner.nextLine();
             }
 
-            if (resultat == null && !isNullable && entradaValida) {
+            if ((resultat == null && !isNullable) && entradaValida) {
                 System.out.println("    Error: Si us plau, introdueix un número.");
                 entradaValida = false;
             }
@@ -160,6 +186,18 @@ public class EntryUtils {
         return retorn;
 
     };
+
+    public static boolean isInteger(String s) {
+        try {
+            Integer.parseInt(s);
+        } catch(NumberFormatException e) {
+            return false;
+        } catch(NullPointerException e) {
+            return false;
+        }
+        // only got here if we didn't return false
+        return true;
+    }
 
 }
 

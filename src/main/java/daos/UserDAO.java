@@ -38,7 +38,7 @@ public class UserDAO extends GenericDAO{
         }
     }
 
-    public Optional<User> getUserById(Integer id) throws SQLException, ClassNotFoundException {
+    public Optional<User> getUserById(Long id) throws SQLException, ClassNotFoundException {
         return getUserBy( id, "user_id", false);
     }
 
@@ -65,75 +65,14 @@ public class UserDAO extends GenericDAO{
             }
 
         } catch (SQLException e) {
-            throw new SQLException("Error en obtenir usuaris per cognom: " + e.getMessage(), e);
+            throw new SQLException("Error getting users by last name: " + e.getMessage(), e);
         }
 
         return usersList;
     }
 
-/*
-    @Deprecated
-    public Optional<User> getUserById_(Integer id) throws SQLException, ClassNotFoundException {
-        if (id == null || id <= 0) {
-            return Optional.empty();
-        }
-        final String sqlSelectUser = "SELECT * FROM users WHERE user_id=?";
-        try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(sqlSelectUser)) {
-
-            ps.setInt(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return Optional.of(resultSetToUserObject(rs));
-                } else {
-                    return Optional.empty();
-                }
-            }
-        }
-    }
-
-    @Deprecated
-    public Optional<User> getUserByIdCard_(String idCard) throws SQLException, ClassNotFoundException {
-        if (idCard == null || idCard.isBlank()) {
-            return Optional.empty();
-        }
-        final String sqlSelectUser = "SELECT * FROM users WHERE id=?";
-        try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(sqlSelectUser)) {
-
-            ps.setString(1, idCard);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return Optional.of(resultSetToUserObject(rs));
-                } else {
-                    return Optional.empty();
-                }
-            }
-        }
-    }
-
-    public Optional<User> getUserByNickName_(String nickname) throws SQLException, ClassNotFoundException {
-        if (nickname == null || nickname.isBlank()) {
-            return Optional.empty();
-        }
-        final String sqlSelectUser = "SELECT * FROM users WHERE id=?";
-        try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(sqlSelectUser)) {
-
-            ps.setString(1, nickname);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return Optional.of(resultSetToUserObject(rs));
-                } else {
-                    return Optional.empty();
-                }
-            }
-        }
-    }
-*/
-
     public void printAllUsers() throws ClassNotFoundException, SQLException {
-        System.out.println("Users list ____________________");
+        System.out.println("    Users list............................");
         getAllUsers().forEach(User::printBasicInfoValues);
     }
 
@@ -165,9 +104,9 @@ public class UserDAO extends GenericDAO{
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sqlStr)) {
-            ps.setString(1, user.getName());
-            ps.setString(2, user.getSurname());
-            ps.setString(3, user.getNickName());
+            ps.setString(1, user.getNickName());
+            ps.setString(2, user.getName());
+            ps.setString(3, user.getSurname());
             ps.setString(4, user.getAddressStreet());
             ps.setString(5, user.getIdCard());
             ps.setInt(6, user.getAddressNumber());
@@ -188,9 +127,9 @@ public class UserDAO extends GenericDAO{
         } catch (SQLException | ClassNotFoundException e) {
             log.info("Can't save the information\n");
             log.error("Can't save the information\n",e);
+            return false;
         }
 
-        return false;
     }
 
     public User resultSetToUserObject(ResultSet rs) throws SQLException {

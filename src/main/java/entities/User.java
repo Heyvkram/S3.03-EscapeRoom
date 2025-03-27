@@ -25,6 +25,7 @@ public class User {
     public String getWholeName() {
         return name + " " + surname ;
     }
+
     public void printBasicInfoValues() {
         System.out.printf("     %-5d  %-25s  %-25s ,Nickname: %-25s%n", getId(), getName(), getSurname(), getNickName());
     }

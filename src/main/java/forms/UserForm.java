@@ -18,9 +18,10 @@ public class UserForm {
         int option;
         UserDAO userDao = new UserDAO();
         do {
-            System.out.println("\n-----------------------------------------");
-            System.out.println("User menu:");
-            System.out.println("-----------------------------------------");
+            System.out.println("\n");
+            System.out.println("    -----------------------------------------");
+            System.out.println("    User menu:");
+            System.out.println("    -----------------------------------------");
             System.out.println("    1. New user");
             System.out.println("    2. List users");
             System.out.println("    3. Edit user");
@@ -49,18 +50,28 @@ public class UserForm {
                     }
                     break;
                 case 3:
+                    /*
                     try {
                         Optional<User>  userOpt =  userDao.getUserById(EntryUtils.llegirInt(scanner, "Type the user id: ", false));
                         scanner.nextLine();
                         if(userOpt.isPresent()){
                             userOpt.get().printBasicInfoValues();
-                            editUserForm(userOpt.get(), scanner);
+                            User usrUpdated = editUserForm(userOpt.get(), scanner);
+                            if(usrUpdated==null) {
+                                userDao.saveOrUpdateUser(usrUpdated);
+                            }
+
+                            userOpt =  userDao.getUserById(usrUpdated.getId());
+                            userOpt.get().printBasicInfoValues();
+
                         }else{
-                            System.out.println("No s'ha trobar cap usuari amb aquest id");
+                            System.out.println("No user with this id was found.");
                         }
                     } catch (SQLException | ClassNotFoundException e) {
                         log.error(e);
                     }
+                    
+                     */
                     break;
                 case 4:
                     try {
@@ -96,7 +107,7 @@ public class UserForm {
         return user;
     }
 
-    public static void editUserForm(User user, Scanner scanner) {
+    public static User editUserForm(User user, Scanner scanner) {
 
         System.out.print("\n*Name: "+ user.getName());
         user.setName(EntryUtils.llegirString(scanner, ", new value: > ", true));
@@ -111,8 +122,7 @@ public class UserForm {
         EntryUtils.llegirString(scanner, ", new value: > ", true);
 
         System.out.print("\n*Number: "+ user.getAddressNumber());
-        EntryUtils.llegirInt(scanner, ", new value: > ", true);
-        scanner.nextLine();
+        EntryUtils.readStringLikeInt(scanner, ", new value: > ", true);
 
         System.out.print("\n*Floor: "+ user.getAddressFloor());
         EntryUtils.llegirString(scanner, ", new value: > ", true);
@@ -135,6 +145,12 @@ public class UserForm {
         System.out.print("\n*Mail: "+ user.getMail());
         EntryUtils.llegirString(scanner, ", new value: > ", true);
 
+
+        if(!EntryUtils.readYesNo(scanner, "Save this changes (y/n)? ")){
+            user=null;
+        }
+
+        return user;
     }
 
 }
