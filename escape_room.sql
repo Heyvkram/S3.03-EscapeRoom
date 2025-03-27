@@ -94,8 +94,8 @@ ALTER TABLE `clues`
   ADD KEY `fk_clues_room` (`room_id`);
 
 ALTER TABLE `relation_clue_room`
-  ADD KEY `fk_clue_id` (`clue_id`),
-  ADD KEY `fk_room_id` (`room_id`);
+  ADD KEY `fk_clue_relation_id` (`clue_relation_id`),
+  ADD KEY `fk_room_relation_id` (`room_relation_id`);
   
 ALTER TABLE `decoration_items`
   ADD PRIMARY KEY (`decoration_item_id`),
@@ -133,8 +133,8 @@ ALTER TABLE `users`
 
 
 ALTER TABLE `relation_clue_room`
-  ADD CONSTRAINT `fk_clue_id` FOREIGN KEY (`clue_id`) REFERENCES `clues` (`clue_id`),
-  ADD CONSTRAINT `fk_room_id` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`room_id`);
+  ADD CONSTRAINT `fk_clue_id` FOREIGN KEY (`clue_relation_id`) REFERENCES `clues` (`clue_relation_id`),
+  ADD CONSTRAINT `fk_room_id` FOREIGN KEY (`room_relation_id`) REFERENCES `rooms` (`room_relation_id`);
 
 ALTER TABLE `decoration_items`
   ADD CONSTRAINT `fk_room_decoration` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`room_id`),
