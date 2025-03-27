@@ -1,31 +1,10 @@
--- phpMyAdmin SQL Dump
--- version 5.2.1
--- https://www.phpmyadmin.net/
---
--- Servidor: 127.0.0.1
--- Tiempo de generación: 27-03-2025 a las 12:22:00
--- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Base de datos: `escape_room`
---
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `clues`
---
+DROP DATABASE IF EXISTS escape_room;
+CREATE DATABASE escape_room;
+USE escape_room:
 
 CREATE TABLE `clues` (
   `clue_id` int(11) NOT NULL,
@@ -39,12 +18,6 @@ CREATE TABLE `clues` (
   `clue_price` int(11) NOT NULL,
   `clue_value` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `decoration_items`
---
 
 CREATE TABLE `decoration_items` (
   `decoration_item_id` int(11) NOT NULL,
@@ -60,24 +33,12 @@ CREATE TABLE `decoration_items` (
   `room_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `game_sessions`
---
-
 CREATE TABLE `game_sessions` (
   `game_id` int(11) NOT NULL,
   `room_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `payment_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `notifications`
---
 
 CREATE TABLE `notifications` (
   `notification_id` int(11) NOT NULL,
@@ -87,12 +48,6 @@ CREATE TABLE `notifications` (
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `payments`
---
-
 CREATE TABLE `payments` (
   `payment_id` int(11) NOT NULL,
   `payment_mode` enum('Credit card','Bizum','PayPal') DEFAULT NULL,
@@ -101,22 +56,10 @@ CREATE TABLE `payments` (
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `relation_clue_room`
---
-
 CREATE TABLE `relation_clue_room` (
   `clue_id` int(11) NOT NULL,
   `room_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `rooms`
---
 
 CREATE TABLE `rooms` (
   `room_id` int(11) NOT NULL,
@@ -127,12 +70,6 @@ CREATE TABLE `rooms` (
   `room_max_players` int(11) NOT NULL,
   `room_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `users`
---
 
 CREATE TABLE `users` (
   `user_id` int(11) NOT NULL,
@@ -151,124 +88,66 @@ CREATE TABLE `users` (
   `user_mail` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Índices para tablas volcadas
---
 
---
--- Indices de la tabla `clues`
---
 ALTER TABLE `clues`
   ADD PRIMARY KEY (`clue_id`);
 
---
--- Indices de la tabla `decoration_items`
---
 ALTER TABLE `decoration_items`
   ADD PRIMARY KEY (`decoration_item_id`),
   ADD UNIQUE KEY `clue_id` (`clue_id`),
   ADD KEY `fk_room_decoration` (`room_id`);
 
---
--- Indices de la tabla `game_sessions`
---
 ALTER TABLE `game_sessions`
   ADD PRIMARY KEY (`game_id`),
   ADD KEY `fk_game_user` (`user_id`),
   ADD KEY `fk_game_room` (`room_id`),
   ADD KEY `fk_game_payment` (`payment_id`);
 
---
--- Indices de la tabla `notifications`
---
 ALTER TABLE `notifications`
   ADD PRIMARY KEY (`notification_id`),
   ADD UNIQUE KEY `user_id` (`user_id`),
   ADD KEY `fk_notification_user` (`user_id`);
 
---
--- Indices de la tabla `payments`
---
 ALTER TABLE `payments`
   ADD PRIMARY KEY (`payment_id`),
   ADD KEY `fk_payment_user` (`user_id`);
 
---
--- Indices de la tabla `relation_clue_room`
---
 ALTER TABLE `relation_clue_room`
   ADD KEY `fk_clues_id` (`clue_id`),
   ADD KEY `fk_room_id` (`room_id`);
 
---
--- Indices de la tabla `rooms`
---
 ALTER TABLE `rooms`
   ADD PRIMARY KEY (`room_id`);
 
---
--- Indices de la tabla `users`
---
 ALTER TABLE `users`
   ADD PRIMARY KEY (`user_id`),
   ADD UNIQUE KEY `user_nick_name` (`user_nick_name`),
   ADD UNIQUE KEY `user_idCard` (`user_idCard`);
 
---
--- AUTO_INCREMENT de las tablas volcadas
---
 
---
--- AUTO_INCREMENT de la tabla `rooms`
---
 ALTER TABLE `rooms`
   MODIFY `room_id` int(11) NOT NULL AUTO_INCREMENT;
 
---
--- AUTO_INCREMENT de la tabla `users`
---
 ALTER TABLE `users`
   MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
 
---
--- Restricciones para tablas volcadas
---
 
---
--- Filtros para la tabla `decoration_items`
---
 ALTER TABLE `decoration_items`
   ADD CONSTRAINT `fk_clue_decoration` FOREIGN KEY (`clue_id`) REFERENCES `clues` (`clue_id`),
   ADD CONSTRAINT `fk_room_decoration` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`room_id`);
 
---
--- Filtros para la tabla `game_sessions`
---
 ALTER TABLE `game_sessions`
   ADD CONSTRAINT `fk_game_payment` FOREIGN KEY (`payment_id`) REFERENCES `payments` (`payment_id`),
   ADD CONSTRAINT `fk_game_room` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`room_id`),
   ADD CONSTRAINT `fk_game_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
---
--- Filtros para la tabla `notifications`
---
 ALTER TABLE `notifications`
   ADD CONSTRAINT `fk_notification_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
---
--- Filtros para la tabla `payments`
---
 ALTER TABLE `payments`
   ADD CONSTRAINT `fk_payment_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
---
--- Filtros para la tabla `relation_clue_room`
---
 ALTER TABLE `relation_clue_room`
   ADD CONSTRAINT `fk_clues_id` FOREIGN KEY (`clue_id`) REFERENCES `clues` (`clue_id`),
   ADD CONSTRAINT `fk_room_id` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`room_id`);
 COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
