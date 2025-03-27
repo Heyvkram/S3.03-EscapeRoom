@@ -4,7 +4,7 @@ SET time_zone = "+00:00";
 
 DROP DATABASE IF EXISTS escape_room;
 CREATE DATABASE escape_room;
-USE escape_room:
+USE escape_room;
 
 CREATE TABLE `clues` (
   `clue_id` int(11) NOT NULL,
