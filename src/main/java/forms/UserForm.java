@@ -28,16 +28,16 @@ public class UserForm {
             System.out.println("    4. Delete user");
             System.out.println("    5. Back");
 
-            System.out.print("\nChoose option > ");
+            System.out.print("\n>>> Choose option > ");
             // option = scanner.nextInt();
             option = EntryUtils.llegirInt(scanner,null);
+            scanner.nextLine();
             switch (option) {
                 case 1:
-                        scanner.nextLine();
-                        if(!userDao.saveOrUpdateUser(newUserForm(scanner))){
+                        if(!userDao.insertNewUser(newUserForm(scanner))){
                            System.out.println("\n   Error: Unable to establish connection to the database.");
                            System.out.println("     (Please contact your system administrator)\n");
-                           if(!EntryUtils.readYesNo(scanner," Type 'Y' for continue or 'N' for scape.")){
+                           if(!EntryUtils.readYesNo(scanner," Type 'y' for continue or 'n' for escape.")){
                                option=4;
                            }
                        }
@@ -50,32 +50,39 @@ public class UserForm {
                     }
                     break;
                 case 3:
-                    /*
+
                     try {
-                        Optional<User>  userOpt =  userDao.getUserById(EntryUtils.llegirInt(scanner, "Type the user id: ", false));
-                        scanner.nextLine();
+                        Optional<User>  userOpt =  userDao.getUserById(EntryUtils.readStringLikeLong(scanner, "Type the user id: ", false));
                         if(userOpt.isPresent()){
                             userOpt.get().printBasicInfoValues();
                             User usrUpdated = editUserForm(userOpt.get(), scanner);
-                            if(usrUpdated==null) {
-                                userDao.saveOrUpdateUser(usrUpdated);
+                            if(usrUpdated!=null) {
+                                userDao.updateUser(usrUpdated);
                             }
 
                             userOpt =  userDao.getUserById(usrUpdated.getId());
                             userOpt.get().printBasicInfoValues();
 
                         }else{
-                            System.out.println("No user with this id was found.");
+                            System.out.println("\n>>> No user with this id was found.");
                         }
                     } catch (SQLException | ClassNotFoundException e) {
                         log.error(e);
                     }
-                    
-                     */
+
                     break;
                 case 4:
                     try {
-                        userDao.deleteById(EntryUtils.llegirInt(scanner, "Type the user id: ", false));
+                        Optional<User>  userOpt =  userDao.getUserById(EntryUtils.readStringLikeLong(scanner, "Type the user to delete id : ", false));
+                        if(userOpt.isPresent()){
+                            System.out.println("\n");
+                            userOpt.get().printBasicInfoValues();
+                            if(EntryUtils.readYesNo(scanner, "\nDelete this user (y/n)? ")){
+                                if(userDao.deleteById(userOpt.get().getId())){
+                                    System.out.println("\n>>> User deleted.");
+                                }
+                            }
+                        }
                     } catch (SQLException | ClassNotFoundException e) {
                         log.error(e);
                     }
@@ -83,9 +90,10 @@ public class UserForm {
                 case 5:
                     break;
                 default:
-                    System.out.println("Wrong option.");
+                    System.out.println(">>> Wrong option.");
             }
         } while (option != 5);
+        scanner.nextLine();
     }
 
     public static User newUserForm(Scanner scanner) {
@@ -113,10 +121,10 @@ public class UserForm {
         user.setName(EntryUtils.llegirString(scanner, ", new value: > ", true));
 
         System.out.print("\n*Surname: "+ user.getSurname());
-        EntryUtils.llegirString(scanner, ", new value: > ", true);
+        user.setSurname(EntryUtils.llegirString(scanner, ", new value: > ", true));
 
         System.out.print("\n*Nickname: "+ user.getNickName());
-        EntryUtils.llegirString(scanner, ", new value: > ", true);
+        user.setNickName(EntryUtils.llegirString(scanner, ", new value: > ", true));
 
         System.out.print("\n*Street: "+ user.getAddressStreet());
         EntryUtils.llegirString(scanner, ", new value: > ", true);
@@ -146,7 +154,7 @@ public class UserForm {
         EntryUtils.llegirString(scanner, ", new value: > ", true);
 
 
-        if(!EntryUtils.readYesNo(scanner, "Save this changes (y/n)? ")){
+        if(!EntryUtils.readYesNo(scanner, "\nSave this changes (y/n)? ")){
             user=null;
         }
 

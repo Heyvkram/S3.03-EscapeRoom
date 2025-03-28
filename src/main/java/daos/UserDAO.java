@@ -1,30 +1,32 @@
 package daos;
 
+import com.sun.jdi.LongValue;
 import entities.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utils.DdBbUtils;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
-public class UserDAO extends GenericDAO{
+public class UserDAO extends GenericDAO {
 
     private static final Logger log = LogManager.getLogger(UserDAO.class);
-    final String TABLE_NAME="users";
+    final String TABLE_NAME = "users";
 
     public Optional<User> getUserBy(Object object, String fieldName, boolean isLikeSearch) throws SQLException, ClassNotFoundException {
         if (object == null) {
             return Optional.empty();
         }
-        final String sqlSelectUser = "SELECT * FROM users WHERE "+fieldName+"=?";
+        final String sqlSelectUser = "SELECT * FROM users WHERE " + fieldName + "=?";
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sqlSelectUser)) {
 
-            if(object instanceof Integer){
+            if (object instanceof Integer) {
                 ps.setInt(1, (Integer) object);
-            }else if(object instanceof String){
+            } else if (object instanceof Long) {
+                ps.setLong(1, (Long) object);
+            } else if (object instanceof String) {
                 ps.setString(1, (String) object);
             }
 
@@ -39,15 +41,15 @@ public class UserDAO extends GenericDAO{
     }
 
     public Optional<User> getUserById(Long id) throws SQLException, ClassNotFoundException {
-        return getUserBy( id, "user_id", false);
+        return getUserBy(id, "user_id", false);
     }
 
     public Optional<User> getUserByIdCard(String idCard) throws SQLException, ClassNotFoundException {
-        return getUserBy( idCard, "user_idCard", false);
+        return getUserBy(idCard, "user_idCard", false);
     }
 
     public Optional<User> getUserByNickName(String nickName) throws SQLException, ClassNotFoundException {
-        return getUserBy( nickName, "nick_name", false);
+        return getUserBy(nickName, "nick_name", false);
     }
 
     public List<User> getUsersLikeSurName(String pLastname) throws ClassNotFoundException, SQLException {
@@ -72,12 +74,12 @@ public class UserDAO extends GenericDAO{
     }
 
     public void printAllUsers() throws ClassNotFoundException, SQLException {
-        System.out.println("    Users list............................");
+        System.out.println("\n    Users list............................");
         getAllUsers().forEach(User::printBasicInfoValues);
     }
 
     public List<User> getAllUsers() throws ClassNotFoundException, SQLException {
-        String sqlSelectAllUsers = "SELECT * FROM "+TABLE_NAME;
+        String sqlSelectAllUsers = "SELECT * FROM " + TABLE_NAME;
         List<User> usersList = new ArrayList<>();
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sqlSelectAllUsers);
@@ -91,16 +93,10 @@ public class UserDAO extends GenericDAO{
         return usersList;
     }
 
-    public boolean saveOrUpdateUser(User user) {
-        if(user == null) return false;
-        String resultMsg = "User updated";
-        String sqlStr = "UPDATE users SET user_nick_name = ?, user_name = ?, user_surname = ?, user_idCard = ?, user_address_street = ?, user_address_number = ?, user_address_floor = ?," +
-                " user_address_door = ?, user_city = ?, user_zip_code = ?, user_country = ?, user_phone = ?, user_mail = ? WHERE id = ?";
-        if (user.getId() == null) {
-            sqlStr = "INSERT INTO users (user_nick_name,user_name,user_surname,user_idCard,user_address_street,user_address_number,user_address_floor," +
-                    "user_address_door,user_city,user_zip_code,user_country,user_phone,user_mail) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            resultMsg = "\nUser inserted";
-        }
+    public boolean insertNewUser(User user) {
+        if (user == null) return false;
+        String sqlStr = "INSERT INTO users (user_nick_name,user_name,user_surname,user_idCard,user_address_street,user_address_number,user_address_floor," +
+                    "user_address_door,user_city,user_zip_code,user_country,user_phone,user_mail) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sqlStr)) {
@@ -118,18 +114,80 @@ public class UserDAO extends GenericDAO{
             ps.setString(12, user.getPhoneNumber());
             ps.setString(13, user.getMail());
 
+            if (user.getId() != null) {
+                ps.setLong(14, user.getId());
+            }
+
             int rowsAffected = ps.executeUpdate();
-            if(rowsAffected > 0){
-                System.out.println(resultMsg);
+            if (rowsAffected > 0) {
+                System.out.println(">>>New user inserted\n");
             }
             return rowsAffected > 0;
 
         } catch (SQLException | ClassNotFoundException e) {
             log.info("Can't save the information\n");
-            log.error("Can't save the information\n",e);
+            log.error("Can't save the information\n", e);
+            return false;
+        }
+    }
+
+    public boolean updateUser(User user) {
+        if (user == null) return false;
+
+        ArrayList<Object> parameterList = new ArrayList<>();
+        ArrayList<String> arrayQueryParams = new ArrayList<>();
+
+        if(user.getNickName()!=null) {
+            arrayQueryParams.add(" user_nick_name = ?");
+            parameterList.add(user.getNickName());
+        }
+        if(user.getName()!=null) {
+            arrayQueryParams.add(" user_name = ?");
+            parameterList.add(user.getName());
+        }
+        if(user.getSurname()!=null) {
+            arrayQueryParams.add(" user_surname = ?");
+            parameterList.add(user.getSurname());
+        }
+
+        if(arrayQueryParams.isEmpty()){
+            System.out.println("\n>>> No changes in user\n");
             return false;
         }
 
+        String updatedParams = String.join(",", arrayQueryParams);
+        String sqlUpdate = "UPDATE users SET " + updatedParams + " WHERE user_id = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sqlUpdate);
+        ) {
+            DdBbUtils.preparareUpdate(ps, parameterList);
+            ps.setLong(parameterList.size()+1, user.getId());
+
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println(">>> User updated\n");
+            }
+            return rowsAffected > 0;
+
+        } catch (SQLException | ClassNotFoundException e) {
+            log.info("!!!! Can't save the information\n");
+            log.error("!!!! Can't save the information\n", e);
+            return false;
+        }
+    }
+
+    public boolean deleteById(Long id) throws SQLException, ClassNotFoundException {
+        if (id == null || id <= 0) {
+            throw new IllegalArgumentException("No user");
+        }
+        final String sqlDelete = "DELETE FROM "+TABLE_NAME+" WHERE user_id=?";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sqlDelete)) {
+            ps.setLong(1, id);
+            ps.execute();
+            return true;
+        }
     }
 
     public User resultSetToUserObject(ResultSet rs) throws SQLException {

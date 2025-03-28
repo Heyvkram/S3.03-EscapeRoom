@@ -39,6 +39,21 @@ public class EntryUtils {
         return entrada;
     };
 
+    public static Long readStringLikeLong(Scanner scanner, String missatge, Boolean isNullable){
+        String entrada = null;
+        Integer sortida = null;
+        do{
+            if(missatge!=null) System.out.print(missatge+" ");
+            entrada = scanner.nextLine();
+            if((entrada.isEmpty() && !isNullable)){
+                System.out.println("  Error: This field is required.");
+            }else if(isNumeric(entrada)){
+                sortida = Integer.valueOf(entrada);
+            }
+        }while(entrada.isEmpty() && !isNullable);
+        return Long.valueOf(sortida);
+    };
+
     public static Integer readStringLikeInt(Scanner scanner, String missatge, Boolean isNullable){
         String entrada = null;
         Integer sortida = null;
@@ -133,14 +148,6 @@ public class EntryUtils {
         return resultat;
     };
 
-
-    /*
-        AmidaException (Exception):
-        public static char llegirChar(String missatge);
-        public static String llegirString(String missatge);
-        public static boolean llegirSiNo(String missatge), si l’usuari/ària introdueix “s”,
-        retorna “true”, si l’usuari/ària introdueix “n”, retorna “false”.
-     */
     public static char llegirChar(Scanner scanner, String missatge){
         String entrada = null;
         scanner.nextLine();
@@ -196,6 +203,19 @@ public class EntryUtils {
             return false;
         }
         // only got here if we didn't return false
+        return true;
+    }
+
+    public static boolean isNumeric(String str) {
+        if (str == null) {
+            return false;
+        }
+        int sz = str.length();
+        for (int i = 0; i < sz; i++) {
+            if (!Character.isDigit(str.charAt(i))) {
+                return false;
+            }
+        }
         return true;
     }
 

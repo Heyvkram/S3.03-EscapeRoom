@@ -19,7 +19,7 @@ public class Menu {
             System.out.println("    4. Room menu");
             System.out.println("    5. Exit");
 
-            System.out.print("\nChoose option > ");
+            System.out.print("\n>>> Choose option : ");
             option = EntryUtils.llegirInt(scanner,null);
 
             switch (option) {
@@ -36,7 +36,7 @@ public class Menu {
                 case 5:
                     break;
                 default:
-                    System.out.println("Wrong option.");
+                    System.out.println(">>> Wrong option.");
             }
         } while (option != 4);
     }
@@ -56,7 +56,7 @@ public class Menu {
             System.out.println("    3. Delete clue");
             System.out.println("    4. Back");
 
-            System.out.print("\nChoose option > ");
+            System.out.print("\n>>> Choose option : ");
             option = scanner.nextInt();
 
             switch (option) {
@@ -90,7 +90,7 @@ public class Menu {
             System.out.println("    3. Delete room");
             System.out.println("    4. Back");
 
-            System.out.print("\nChoose option > ");
+            System.out.print("\n>>> Choose option : ");
             option = scanner.nextInt();
 
             switch (option) {
@@ -106,7 +106,7 @@ public class Menu {
                 case 4:
                     break;
                 default:
-                    System.out.println("Wrong option.");
+                    System.out.println(">>> Wrong option.");
             }
         } while (option != 4);
     }
