@@ -27,7 +27,8 @@ public class Menu {
                     DecorationItemsForm.menuDecorationItem(scanner);
                     break;
                 case 2:
-                    UserForm.menuUser(scanner);
+                    UserForm userForm = new UserForm();
+                    userForm.menuUser(scanner);
                     break;
                 case 3:
                     break;

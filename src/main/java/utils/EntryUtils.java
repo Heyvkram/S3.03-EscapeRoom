@@ -219,5 +219,9 @@ public class EntryUtils {
         return true;
     }
 
+    public static boolean isUpdateable(String strObj){
+        return !(strObj==null || strObj.isEmpty() || strObj.isBlank());
+    }
+
 }
 

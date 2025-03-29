@@ -14,7 +14,7 @@ public class UserForm {
 
     private static final Logger log = LogManager.getLogger(UserForm.class);
 
-    public static void menuUser(Scanner scanner) {
+    public void menuUser(Scanner scanner) {
         int option;
         UserDAO userDao = new UserDAO();
         do {
@@ -96,26 +96,59 @@ public class UserForm {
         scanner.nextLine();
     }
 
-    public static User newUserForm(Scanner scanner) {
+    public User newUserForm(Scanner scanner) {
         System.out.println("\n");
         User user = new User();
         user.setName(EntryUtils.llegirString(scanner, "*Name: ", false));
         user.setSurname(EntryUtils.llegirString(scanner, "*Surname: ", false));
-        user.setNickName(EntryUtils.llegirString(scanner, "Nickname: ", false));
-        user.setAddressStreet(EntryUtils.llegirString(scanner, "Street: ", false));
-        user.setAddressNumber(EntryUtils.llegirInt(scanner, "number: ", false));
+        /// user.setNickName(EntryUtils.llegirString(scanner, "Nickname: ", false));
+
+        String nickName = null;
+        do{
+            nickName = EntryUtils.llegirString(scanner, "*Nickname: ", false);
+            if(existField(nickName, "user_nick_name", true)){
+                System.out.println("ERROR: This nickname exist");
+                nickName = null;
+            }
+        }while(nickName==null);
+        user.setSurname(nickName);
+
+        String idCard = null;
+        do{
+            idCard = EntryUtils.llegirString(scanner, "*idCard: ", true);
+            if(existField(idCard, "user_idCard", true)){
+                System.out.println("ERROR: This user identification card exist");
+                idCard = null;
+            }
+        }while(idCard==null);
+        user.setIdCard(idCard);
+
+        user.setAddressStreet(EntryUtils.llegirString(scanner, "Street: ", true));
+        user.setAddressNumber(EntryUtils.llegirInt(scanner, "number: ", true));
         scanner.nextLine();
-        user.setAddressFloor(EntryUtils.llegirString(scanner, "Floor: ", false));
-        user.setAddressDoor(EntryUtils.llegirString(scanner, "Door: ", false));
-        user.setCity(EntryUtils.llegirString(scanner, "City: ", false));
-        user.setZipCode(EntryUtils.llegirString(scanner, "Zip code: ", false));
-        user.setCountry(EntryUtils.llegirString(scanner, "Country: ", false));
-        user.setPhoneNumber(EntryUtils.llegirString(scanner, "Phone number: ", false));
-        user.setMail(EntryUtils.llegirString(scanner, "*email: ", false));
+        user.setAddressFloor(EntryUtils.llegirString(scanner, "Floor: ", true));
+        user.setAddressDoor(EntryUtils.llegirString(scanner, "Door: ", true));
+        user.setCity(EntryUtils.llegirString(scanner, "City: ", true));
+        user.setZipCode(EntryUtils.llegirString(scanner, "Zip code: ", true));
+        user.setCountry(EntryUtils.llegirString(scanner, "Country: ", true));
+        user.setPhoneNumber(EntryUtils.llegirString(scanner, "Phone number: ", true));
+
+        String email = null;
+        do{
+            email = EntryUtils.llegirString(scanner, "*email: ", false);
+            if(existField(email, "user_mail", true)){
+                System.out.println("ERROR: This user email exist");
+                email = null;
+            }
+        }while(email==null);
+        user.setMail(email);
+
         return user;
     }
 
-    public static User editUserForm(User user, Scanner scanner) {
+    public User editUserForm(User user, Scanner scanner) {
+
+        UserDAO userDao = new UserDAO();
 
         System.out.print("\n*Name: "+ user.getName());
         user.setName(EntryUtils.llegirString(scanner, ", new value: > ", true));
@@ -123,35 +156,43 @@ public class UserForm {
         System.out.print("\n*Surname: "+ user.getSurname());
         user.setSurname(EntryUtils.llegirString(scanner, ", new value: > ", true));
 
+        String nickName = null;
         System.out.print("\n*Nickname: "+ user.getNickName());
-        user.setNickName(EntryUtils.llegirString(scanner, ", new value: > ", true));
+        do{
+            nickName = EntryUtils.llegirString(scanner, ", new value: > ", true);
+            if(nickName.isEmpty() || existField(nickName, "user_nick_name", true)){
+                nickName = null;
+            }
+        }while(nickName==null);
+        user.setNickName(nickName);
+        // System.out.print("\n*Nickname: "+ user.getNickName());
 
         System.out.print("\n*Street: "+ user.getAddressStreet());
-        EntryUtils.llegirString(scanner, ", new value: > ", true);
+        user.setAddressStreet(EntryUtils.llegirString(scanner, ", new value: > ", true));
 
         System.out.print("\n*Number: "+ user.getAddressNumber());
-        EntryUtils.readStringLikeInt(scanner, ", new value: > ", true);
+        user.setAddressNumber(EntryUtils.readStringLikeInt(scanner, ", new value: > ", true));
 
         System.out.print("\n*Floor: "+ user.getAddressFloor());
-        EntryUtils.llegirString(scanner, ", new value: > ", true);
+        user.setAddressFloor(EntryUtils.llegirString(scanner, ", new value: > ", true));
 
         System.out.print("\n*Door: "+ user.getAddressDoor());
-        EntryUtils.llegirString(scanner, ", new value: > ", true);
+        user.setAddressDoor(EntryUtils.llegirString(scanner, ", new value: > ", true));
 
         System.out.print("\n*City: "+ user.getCity());
-        EntryUtils.llegirString(scanner, ", new value: > ", true);
+        user.setCity(EntryUtils.llegirString(scanner, ", new value: > ", true));
 
         System.out.print("\n*ZipCode: "+ user.getZipCode());
-        EntryUtils.llegirString(scanner, ", new value: > ", true);
+        user.setZipCode(EntryUtils.llegirString(scanner, ", new value: > ", true));
 
         System.out.print("\n*Country: "+ user.getCountry());
-        EntryUtils.llegirString(scanner, ", new value: > ", true);
+        user.setCountry(EntryUtils.llegirString(scanner, ", new value: > ", true));
 
         System.out.print("\n*PhoneNumber: "+ user.getPhoneNumber());
-        EntryUtils.llegirString(scanner, ", new value: > ", true);
+        user.setPhoneNumber(EntryUtils.llegirString(scanner, ", new value: > ", true));
 
         System.out.print("\n*Mail: "+ user.getMail());
-        EntryUtils.llegirString(scanner, ", new value: > ", true);
+        user.setMail(EntryUtils.llegirString(scanner, ", new value: > ", true));
 
 
         if(!EntryUtils.readYesNo(scanner, "\nSave this changes (y/n)? ")){
@@ -159,6 +200,18 @@ public class UserForm {
         }
 
         return user;
+    }
+
+    public boolean existField(String entrada, String fieldName, boolean ignoreCase){
+        UserDAO userDao = new UserDAO();
+        boolean result = false;
+        try {
+            result = userDao.existUserBy(entrada, fieldName, ignoreCase);
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println((">>> No s'ha pogut comprovar el camp "+fieldName));
+            // log.error(new RuntimeException(e));
+        }
+        return result;
     }
 
 }

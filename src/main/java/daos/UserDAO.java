@@ -5,6 +5,7 @@ import entities.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utils.DdBbUtils;
+import utils.EntryUtils;
 
 import java.sql.*;
 import java.util.*;
@@ -14,7 +15,7 @@ public class UserDAO extends GenericDAO {
     private static final Logger log = LogManager.getLogger(UserDAO.class);
     final String TABLE_NAME = "users";
 
-    public Optional<User> getUserBy(Object object, String fieldName, boolean isLikeSearch) throws SQLException, ClassNotFoundException {
+    public Optional<User> getUserBy(Object object, String fieldName) throws SQLException, ClassNotFoundException {
         if (object == null) {
             return Optional.empty();
         }
@@ -40,16 +41,52 @@ public class UserDAO extends GenericDAO {
         }
     }
 
+    public boolean existUserBy(Object object, String fieldName, boolean ignoreCase) throws SQLException, ClassNotFoundException {
+
+        String sqlWhereStr = " WHERE "+fieldName+" = ?";
+        String sqlWhereStrIgnoreCase = " WHERE LOWER(user_nick_name) = LOWER(?)";
+        // String sqlSelectUser = "SELECT EXISTS (SELECT 1 FROM users WHERE LOWER(user_nick_name) = LOWER(?))";
+        String finalSqlSelectr = "SELECT EXISTS (SELECT 1 FROM users XXXX)";
+
+        if (ignoreCase && object instanceof String) {
+            finalSqlSelectr = finalSqlSelectr.replace("XXXX",sqlWhereStrIgnoreCase);
+        }else{
+            finalSqlSelectr = finalSqlSelectr.replace("XXXX",sqlWhereStr);
+        }
+
+        boolean result = false;
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(finalSqlSelectr)) {
+            if (object instanceof Integer) {
+                ps.setInt(1, (Integer) object);
+            } else if (object instanceof Long) {
+                ps.setLong(1, (Long) object);
+            } else if (object instanceof String) {
+                ps.setString(1, (String) object);
+            }
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    result = rs.getBoolean(1);
+                }
+            }
+            return result;
+        }
+    }
+
     public Optional<User> getUserById(Long id) throws SQLException, ClassNotFoundException {
-        return getUserBy(id, "user_id", false);
+        return getUserBy(id, "user_id");
     }
 
     public Optional<User> getUserByIdCard(String idCard) throws SQLException, ClassNotFoundException {
-        return getUserBy(idCard, "user_idCard", false);
+        return getUserBy(idCard, "user_idCard");
     }
 
     public Optional<User> getUserByNickName(String nickName) throws SQLException, ClassNotFoundException {
-        return getUserBy(nickName, "nick_name", false);
+        return getUserBy(nickName, "nick_name");
+    }
+
+    public Optional<User> getUserByEmail(String nickName) throws SQLException, ClassNotFoundException {
+        return getUserBy(nickName, "user_mail");
     }
 
     public List<User> getUsersLikeSurName(String pLastname) throws ClassNotFoundException, SQLException {
@@ -137,15 +174,17 @@ public class UserDAO extends GenericDAO {
         ArrayList<Object> parameterList = new ArrayList<>();
         ArrayList<String> arrayQueryParams = new ArrayList<>();
 
-        if(user.getNickName()!=null) {
+        if(EntryUtils.isUpdateable(user.getNickName())) {
             arrayQueryParams.add(" user_nick_name = ?");
             parameterList.add(user.getNickName());
         }
-        if(user.getName()!=null) {
+
+        if(EntryUtils.isUpdateable(user.getName())) {
             arrayQueryParams.add(" user_name = ?");
             parameterList.add(user.getName());
         }
-        if(user.getSurname()!=null) {
+
+        if(EntryUtils.isUpdateable(user.getSurname())) {
             arrayQueryParams.add(" user_surname = ?");
             parameterList.add(user.getSurname());
         }

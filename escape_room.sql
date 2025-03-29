@@ -8,15 +8,14 @@ USE escape_room;
 
 CREATE TABLE `clues` (
   `clue_id` int(11) NOT NULL,
-  `clue_title` varchar(100) NOT NULL,
-  `clue_description_user` varchar(300) NOT NULL,
-  `clue_description_admin` varchar(300) NOT NULL,
+  `clue_name` varchar(100) NOT NULL,
   `clue_theme` enum('Terror','Fiction','Fantasy') NOT NULL,
   `clue_level` enum('Easy','Intermediate','Hard') NOT NULL,
   `clue_game_phase` varchar(100) NOT NULL,
   `clue_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `clue_price` int(11) NOT NULL,
-  `clue_value` int(11) NOT NULL
+  `clue_value` int(11) NOT NULL,
+  `room_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `decoration_items` (
@@ -45,7 +44,7 @@ CREATE TABLE `notifications` (
   `notification_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `notification_type` enum('Generic','Personal') DEFAULT NULL,
   `notification_description` varchar(200) NOT NULL,
-  `user_id` int(11) NOT NULL
+  `user_id` int(11) UNIQUE NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `payments` (
@@ -54,11 +53,6 @@ CREATE TABLE `payments` (
   `payment_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `payment_price` int(11) NOT NULL,
   `user_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-CREATE TABLE `relation_clue_room` (
-  `clue_id` int(11) NOT NULL,
-  `room_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `rooms` (
@@ -72,25 +66,30 @@ CREATE TABLE `rooms` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `users` (
-  `user_id` int(11) NOT NULL,
-  `user_nick_name` varchar(20) NOT NULL,
+  `user_id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `user_nick_name` varchar(20) UNIQUE NOT NULL,
   `user_name` varchar(30) NOT NULL,
   `user_surname` varchar(100) NOT NULL,
-  `user_idCard` varchar(100) NOT NULL,
-  `user_address_street` varchar(100) DEFAULT NULL,
-  `user_address_number` int(11) DEFAULT NULL,
-  `user_address_floor` char(20) DEFAULT NULL,
-  `user_address_door` char(20) DEFAULT NULL,
-  `user_city` varchar(30) DEFAULT NULL,
-  `user_zip_code` char(20) DEFAULT NULL,
-  `user_country` varchar(30) DEFAULT NULL,
-  `user_phone` char(50) DEFAULT NULL,
-  `user_mail` varchar(50) DEFAULT NULL
+  `user_mail` varchar(50) UNIQUE,
+  `user_idCard` varchar(100) UNIQUE,
+  `user_address_street` varchar(100),
+  `user_address_number` int(11),
+  `user_address_floor` varchar(10),
+  `user_address_door` varchar(10),
+  `user_city` varchar(30),
+  `user_zip_code` varchar(20),
+  `user_country` varchar(150),
+  `user_phone` varchar(50),
+  INDEX (user_mail),
+  INDEX (user_nick_name),
+  INDEX (user_surname),
+  INDEX (user_idCard)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 ALTER TABLE `clues`
-  ADD PRIMARY KEY (`clue_id`);
+  ADD PRIMARY KEY (`clue_id`),
+  ADD KEY `fk_clues_room` (`room_id`);
 
 ALTER TABLE `decoration_items`
   ADD PRIMARY KEY (`decoration_item_id`),
@@ -105,25 +104,14 @@ ALTER TABLE `game_sessions`
 
 ALTER TABLE `notifications`
   ADD PRIMARY KEY (`notification_id`),
-  ADD UNIQUE KEY `user_id` (`user_id`),
   ADD KEY `fk_notification_user` (`user_id`);
 
 ALTER TABLE `payments`
   ADD PRIMARY KEY (`payment_id`),
   ADD KEY `fk_payment_user` (`user_id`);
 
-ALTER TABLE `relation_clue_room`
-  ADD KEY `fk_clues_id` (`clue_id`),
-  ADD KEY `fk_room_id` (`room_id`);
-
 ALTER TABLE `rooms`
   ADD PRIMARY KEY (`room_id`);
-
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`user_id`),
-  ADD UNIQUE KEY `user_nick_name` (`user_nick_name`),
-  ADD UNIQUE KEY `user_idCard` (`user_idCard`);
-
 
 ALTER TABLE `rooms`
   MODIFY `room_id` int(11) NOT NULL AUTO_INCREMENT;
@@ -132,9 +120,12 @@ ALTER TABLE `users`
   MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
 
 
+ALTER TABLE `clues`
+  ADD CONSTRAINT `fk_clues_room` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`room_id`);
+
 ALTER TABLE `decoration_items`
-  ADD CONSTRAINT `fk_clue_decoration` FOREIGN KEY (`clue_id`) REFERENCES `clues` (`clue_id`),
-  ADD CONSTRAINT `fk_room_decoration` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`room_id`);
+  ADD CONSTRAINT `fk_room_decoration` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`room_id`),
+  ADD CONSTRAINT `fk_clue_decoration` FOREIGN KEY (`clue_id`) REFERENCES `clues` (`clue_id`);
 
 ALTER TABLE `game_sessions`
   ADD CONSTRAINT `fk_game_payment` FOREIGN KEY (`payment_id`) REFERENCES `payments` (`payment_id`),
@@ -146,8 +137,4 @@ ALTER TABLE `notifications`
 
 ALTER TABLE `payments`
   ADD CONSTRAINT `fk_payment_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
-
-ALTER TABLE `relation_clue_room`
-  ADD CONSTRAINT `fk_clues_id` FOREIGN KEY (`clue_id`) REFERENCES `clues` (`clue_id`),
-  ADD CONSTRAINT `fk_room_id` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`room_id`);
 COMMIT;
