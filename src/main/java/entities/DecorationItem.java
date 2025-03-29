@@ -14,9 +14,11 @@ public class DecorationItem {
     private int clueValor;
     private String img;
 
-
-
     public String getDecorationItemData(){
         return name + " " + description;
+    }
+
+    public void printBasicInfoValues() {
+        System.out.printf("     %-5d  %-25s   ,Description: %-25s%n", getId(), getName(), getDescription());
     }
 }
