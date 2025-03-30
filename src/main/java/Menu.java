@@ -1,3 +1,4 @@
+import daos.ClueDAO;
 import forms.CluesForm;
 import forms.DecorationItemsForm;
 import forms.UserForm;
@@ -65,7 +66,7 @@ public class Menu {
                     // ObjectDAO.metode1(scanner);
                     break;
                 case 2:
-                    // ObjectDAO.metode2(scanner);
+                    ClueDAO.printAllClues(scanner);
                     break;
                 case 3:
                     // ObjectDAO.metode2(scanner);

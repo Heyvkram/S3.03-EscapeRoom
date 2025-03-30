@@ -11,36 +11,40 @@ public class EntryUtils {
 
     private static final Logger log = LogManager.getLogger(EntryUtils.class);
 
-    public static byte llegirByte(Scanner scanner, String missatge){
+    public static byte llegirByte(Scanner scanner, String missatge) {
         Byte resultat = null;
-        do{
-            System.out.print(missatge+" ");
-            try{
+        do {
+            System.out.print(missatge + " ");
+            try {
                 resultat = scanner.nextByte();
                 System.out.println(">> " + resultat);
-            }catch(InputMismatchException ee){
+            } catch (InputMismatchException ee) {
                 System.out.println("Exception InputMismatchException controlada.");
                 scanner.nextLine();
             }
-        }while(resultat==null);
+        } while (resultat == null);
 
         return resultat;
-    };
+    }
 
-    public static String llegirString(Scanner scanner, String missatge, Boolean isNullable){
+    ;
+
+    public static String llegirString(Scanner scanner, String missatge, Boolean isNullable) {
         String entrada = null;
-        do{
-            if(missatge!=null) System.out.print(missatge+" ");
+        do {
+            if (missatge != null) System.out.print(missatge + " ");
             entrada = scanner.nextLine();
-            if((entrada.isEmpty() && !isNullable)){
+            if ((entrada.isEmpty() && !isNullable)) {
                 System.out.println("  Error: This field is required.");
             }
-        }while(entrada.isEmpty() && !isNullable);
+        } while (entrada.isEmpty() && !isNullable);
         return entrada;
-    };
+    }
+
+    ;
 
     public static Integer llegirInt(Scanner scanner, String missatge) {
-        return llegirInt( scanner, missatge, true);
+        return llegirInt(scanner, missatge, true);
     }
 
     public static Integer llegirInt(Scanner scanner, String missatge, Boolean isNullable) {
@@ -75,38 +79,55 @@ public class EntryUtils {
         return resultat;
     }
 
-    public static float llegirFloat(Scanner scanner, String missatge){
+    public static float llegirFloat(Scanner scanner, String missatge) {
         Float resultat = null;
-        do{
-            System.out.print(missatge+" ");
-            try{
+        do {
+            System.out.print(missatge + " ");
+            try {
                 resultat = scanner.nextFloat();
-                System.out.println(">> " + resultat );
-            }catch(InputMismatchException ee){
+                System.out.println(">> " + resultat);
+            } catch (InputMismatchException ee) {
                 System.out.println("Exception InputMismatchException controlada.");
                 scanner.nextLine();
             }
-        }while(resultat==null);
+        } while (resultat == null);
 
         return resultat;
-    };
+    }
 
-    public static double llegirDouble(Scanner scanner, String missatge){
+    ;
+
+    public static double llegirDouble(Scanner scanner, String missatge, boolean b) {
         Double resultat = null;
-        do{
-            System.out.print(missatge+" ");
-            try{
+        do {
+            System.out.print(missatge + " ");
+            try {
                 resultat = scanner.nextDouble();
-                System.out.println(">> " + resultat );
-            }catch(InputMismatchException ee){
+                System.out.println(">> " + resultat);
+            } catch (InputMismatchException ee) {
                 System.out.println("Exception InputMismatchException controlada.");
                 scanner.nextLine();
             }
-        }while(resultat==null);
+        } while (resultat == null);
 
         return resultat;
-    };
+    }
 
+    public static long llegirLong(Scanner scanner, Long missatge) {
+        Long resultado = null;
+        do {
+            System.out.print(missatge + " ");
+            try {
+                resultado = scanner.nextLong();
+                System.out.println(">> " + resultado);
+            } catch (InputMismatchException ee) {
+                System.out.println("Exception InputMismatchException controlled.");
+                scanner.nextLine();
+            }
+        } while (resultado == null);
+
+        return resultado;
+    }
 
     /*
         AmidaException (Exception):
@@ -115,17 +136,17 @@ public class EntryUtils {
         public static boolean llegirSiNo(String missatge), si l’usuari/ària introdueix “s”,
         retorna “true”, si l’usuari/ària introdueix “n”, retorna “false”.
      */
-    public static char llegirChar(Scanner scanner, String missatge){
+    public static char llegirChar(Scanner scanner, String missatge) {
         String entrada = null;
         scanner.nextLine();
-        do{
-            System.out.print(missatge+" ");
+        do {
+            System.out.print(missatge + " ");
             entrada = scanner.nextLine();
-            try{
-                if(entrada!=null && entrada.length()>=2){
-                    entrada=null;
+            try {
+                if (entrada != null && entrada.length() >= 2) {
+                    entrada = null;
                     throw new ConsoleEntryException("** Escriu sols un caràcter!");
-                }else{
+                } else {
                     System.out.println(">> " + entrada + " és correcte.");
                 }
 
@@ -133,33 +154,36 @@ public class EntryUtils {
                 System.out.println(e.getMessage());
             }
 
-        }while(entrada==null);
+        } while (entrada == null);
 
         return entrada.charAt(0);
-    };
+    }
+
+    ;
 
     public static boolean readYesNo(Scanner scanner, String missatge) {
         String entrada = null;
         Boolean retorn = null;
-        do{
-            System.out.print(missatge+" ");
+        do {
+            System.out.print(missatge + " ");
             entrada = scanner.nextLine();
-            try{
-                if ("y".equals(entrada) || "Y".equals(entrada)){
+            try {
+                if ("y".equals(entrada) || "Y".equals(entrada)) {
                     retorn = true;
-                }else if ("n".equals(entrada) || "N".equals(entrada)){
+                } else if ("n".equals(entrada) || "N".equals(entrada)) {
                     retorn = false;
-                }else{
+                } else {
                     throw new ConsoleEntryException("   Error: Type 'y' o 'n'.");
                 }
             } catch (ConsoleEntryException e) {
-               log.info(e.getMessage());
+                log.info(e.getMessage());
             }
-        }while(retorn==null);
+        } while (retorn == null);
 
         return retorn;
 
-    };
+    }
+
 
 }
 
