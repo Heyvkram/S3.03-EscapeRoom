@@ -39,6 +39,42 @@ public class EntryUtils {
         return entrada;
     };
 
+    public static Long readStringLikeLong(Scanner scanner, String missatge, Boolean isNullable){
+        String entrada = null;
+        Integer sortida = null;
+        do{
+            if(missatge!=null) System.out.print(missatge+" ");
+            entrada = scanner.nextLine();
+            if((entrada.isEmpty() && !isNullable)){
+                System.out.println("  Error: This field is required.");
+            }else if(isNumeric(entrada)){
+                sortida = Integer.valueOf(entrada);
+            }
+        }while(entrada.isEmpty() && !isNullable);
+        return Long.valueOf(sortida);
+    };
+
+    public static Integer readStringLikeInt(Scanner scanner, String missatge, Boolean isNullable){
+        String entrada = null;
+        Integer sortida = null;
+        do{
+            if(missatge!=null) System.out.print(missatge+" ");
+            entrada = scanner.nextLine();
+            if((entrada.isEmpty() && !isNullable)){
+                System.out.println("  Error: This field is required.");
+            }else if(isInteger(entrada)){
+                sortida = Integer.valueOf(entrada);
+            }
+        }while(entrada.isEmpty() && !isNullable);
+        return sortida;
+    };
+
+    public static Long llegirIntHasLong(Scanner scanner, String missatge) {
+        Integer resultInt = llegirInt( scanner, missatge, true);
+
+        return null;
+    }
+
     public static Integer llegirInt(Scanner scanner, String missatge) {
         return llegirInt( scanner, missatge, true);
     }
@@ -56,6 +92,11 @@ public class EntryUtils {
                 if (scanner.hasNextInt()) {
                     resultat = scanner.nextInt();
                     entradaValida = true;
+                } else if (isNullable) {
+                    String resultatStr = scanner.nextLine();
+                    if(resultatStr.isEmpty()){
+                        entradaValida = true;
+                    }
                 } else {
                     System.out.println("    Error: Si us plau, introdueix un número.");
                     scanner.nextLine();
@@ -65,7 +106,7 @@ public class EntryUtils {
                 scanner.nextLine();
             }
 
-            if (resultat == null && !isNullable && entradaValida) {
+            if ((resultat == null && !isNullable) && entradaValida) {
                 System.out.println("    Error: Si us plau, introdueix un número.");
                 entradaValida = false;
             }
@@ -107,14 +148,6 @@ public class EntryUtils {
         return resultat;
     };
 
-
-    /*
-        AmidaException (Exception):
-        public static char llegirChar(String missatge);
-        public static String llegirString(String missatge);
-        public static boolean llegirSiNo(String missatge), si l’usuari/ària introdueix “s”,
-        retorna “true”, si l’usuari/ària introdueix “n”, retorna “false”.
-     */
     public static char llegirChar(Scanner scanner, String missatge){
         String entrada = null;
         scanner.nextLine();
@@ -153,13 +186,42 @@ public class EntryUtils {
                     throw new ConsoleEntryException("   Error: Type 'y' o 'n'.");
                 }
             } catch (ConsoleEntryException e) {
-               log.info(e.getMessage());
+                log.info(e.getMessage());
             }
         }while(retorn==null);
 
         return retorn;
 
     };
+
+    public static boolean isInteger(String s) {
+        try {
+            Integer.parseInt(s);
+        } catch(NumberFormatException e) {
+            return false;
+        } catch(NullPointerException e) {
+            return false;
+        }
+        // only got here if we didn't return false
+        return true;
+    }
+
+    public static boolean isNumeric(String str) {
+        if (str == null) {
+            return false;
+        }
+        int sz = str.length();
+        for (int i = 0; i < sz; i++) {
+            if (!Character.isDigit(str.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean isUpdateable(String strObj){
+        return !(strObj==null || strObj.isEmpty() || strObj.isBlank());
+    }
 
 }
 

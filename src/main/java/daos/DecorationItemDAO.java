@@ -1,7 +1,6 @@
 package daos;
 
 import entities.DecorationItem;
-import entities.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.sql.*;
@@ -38,6 +37,10 @@ public class DecorationItemDAO extends GenericDAO{
 
     public Optional<DecorationItem> getDecorationItemByName(String name) throws SQLException, ClassNotFoundException {
         return getDecorationItemBy( name, "decoration_item_name", false);
+    }
+
+    public Optional<DecorationItem> getDecorationIemById(Long id) throws SQLException, ClassNotFoundException {
+        return getDecorationItemBy( id, "user_id", false);
     }
 
     public boolean saveOrUpdateDecorationItem(DecorationItem decorationItem) {
@@ -77,7 +80,7 @@ public class DecorationItemDAO extends GenericDAO{
         decorationItem.setId(rs.getLong("decoration_item_id"));
         decorationItem.setName(rs.getString("decoration_item_name"));
         decorationItem.setDescription(rs.getString("decoration_item_description"));
-        //decorationItem.setName(rs.getTheme("decoration_item_theme"));
+        //decorationItem.setTheme(rs.getTheme("decoration_item_theme"));
         decorationItem.setPrice(rs.getDouble("decoration_item_price"));
         decorationItem.setClueValor(rs.getInt("decoration_item_clue_valor"));
         decorationItem.setImg(rs.getString("decoration_item_img"));
@@ -102,6 +105,19 @@ public class DecorationItemDAO extends GenericDAO{
     public void printAllDecorationItems() throws ClassNotFoundException, SQLException {
         System.out.println("Decoration Items list ____________________");
         getAllDecorationItems().forEach(DecorationItem::printBasicInfoValues);
+    }
+
+    public boolean deleteDecorationItemsById(Long id) throws SQLException, ClassNotFoundException {
+        if (id == null || id <= 0) {
+            throw new IllegalArgumentException("There is no decoration item with this id");
+        }
+        final String sqlDelete = "DELETE FROM "+TABLE_NAME+" WHERE decoration_item_id=?";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sqlDelete)) {
+            ps.setLong(1, id);
+            ps.execute();
+            return true;
+        }
     }
 
 }
