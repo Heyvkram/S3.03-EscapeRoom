@@ -1,8 +1,11 @@
 package forms;
 
 import daos.DecorationItemDAO;
+import entities.DecorationItem;
+import utils.EntryUtils;
 
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class DecorationItemsForm {
@@ -13,36 +16,72 @@ public class DecorationItemsForm {
         System.out.println("\n");
         do {
             System.out.println("-----------------------------------------");
-            System.out.println("Object menu:");
+            System.out.println("Decoration items menu:");
             System.out.println("-----------------------------------------");
-            System.out.println("    1. List");
-            System.out.println("    2. Edit object");
-            System.out.println("    3. Delete object");
-            System.out.println("    4. Back");
+            System.out.println("    1. New decoration item");
+            System.out.println("    2. List decoration items");
+            System.out.println("    3. Edit decoration item");
+            System.out.println("    4. Delete decoration item");
+            System.out.println("    5. Back");
 
             System.out.print("\nChoose option > ");
             option = scanner.nextInt();
 
             switch (option) {
                 case 1:
+                    scanner.nextLine();
+                    if(!decorationItem.saveOrUpdateDecorationItem(newDecorationItemForm(scanner))){
+                        System.out.println("\n   Error: Unable to establish connection to the database.");
+                        System.out.println("     (Please contact your system administrator)\n");
+                        if(!EntryUtils.readYesNo(scanner," Type 'Y' for continue or 'N' for scape.")){
+                            option=5;
+                        }
+                    }
+                    break;
+                case 2:
                     try {
                         decorationItem.printAllDecorationItems();
                     } catch (SQLException | ClassNotFoundException e) {
                         System.out.println("error(e)");
                     }
                     break;
-                case 2:
+                case 3:
                     // ObjectDAO.edit(scanner);
                     break;
-                case 3:
-                    // ObjectDAO.delete(scanner);
-                    break;
                 case 4:
+                    /*try {
+                        Optional<DecorationItem> decorationItemOpt =  decorationItem.deleteDecorationItemsById(EntryUtils.readStringLikeLong(scanner, "Type the user to delete id : ", false));
+                        if(decorationItemOpt.isPresent()){
+                            System.out.println("\n");
+                            decorationItemOpt.get().printBasicInfoValues();
+                            if(EntryUtils.readYesNo(scanner, "\nDelete this user (y/n)? ")){
+                                if(decorationItem.deleteById(Math.toIntExact(decorationItemOpt.get().getId()))){
+                                    System.out.println("\n>>> User deleted.");
+                                }
+                            }
+                        }
+                    } catch (SQLException | ClassNotFoundException e) {
+                        System.out.println("error(e)");
+                    }*/
+                    break;
+                case 5:
                     break;
                 default:
                     System.out.println("Wrong option.");
             }
-        } while (option != 4);
+        } while (option != 5);
     }
 
+    public static DecorationItem newDecorationItemForm(Scanner scanner) {
+        System.out.println("\n");
+        DecorationItem decorationItem = new DecorationItem();
+        decorationItem.setName(EntryUtils.llegirString(scanner, "*Name: ", false));
+        decorationItem.setDescription(EntryUtils.llegirString(scanner, "Description: ", false));
+        //decorationItem.setTheme(EntryUtils.llegirString(scanner, "Theme: ", false));
+        decorationItem.setPrice(EntryUtils.llegirDouble(scanner, "Price: "));
+        decorationItem.setClueValor(EntryUtils.llegirInt(scanner, "ClueValor: ", false));
+        scanner.nextLine();
+        decorationItem.setImg(EntryUtils.llegirString(scanner, "Img: ", false));
+        return decorationItem;
+    }
 }
