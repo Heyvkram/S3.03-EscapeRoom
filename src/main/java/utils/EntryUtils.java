@@ -53,7 +53,7 @@ public class EntryUtils {
 
             if(!entrada.isEmpty() && maxLength!=null && entrada.length()>maxLength){
                 System.out.println("  The character limit in this field has been exceeded. The maximum number of characters is "+maxLength);
-                entrada=null;
+                entrada="validationError";
             }
 
             if(regExp!=null && isNotNullOrEmpty(entrada)){
@@ -65,7 +65,7 @@ public class EntryUtils {
                 }
             }
 
-        }while( !isNotNullOrEmpty(entrada) && !isNullable);
+        }while((!isNotNullOrEmpty(entrada) && !isNullable) || "validationError".equals(entrada));
         return entrada;
 
     };
