@@ -2,14 +2,12 @@ package forms;
 
 import daos.ClueDAO;
 import entities.Clues;
-import entities.User;
 import utils.EntryUtils;
 
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.Scanner;
 
-import static forms.UserForm.editUserForm;
 import static forms.UserForm.log;
 import static utils.EntryUtils.*;
 
@@ -35,14 +33,13 @@ public class CluesForm {
             switch (option) {
                 case 1:
                     scanner.nextLine();
-                    if (!ClueDAO.saveOrUpdateClue(newClueForm(scanner))) {
+                    if (!clueDao.saveOrUpdateClue(newClueForm(scanner))) {
                         System.out.println("\n   Error: Unable to establish connection to the database.");
                         System.out.println("     (Please contact your system administrator)\n");
-                        if (!readYesNo(scanner, " Type 'Y' for continue or 'N' for scape.")) {
-                            option = 4;
+                        if (!EntryUtils.readYesNo(scanner, " Type 'Y' for continue or 'N' for scape.")) {
+                            option = 5;
                         }
                     }
-
 
 //                    try {
 //                        for (Clues x : clueDao.getAllClues()) {
@@ -63,18 +60,18 @@ public class CluesForm {
                     }
                     break;
                 case 3:
-                    try {
-                        Optional<Clues> clueOpt = clueDao.getClueById(EntryUtils.llegirLong(scanner, "Type the clue id: ", false));
-                        scanner.nextLine();
-                        if (clueOpt.isPresent()) {
-                            clueOpt.get().printBasicInfoValues();
-                            editCluesForm(clueOpt.get(), scanner);
-                        } else {
-                            System.out.println("No clue found with this ID");
-                        }
-                    } catch (SQLException | ClassNotFoundException e) {
-                        log.error(e);
-                    }
+//                    try {
+//                        Optional<Clues> clueOpt = clueDao.getClueById(EntryUtils.llegirLong(scanner, "Type clue id: ", false));
+//                        scanner.nextLine();
+//                        if (clueOpt.isPresent()) {
+//                            clueOpt.get().printBasicInfoValues();
+//                            editCluesForm(clueOpt.get(), scanner);
+//                        } else {
+//                            System.out.println("No clue found with this ID");
+//                        }
+//                    } catch (SQLException | ClassNotFoundException e) {
+//                        log.error(e);
+//                    }
 //
                     break;
                 case 4:
@@ -94,7 +91,6 @@ public class CluesForm {
     }
 
 
-
     private static Clues newClueForm(Scanner scanner) {
         System.out.println("\n");
         Clues clue = new Clues();
@@ -111,45 +107,37 @@ public class CluesForm {
 
         return clue;
     }
+
     private static void editCluesForm(Clues clue, Scanner scanner) {
-        System.out.print("\n*Title: "+ clue.getTitle());
+        System.out.print("\n*Title: " + clue.getTitle());
         clue.setTitle(llegirString(scanner, ", new value: > ", true));
 
-        System.out.print("\n*Surname: "+ user.getSurname());
+        System.out.print("\n*User description: " + clue.getDescriptionUser());
         llegirString(scanner, ", new value: > ", true);
 
-        System.out.print("\n*Nickname: "+ user.getNickName());
+        System.out.print("\n*Admin description: " + clue.getDescriptionAdmin());
         llegirString(scanner, ", new value: > ", true);
 
-        System.out.print("\n*Street: "+ user.getAddressStreet());
-        llegirString(scanner, ", new value: > ", true);
+//        System.out.print("\n*Theme: "+ clue.getTheme());
+//        llegirEn(scanner, ", new value: > ", true);
 
-        System.out.print("\n*Number: "+ user.getAddressNumber());
+        System.out.print("\n*Level: " + clue.getLevel());
         llegirInt(scanner, ", new value: > ", true);
         scanner.nextLine();
 
-        System.out.print("\n*Floor: "+ user.getAddressFloor());
-        llegirString(scanner, ", new value: > ", true);
+        System.out.print("\n*Game phase: " + clue.getGamePhase());
+        llegirInt(scanner, ", new value: > ", true);
 
-        System.out.print("\n*Door: "+ user.getAddressDoor());
-        llegirString(scanner, ", new value: > ", true);
 
-        System.out.print("\n*City: "+ user.getCity());
-        llegirString(scanner, ", new value: > ", true);
+//        System.out.print("\n*Date: "+ clue.getDate());
+//        llegirDate(scanner, ", new value: > ", true);
 
-        System.out.print("\n*ZipCode: "+ user.getZipCode());
-        llegirString(scanner, ", new value: > ", true);
+        System.out.print("\n*Price: " + clue.getPrice());
+        llegirDouble(scanner, ", new value: > ", true);
 
-        System.out.print("\n*Country: "+ user.getCountry());
-        llegirString(scanner, ", new value: > ", true);
+        System.out.print("\n*Value: " + clue.getValue());
+        llegirDouble(scanner, ", new value: > ", true);
 
-        System.out.print("\n*PhoneNumber: "+ user.getPhoneNumber());
-        llegirString(scanner, ", new value: > ", true);
-
-        System.out.print("\n*Mail: "+ user.getMail());
-        llegirString(scanner, ", new value: > ", true);
-
-    }
     }
 
 }
