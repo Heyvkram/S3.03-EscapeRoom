@@ -142,7 +142,13 @@ public class UserDAO extends GenericDAO {
             ps.setString(3, user.getSurname());
             ps.setString(4, user.getAddressStreet());
             ps.setString(5, user.getIdCard());
-            ps.setInt(6, user.getAddressNumber());
+
+            if(user.getAddressNumber() != null) {
+                ps.setInt(6, user.getAddressNumber());
+            }else{
+                ps.setNull(6, java.sql.Types.INTEGER);
+            }
+
             ps.setString(7, user.getAddressFloor());
             ps.setString(8, user.getAddressDoor());
             ps.setString(9, user.getCity());
@@ -174,19 +180,69 @@ public class UserDAO extends GenericDAO {
         ArrayList<Object> parameterList = new ArrayList<>();
         ArrayList<String> arrayQueryParams = new ArrayList<>();
 
-        if(EntryUtils.isUpdateable(user.getNickName())) {
+        if(EntryUtils.isNotNullOrEmpty(user.getNickName())) {
             arrayQueryParams.add(" user_nick_name = ?");
             parameterList.add(user.getNickName());
         }
 
-        if(EntryUtils.isUpdateable(user.getName())) {
+        if(EntryUtils.isNotNullOrEmpty(user.getName())) {
             arrayQueryParams.add(" user_name = ?");
             parameterList.add(user.getName());
         }
 
-        if(EntryUtils.isUpdateable(user.getSurname())) {
+        if(EntryUtils.isNotNullOrEmpty(user.getSurname())) {
             arrayQueryParams.add(" user_surname = ?");
             parameterList.add(user.getSurname());
+        }
+
+        if(EntryUtils.isNotNullOrEmpty(user.getAddressStreet())) {
+            arrayQueryParams.add(" user_address_street = ?");
+            parameterList.add(user.getAddressStreet());
+        }
+
+        if(EntryUtils.isNotNullOrEmpty(user.getIdCard())) {
+            arrayQueryParams.add(" user_idCard = ?");
+            parameterList.add(user.getIdCard());
+        }
+
+        if( user.getAddressNumber()!=null) {
+            arrayQueryParams.add(" user_address_number = ?");
+            parameterList.add(user.getAddressNumber());
+        }
+
+        if(EntryUtils.isNotNullOrEmpty(user.getAddressFloor())) {
+            arrayQueryParams.add(" user_address_floor = ?");
+            parameterList.add(user.getAddressFloor());
+        }
+
+        if(EntryUtils.isNotNullOrEmpty(user.getAddressDoor())) {
+            arrayQueryParams.add(" user_address_door = ?");
+            parameterList.add(user.getAddressDoor());
+        }
+
+        if(EntryUtils.isNotNullOrEmpty(user.getCity())) {
+            arrayQueryParams.add(" user_city = ?");
+            parameterList.add(user.getCity());
+        }
+
+        if(EntryUtils.isNotNullOrEmpty(user.getZipCode())) {
+            arrayQueryParams.add(" user_zip_code = ?");
+            parameterList.add(user.getZipCode());
+        }
+
+        if(EntryUtils.isNotNullOrEmpty(user.getCountry())) {
+            arrayQueryParams.add(" user_country = ?");
+            parameterList.add(user.getCountry());
+        }
+
+        if(EntryUtils.isNotNullOrEmpty(user.getPhoneNumber())) {
+            arrayQueryParams.add(" user_phone = ?");
+            parameterList.add(user.getPhoneNumber());
+        }
+
+        if(EntryUtils.isNotNullOrEmpty(user.getMail())) {
+            arrayQueryParams.add(" user_mail = ?");
+            parameterList.add(user.getMail());
         }
 
         if(arrayQueryParams.isEmpty()){
@@ -210,7 +266,7 @@ public class UserDAO extends GenericDAO {
             return rowsAffected > 0;
 
         } catch (SQLException | ClassNotFoundException e) {
-            log.info("!!!! Can't save the information\n");
+            System.out.println("!!!! Can't save the information\n");
             log.error("!!!! Can't save the information\n", e);
             return false;
         }

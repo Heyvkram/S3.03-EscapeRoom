@@ -27,7 +27,7 @@ public class User {
     }
 
     public void printBasicInfoValues() {
-        System.out.printf("     %-5d  %-25s  %-25s ,Nickname: %-25s%n", getId(), getName(), getSurname(), getNickName());
+        System.out.printf("     %-5d %-25s ,%-25s | Email: %-30s  Nickname: %-25s%n", getId(), getSurname(), getName(), getMail(), getNickName());
     }
 
 }
