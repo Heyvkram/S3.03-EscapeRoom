@@ -22,7 +22,6 @@ CREATE TABLE `decoration_items` (
   `decoration_item_id` int(11) NOT NULL,
   `decoration_item_name` varchar(20) NOT NULL,
   `decoration_item_description` varchar(200) NOT NULL,
-  `decoration_item_theme` enum('Terror','Fiction','Fantasy') NOT NULL,
   `decoration_item_price` double NOT NULL,
   `decoration_item_clue_valor` int(11) DEFAULT NULL,
   `decoration_item_img` varchar(100) DEFAULT NULL,

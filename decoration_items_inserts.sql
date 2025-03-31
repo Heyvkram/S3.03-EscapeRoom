@@ -17,9 +17,9 @@ INSERT INTO `clues` (`clue_id`, `clue_name`, `clue_theme`, `clue_level`, `clue_g
 (5, 'El Espejo Distorsionado', 'Terror', 'Intermediate', 'Inicio', 9, 14, 5);
 
 -- Insertar 5 registros en la tabla 'decoration_items'
-INSERT INTO `decoration_items` (`decoration_item_id`, `decoration_item_name`, `decoration_item_description`, `decoration_item_theme`, `decoration_item_price`, `decoration_item_clue_valor`, `decoration_item_img`, `clue_id`, `room_id`) VALUES
-(1, 'Espejo Roto', 'Un espejo antiguo con grietas extrañas.', 'Terror', 35.00, 10, 'espejo_roto.jpg', 1, 1),
-(2, 'Panel Estelar', 'Un panel con constelaciones brillantes.', 'Fiction', 42.50, 12, 'panel_estelar.png', 2, 2),
-(3, 'Libro de Hechizos', 'Un libro antiguo con símbolos mágicos.', 'Fantasy', 30.00, 8, 'libro_hechizos.svg', 3, 3),
-(4, 'Terminal de Datos', 'Una terminal con información encriptada.', 'Fiction', 50.00, 18, 'terminal_datos.gif', 4, 4),
-(5, 'Muñeca Poseída', 'Una muñeca de porcelana con ojos rojos.', 'Terror', 40.00, 14, 'muneca_poseida.jpeg', 5, 5);
+INSERT INTO `decoration_items` (`decoration_item_id`, `decoration_item_name`, `decoration_item_description`, `decoration_item_price`, `decoration_item_clue_valor`, `decoration_item_img`, `clue_id`, `room_id`) VALUES
+(1, 'Espejo Roto', 'Un espejo antiguo con grietas extrañas.', 35.00, 10, 'espejo_roto.jpg', 1, 1),
+(2, 'Panel Estelar', 'Un panel con constelaciones brillantes.', 42.50, 12, 'panel_estelar.png', 2, 2),
+(3, 'Libro de Hechizos', 'Un libro antiguo con símbolos mágicos.', 30.00, 8, 'libro_hechizos.svg', 3, 3),
+(4, 'Terminal de Datos', 'Una terminal con información encriptada.', 50.00, 18, 'terminal_datos.gif', 4, 4),
+(5, 'Muñeca Poseída', 'Una muñeca de porcelana con ojos rojos.', 40.00, 14, 'muneca_poseida.jpeg', 5, 5);
