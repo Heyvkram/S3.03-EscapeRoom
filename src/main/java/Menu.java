@@ -32,6 +32,7 @@ public class Menu {
                 case 3:
                     break;
                 case 4:
+                    RoomForm.menuRoom(scanner);
                     break;
                 case 5:
                     break;
