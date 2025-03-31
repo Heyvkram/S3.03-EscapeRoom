@@ -48,3 +48,40 @@ INSERT INTO `users` (
     'Rue de la Paix', 22, '5ème', 'E',
     'Paris', '75001', 'France', '+33112345678', 'marie.laurent@example.fr'
 );
+
+INSERT INTO `notifications` (
+    `notification_title`,
+    `notification_short_description`,
+    `notification_message`,
+    `notification_type`
+) VALUES
+(
+    'Avís de Manteniment',
+    'Manteniment programat del sistema',
+    'El sistema estarà en manteniment el proper diumenge a partir de les 02:00. Disculpeu les molèsties.',
+    'Generic'
+),
+(
+    'Recordatori de Pagament',
+    'Recordatori de pagament pendent',
+    'El pagament de la factura número 1234 està pendent. Si us plau, realitzi el pagament abans del 30 de juny.',
+    'Personal'
+),
+(
+    'Nova Versió Disponible',
+    'Actualització del software',
+    'Hi ha una nova versió del software disponible. Si us plau, actualitzi el software per obtenir les últimes funcions i correccions de seguretat.',
+    'Generic'
+),
+(
+    'Missatge Personalitzat',
+    'Missatge personalitzat per a l\'usuari',
+    'Hola usuari, tenim una oferta especial per a tu. Si estàs interessat, fes clic aquí: [enllaç]',
+    'Personal'
+),
+(
+    'Alerta de Seguretat',
+    'Alerta de seguretat important',
+    'S\'ha detectat una activitat sospitosa al teu compte. Si no has fet aquesta activitat, canvia la teva contrasenya immediatament.',
+    'Generic'
+);

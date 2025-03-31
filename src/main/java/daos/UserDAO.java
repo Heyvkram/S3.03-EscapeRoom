@@ -14,32 +14,13 @@ public class UserDAO extends GenericDAO {
 
     private static final Logger log = LogManager.getLogger(UserDAO.class);
     final String TABLE_NAME = "users";
+    final String ID_FIELD_NAME = "user_id";
 
-    public Optional<User> getUserBy(Object object, String fieldName) throws SQLException, ClassNotFoundException {
-        if (object == null) {
-            return Optional.empty();
-        }
-        final String sqlSelectUser = "SELECT * FROM users WHERE " + fieldName + "=?";
-        try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(sqlSelectUser)) {
+    @Override
+    String getTableName(){ return TABLE_NAME; }
 
-            if (object instanceof Integer) {
-                ps.setInt(1, (Integer) object);
-            } else if (object instanceof Long) {
-                ps.setLong(1, (Long) object);
-            } else if (object instanceof String) {
-                ps.setString(1, (String) object);
-            }
-
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return Optional.of(resultSetToUserObject(rs));
-                } else {
-                    return Optional.empty();
-                }
-            }
-        }
-    }
+    @Override
+    String getIdFieldName(){  return ID_FIELD_NAME;  }
 
     public boolean existUserBy(Object object, String fieldName, boolean ignoreCase) throws SQLException, ClassNotFoundException {
 
@@ -73,10 +54,6 @@ public class UserDAO extends GenericDAO {
         }
     }
 
-    public Optional<User> getUserById(Long id) throws SQLException, ClassNotFoundException {
-        return getUserBy(id, "user_id");
-    }
-
     public Optional<User> getUserByIdCard(String idCard) throws SQLException, ClassNotFoundException {
         return getUserBy(idCard, "user_idCard");
     }
@@ -87,6 +64,36 @@ public class UserDAO extends GenericDAO {
 
     public Optional<User> getUserByEmail(String nickName) throws SQLException, ClassNotFoundException {
         return getUserBy(nickName, "user_mail");
+    }
+
+    public Optional<User> getUserById(Long id) throws SQLException, ClassNotFoundException {
+        return getUserBy(id, ID_FIELD_NAME);
+    }
+
+    public Optional<User> getUserBy(Object object, String fieldName) throws SQLException, ClassNotFoundException {
+        if (object == null) {
+            return Optional.empty();
+        }
+        final String sqlSelectUser = "SELECT * FROM users WHERE " + fieldName + "=?";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sqlSelectUser)) {
+
+            if (object instanceof Integer) {
+                ps.setInt(1, (Integer) object);
+            } else if (object instanceof Long) {
+                ps.setLong(1, (Long) object);
+            } else if (object instanceof String) {
+                ps.setString(1, (String) object);
+            }
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return Optional.of(resultSetToUserObject(rs));
+                } else {
+                    return Optional.empty();
+                }
+            }
+        }
     }
 
     public List<User> getUsersLikeSurName(String pLastname) throws ClassNotFoundException, SQLException {
@@ -274,19 +281,6 @@ public class UserDAO extends GenericDAO {
             System.out.println("!!!! Can't save the information\n");
             log.error("!!!! Can't save the information\n", e);
             return false;
-        }
-    }
-
-    public boolean deleteById(Long id) throws SQLException, ClassNotFoundException {
-        if (id == null || id <= 0) {
-            throw new IllegalArgumentException("No user");
-        }
-        final String sqlDelete = "DELETE FROM "+TABLE_NAME+" WHERE user_id=?";
-        try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(sqlDelete)) {
-            ps.setLong(1, id);
-            ps.execute();
-            return true;
         }
     }
 

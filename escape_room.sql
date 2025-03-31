@@ -41,11 +41,13 @@ CREATE TABLE `game_sessions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `notifications` (
-  `notification_id` int(11) NOT NULL,
-  `notification_type` enum('Generic','Personal','') DEFAULT NULL,
-  `notification_message` varchar(200) NOT NULL,
-  `notification_date_reg` timestamp NOT NULL DEFAULT current_timestamp(),
-  `notification_date_modify` timestamp UPDATE current_timestamp()
+  `notification_id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `notification_title` varchar(50) NOT NULL,
+  `notification_short_description` varchar(100) NOT NULL,
+  `notification_message` varchar(500) NOT NULL,
+  `notification_type` enum('GENERIC','PERSONAL','SERVICE','PAYMENT','GAME') DEFAULT NULL,
+  `notification_date_reg` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+  `notification_date_modify` TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `payments` (
@@ -103,10 +105,6 @@ ALTER TABLE `game_sessions`
   ADD KEY `fk_game_room` (`room_id`),
   ADD KEY `fk_game_payment` (`payment_id`);
 
-ALTER TABLE `notifications`
-  ADD PRIMARY KEY (`notification_id`),
-  ADD KEY `fk_notification_user` (`user_id`);
-
 ALTER TABLE `payments`
   ADD PRIMARY KEY (`payment_id`),
   ADD KEY `fk_payment_user` (`user_id`);
@@ -132,9 +130,6 @@ ALTER TABLE `game_sessions`
   ADD CONSTRAINT `fk_game_payment` FOREIGN KEY (`payment_id`) REFERENCES `payments` (`payment_id`),
   ADD CONSTRAINT `fk_game_room` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`room_id`),
   ADD CONSTRAINT `fk_game_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
-
-ALTER TABLE `notifications`
-  ADD CONSTRAINT `fk_notification_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
 ALTER TABLE `payments`
   ADD CONSTRAINT `fk_payment_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);

@@ -153,10 +153,6 @@ public class UserForm {
         user.setAddressStreet(EntryUtils.llegirString(scanner, "Street: ", true, 100));
         user.setAddressNumber(EntryUtils.readStringLikeInt(scanner, "number: ", true, 20000 ));
 
-        /*
-        user.setAddressNumber(EntryUtils.llegirInt(scanner, "number: ", true, 20000));
-        scanner.nextLine();
-        */
         user.setAddressFloor(EntryUtils.llegirString(scanner, "Floor: ", true,10));
         user.setAddressDoor(EntryUtils.llegirString(scanner, "Door: ", true, 10));
         user.setCity(EntryUtils.llegirString(scanner, "City: ", true, 30));

@@ -1,4 +1,5 @@
 import forms.DecorationItemsForm;
+import forms.NotificationForm;
 import forms.UserForm;
 import utils.EntryUtils;
 
@@ -17,7 +18,8 @@ public class Menu {
             System.out.println("    2. User menu");
             System.out.println("    3. Clue menu");
             System.out.println("    4. Room menu");
-            System.out.println("    5. Exit");
+            System.out.println("    5. Notification menu");
+            System.out.println("    6. Exit");
 
             System.out.print("\n>>> Choose option : ");
             option = EntryUtils.llegirInt(scanner,null);
@@ -35,81 +37,15 @@ public class Menu {
                 case 4:
                     break;
                 case 5:
+                    NotificationForm notificationForm = new NotificationForm();
+                    notificationForm.menuNotification(scanner);
+                    break;
+                case 6:
                     break;
                 default:
                     System.out.println(">>> Wrong option.");
             }
-        } while (option != 5);
-    }
-
-
-
-
-    public static void menuClue(Scanner scanner) {
-        int option;
-        System.out.println("\n");
-        do {
-            System.out.println("-----------------------------------------");
-            System.out.println("Object menu:");
-            System.out.println("-----------------------------------------");
-            System.out.println("    1. New clue");
-            System.out.println("    2. Edit clue");
-            System.out.println("    3. Delete clue");
-            System.out.println("    4. Back");
-
-            System.out.print("\n>>> Choose option : ");
-            option = scanner.nextInt();
-
-            switch (option) {
-                case 1:
-                    // ObjectDAO.metode1(scanner);
-                    break;
-                case 2:
-                    // ObjectDAO.metode2(scanner);
-                    break;
-                case 3:
-                    // ObjectDAO.metode3(scanner);
-                    break;
-                case 4:
-                    break;
-                default:
-                    System.out.println("Wrong option.");
-            }
-        } while (option != 4);
-    }
-
-
-    public static void menuRoom(Scanner scanner) {
-        int option;
-        System.out.println("\n");
-        do {
-            System.out.println("-----------------------------------------");
-            System.out.println("Room menu:");
-            System.out.println("-----------------------------------------");
-            System.out.println("    1. New room");
-            System.out.println("    2. Edit room");
-            System.out.println("    3. Delete room");
-            System.out.println("    4. Back");
-
-            System.out.print("\n>>> Choose option : ");
-            option = scanner.nextInt();
-
-            switch (option) {
-                case 1:
-                    // ObjectDAO.metode1(scanner);
-                    break;
-                case 2:
-                    // ObjectDAO.metode2(scanner);
-                    break;
-                case 3:
-                    // ObjectDAO.metode3(scanner);
-                    break;
-                case 4:
-                    break;
-                default:
-                    System.out.println(">>> Wrong option.");
-            }
-        } while (option != 4);
+        } while (option != 6);
     }
 
 }
