@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import utils.EntryUtils;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -26,7 +27,8 @@ public class UserForm {
             System.out.println("    2. List users");
             System.out.println("    3. Edit user");
             System.out.println("    4. Delete user");
-            System.out.println("    5. Back");
+            System.out.println("    5. Find user by surname");
+            System.out.println("    6. Back");
 
             System.out.print("\n>>> Choose option > ");
             // option = scanner.nextInt();
@@ -89,11 +91,25 @@ public class UserForm {
                     }
                     break;
                 case 5:
+
+                    try {
+
+                        List<User> userList =  userDao.getUsersLikeSurName(EntryUtils.llegirString(scanner, "Type the user surname to find : ", true));
+                        if(!userList.isEmpty()){
+                            userDao.printUsersList(userList);
+                        }
+                    } catch (SQLException | ClassNotFoundException e) {
+                        log.error(e);
+                    }
+
+
+                    break;
+                case 6:
                     break;
                 default:
                     System.out.println(">>> Wrong option.");
             }
-        } while (option != 5);
+        } while (option != 6);
         scanner.nextLine();
     }
 

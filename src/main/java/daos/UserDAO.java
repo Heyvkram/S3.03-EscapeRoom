@@ -90,7 +90,7 @@ public class UserDAO extends GenericDAO {
     }
 
     public List<User> getUsersLikeSurName(String pLastname) throws ClassNotFoundException, SQLException {
-        String sqlSelectAllUsers = "SELECT * FROM users WHERE first_lastName LIKE ?";
+        String sqlSelectAllUsers = "SELECT * FROM users WHERE user_surname LIKE ?";
         List<User> usersList = new ArrayList<>();
 
         try (Connection conn = getConnection();
@@ -113,6 +113,11 @@ public class UserDAO extends GenericDAO {
     public void printAllUsers() throws ClassNotFoundException, SQLException {
         System.out.println("\n    Users list............................");
         getAllUsers().forEach(User::printBasicInfoValues);
+    }
+
+    public void printUsersList(List<User> usersList) throws ClassNotFoundException, SQLException {
+        System.out.println("\n    Users list............................");
+        usersList.forEach(User::printBasicInfoValues);
     }
 
     public List<User> getAllUsers() throws ClassNotFoundException, SQLException {

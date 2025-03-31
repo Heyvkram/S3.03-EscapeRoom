@@ -12,10 +12,11 @@ CREATE TABLE `clues` (
   `clue_theme` enum('Terror','Fiction','Fantasy') NOT NULL,
   `clue_level` enum('Easy','Intermediate','Hard') NOT NULL,
   `clue_game_phase` varchar(100) NOT NULL,
-  `clue_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `clue_price` int(11) NOT NULL,
-  `clue_value` int(11) NOT NULL,
-  `room_id` int(11) NOT NULL
+  `clue_date_reg` timestamp NOT NULL DEFAULT current_timestamp(),
+  `clue_date_modify` timestamp ON UPDATE current_timestamp(),
+  `clue_price` int(11),
+  `clue_value` int(11),
+  `room_id` int(11)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `decoration_items` (
@@ -28,8 +29,8 @@ CREATE TABLE `decoration_items` (
   `decoration_item_img` varchar(100) DEFAULT NULL,
   `decoration_item_creation_date` timestamp NOT NULL DEFAULT current_timestamp(),
   `decoration_item_modification_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `clue_id` int(11) NOT NULL,
-  `room_id` int(11) NOT NULL
+  `clue_id` int(11),
+  `room_id` int(11)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `game_sessions` (
@@ -41,10 +42,10 @@ CREATE TABLE `game_sessions` (
 
 CREATE TABLE `notifications` (
   `notification_id` int(11) NOT NULL,
-  `notification_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `notification_type` enum('Generic','Personal') DEFAULT NULL,
-  `notification_description` varchar(200) NOT NULL,
-  `user_id` int(11) UNIQUE NOT NULL
+  `notification_type` enum('Generic','Personal','') DEFAULT NULL,
+  `notification_message` varchar(200) NOT NULL,
+  `notification_date_reg` timestamp NOT NULL DEFAULT current_timestamp(),
+  `notification_date_modify` timestamp UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `payments` (

@@ -39,7 +39,7 @@ public class Menu {
                 default:
                     System.out.println(">>> Wrong option.");
             }
-        } while (option != 4);
+        } while (option != 5);
     }
 
 
