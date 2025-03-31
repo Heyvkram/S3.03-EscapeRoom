@@ -12,14 +12,16 @@ public class DecorationItemDAO extends GenericDAO{
     private static final Logger log = LogManager.getLogger(DecorationItemDAO.class);
     final String TABLE_NAME = "decoration_items";
 
-    public Optional<DecorationItem> getDecorationItemBy(Object object, String fieldName, boolean isLikeSearch) throws SQLException, ClassNotFoundException {
+    public Optional<DecorationItem> getDecorationItemBy(Object object, String fieldName) throws SQLException, ClassNotFoundException {
         if(object == null){
             return Optional.empty();
         }
         final String sqlSelectDecorationItem = "SELECT * FROM decoration_items WHERE " + fieldName + "=?";
         try (Connection conn = getConnection();
             PreparedStatement ps = conn.prepareStatement(sqlSelectDecorationItem)) {
-            if (object instanceof Integer) {
+            if (object instanceof Long) {
+                ps.setLong(1, (Long) object);
+            }if (object instanceof Integer) {
                 ps.setInt(1, (Integer) object);
             } else if (object instanceof String) {
                 ps.setString(1, (String) object);
@@ -35,17 +37,13 @@ public class DecorationItemDAO extends GenericDAO{
         }
     }
 
-    public Optional<DecorationItem> getDecorationItemByName(String name) throws SQLException, ClassNotFoundException {
-        return getDecorationItemBy( name, "decoration_item_name", false);
-    }
-
     public Optional<DecorationItem> getDecorationIemById(Long id) throws SQLException, ClassNotFoundException {
-        return getDecorationItemBy( id, "user_id", false);
+        return getDecorationItemBy(id, "decoration_item_id");
     }
 
     public boolean saveOrUpdateDecorationItem(DecorationItem decorationItem) {
         if(decorationItem == null) return false;
-        String sqlStr = "INSERT INTO decoration_items (decoration_item_name, decoration_item_description, decoration_item_price, decoration_item_clue_valor, decoration_item_img" +
+        String sqlStr = "INSERT INTO decoration_items (decoration_item_name, decoration_item_description, decoration_item_price, decoration_item_clue_valor, decoration_item_img) " +
                     "VALUES (?, ?, ?, ?, ?)";
         String resultMsg = "\nUser inserted";
 

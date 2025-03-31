@@ -49,20 +49,21 @@ public class DecorationItemsForm {
                     // ObjectDAO.edit(scanner);
                     break;
                 case 4:
-                    /*try {
-                        Optional<DecorationItem> decorationItemOpt =  decorationItem.deleteDecorationItemsById(EntryUtils.readStringLikeLong(scanner, "Type the user to delete id : ", false));
-                        if(decorationItemOpt.isPresent()){
+                    scanner.nextLine();
+                    try {
+                        Optional<DecorationItem>  decorationOpt =  decorationItem.getDecorationIemById(EntryUtils.readStringLikeLong(scanner, "Type the decoration item id : ", false));
+                        if(decorationOpt.isPresent()){
                             System.out.println("\n");
-                            decorationItemOpt.get().printBasicInfoValues();
-                            if(EntryUtils.readYesNo(scanner, "\nDelete this user (y/n)? ")){
-                                if(decorationItem.deleteById(Math.toIntExact(decorationItemOpt.get().getId()))){
-                                    System.out.println("\n>>> User deleted.");
+                            decorationOpt.get().printBasicInfoValues();
+                            if(EntryUtils.readYesNo(scanner, "\nDelete this decoration item (y/n)? ")){
+                                if(decorationItem.deleteDecorationItemsById(decorationOpt.get().getId())){
+                                    System.out.println("\n>>> Decoration item deleted.");
                                 }
                             }
                         }
                     } catch (SQLException | ClassNotFoundException e) {
-                        System.out.println("error(e)");
-                    }*/
+                        System.out.println(e);
+                    }
                     break;
                 case 5:
                     break;
