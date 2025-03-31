@@ -45,13 +45,10 @@ public class DecorationItemDAO extends GenericDAO{
 
     public boolean saveOrUpdateDecorationItem(DecorationItem decorationItem) {
         if(decorationItem == null) return false;
-        String resultMsg = "Decoration item updated";
-        String sqlStr = "UPDATE decoration_items SET decoration_item_name = ?, decoration_item_description = ?,  decoration_item_price = ?, decoration_item_clue_valor = ?, decoration_item_img = ?";
-        if (decorationItem.getId() == null) {
-            sqlStr = "INSERT INTO decoration_items (decoration_item_name, decoration_item_description, decoration_item_price, decoration_item_clue_valor, decoration_item_img" +
+        String sqlStr = "INSERT INTO decoration_items (decoration_item_name, decoration_item_description, decoration_item_price, decoration_item_clue_valor, decoration_item_img" +
                     "VALUES (?, ?, ?, ?, ?)";
-            resultMsg = "\nUser inserted";
-        }
+        String resultMsg = "\nUser inserted";
+
 
         try (Connection conn = getConnection();
             PreparedStatement ps = conn.prepareStatement(sqlStr)) {
