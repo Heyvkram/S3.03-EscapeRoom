@@ -60,19 +60,19 @@ public class CluesForm {
                     }
                     break;
                 case 3:
-//                    try {
-//                        Optional<Clues> clueOpt = clueDao.getClueById(EntryUtils.llegirLong(scanner, "Type clue id: ", false));
-//                        scanner.nextLine();
-//                        if (clueOpt.isPresent()) {
-//                            clueOpt.get().printBasicInfoValues();
-//                            editCluesForm(clueOpt.get(), scanner);
-//                        } else {
-//                            System.out.println("No clue found with this ID");
-//                        }
-//                    } catch (SQLException | ClassNotFoundException e) {
-//                        log.error(e);
-//                    }
-//
+                    try {
+                        Optional<Clues> clueOpt = clueDao.getClueById( EntryUtils.llegirLong(scanner, "Type clue id: ") , true);
+                        scanner.nextLine();
+                        if (clueOpt.isPresent()) {
+                            clueOpt.get().printBasicInfoValues();
+                            editCluesForm(clueOpt.get(), scanner);
+                        } else {
+                            System.out.println("No clue found with this ID");
+                        }
+                    } catch (SQLException | ClassNotFoundException e) {
+                        log.error(e);
+                    }
+
                     break;
                 case 4:
                     try {

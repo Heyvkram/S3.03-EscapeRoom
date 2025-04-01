@@ -40,12 +40,12 @@ public class ClueDAO extends GenericDAO {
         }
     }
 
-    public Optional<Clues> getClueByTitle(String s, String title, boolean b) throws SQLException, ClassNotFoundException {
-        return getClueByTitle(title, "clue_title", false);
+    public Optional<Clues> getClueByTitle(String title, boolean isMandatory) throws SQLException, ClassNotFoundException {
+        return getClueBy(title, "clue_title", isMandatory);
     }
 
-    public Optional<Clues> getClueById(Long id, String clueId, boolean b) throws SQLException, ClassNotFoundException {
-        return getClueById(id, "clue_id", false);
+    public Optional<Clues> getClueById(Long id, boolean isMandatory) throws SQLException, ClassNotFoundException {
+        return getClueBy(id, "clue_id", isMandatory);
     }
 
     public boolean saveOrUpdateClue(Clues clue) {
@@ -74,6 +74,7 @@ public class ClueDAO extends GenericDAO {
                 System.out.println(resultMsg);
             }
             return rowsAffected > 0;
+
 
         } catch (SQLException | ClassNotFoundException e) {
             log.info("Can't save the information\n");

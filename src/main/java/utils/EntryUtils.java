@@ -113,7 +113,7 @@ public class EntryUtils {
         return resultat;
     }
 
-    public static long llegirLong(Scanner scanner, Long missatge) {
+    public static long llegirLong(Scanner scanner, String missatge) {
         Long resultado = null;
         do {
             System.out.print(missatge + " ");
