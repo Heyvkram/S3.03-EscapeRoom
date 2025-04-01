@@ -44,15 +44,27 @@ CREATE TABLE `notifications` (
   `notification_id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `notification_title` varchar(50) NOT NULL,
   `notification_short_description` varchar(100) NOT NULL,
-  `notification_message` varchar(500) NOT NULL,
+  `notification_message` varchar(500) NOT NULL,  
+  `notification_shipping_type` enum('SMS','EMAIL') DEFAULT NULL,
   `notification_type` enum('GENERIC','PERSONAL','SERVICE','PAYMENT','GAME') DEFAULT NULL,
   `notification_date_reg` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
   `notification_date_modify` TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+CREATE TABLE `notifications_register` (
+	`notification_register_id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	`notification_id` int(11) NOT NULL,
+	`game_id` int(11),
+	`user_id` int(11),
+	`notification_register_status` enum('SENDED','PENDING','CANCELED') DEFAULT NULL,
+	`notification_register_date_shipping` TIMESTAMP NULL,
+	`notification_register_date_reg` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+	`notification_register_date_modify` TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 CREATE TABLE `payments` (
   `payment_id` int(11) NOT NULL,
-  `payment_mode` enum('Credit card','Bizum','PayPal') DEFAULT NULL,
+  `payment_mode` enum('CREDIT CARD','BIZUM','PAYPAL') DEFAULT NULL,
   `payment_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `payment_price` int(11) NOT NULL,
   `user_id` int(11) NOT NULL
