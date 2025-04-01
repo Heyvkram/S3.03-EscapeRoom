@@ -77,12 +77,12 @@ public class DecorationItemsForm {
         System.out.println("\n");
         DecorationItem decorationItem = new DecorationItem();
         decorationItem.setName(EntryUtils.llegirString(scanner, "*Name: ", false));
-        decorationItem.setDescription(EntryUtils.llegirString(scanner, "Description: ", false));
+        decorationItem.setDescription(EntryUtils.llegirString(scanner, "*Description: ", false));
         //decorationItem.setTheme(EntryUtils.llegirString(scanner, "Theme: ", false));
-        decorationItem.setPrice(EntryUtils.llegirDouble(scanner, "Price: "));
-        decorationItem.setClueValor(EntryUtils.llegirInt(scanner, "ClueValor: ", false));
+        decorationItem.setPrice(EntryUtils.llegirDouble(scanner, "*Price: "));
+        decorationItem.setClueValor(EntryUtils.llegirInt(scanner, "ClueValor: "));
         scanner.nextLine();
-        decorationItem.setImg(EntryUtils.llegirString(scanner, "Img: ", false));
+        decorationItem.setImg(EntryUtils.llegirString(scanner, "Img: ", true));
         return decorationItem;
     }
 }

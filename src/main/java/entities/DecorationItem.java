@@ -19,6 +19,6 @@ public class DecorationItem {
     }
 
     public void printBasicInfoValues() {
-        System.out.printf("     %-5d  %-25s   ,Description: %-25s%n", getId(), getName(), getDescription());
+        System.out.printf("    %-5d  %-25s   Description: %-50s  Clue valor: %-5d%n", getId(), getName(), getDescription(), getClueValor());
     }
 }

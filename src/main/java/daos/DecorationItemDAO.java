@@ -21,7 +21,7 @@ public class DecorationItemDAO extends GenericDAO{
             PreparedStatement ps = conn.prepareStatement(sqlSelectDecorationItem)) {
             if (object instanceof Long) {
                 ps.setLong(1, (Long) object);
-            }if (object instanceof Integer) {
+            } else if (object instanceof Integer) {
                 ps.setInt(1, (Integer) object);
             } else if (object instanceof String) {
                 ps.setString(1, (String) object);
@@ -45,7 +45,7 @@ public class DecorationItemDAO extends GenericDAO{
         if(decorationItem == null) return false;
         String sqlStr = "INSERT INTO decoration_items (decoration_item_name, decoration_item_description, decoration_item_price, decoration_item_clue_valor, decoration_item_img) " +
                     "VALUES (?, ?, ?, ?, ?)";
-        String resultMsg = "\nUser inserted";
+        String resultMsg = "\nDecoration item inserted";
 
 
         try (Connection conn = getConnection();
