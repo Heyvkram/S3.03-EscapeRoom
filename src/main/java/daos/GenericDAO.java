@@ -19,7 +19,7 @@ public abstract class GenericDAO {
     abstract String getIdFieldName();
 
     final Connection getConnection() throws SQLException, ClassNotFoundException {
-        DdBbConnection ddBbConnection = new DdBbConnection();
+        DdBbConnection ddBbConnection = DdBbConnection.getInstance();
         return ddBbConnection.getConnection();
     }
 
@@ -35,10 +35,4 @@ public abstract class GenericDAO {
             return true;
         }
     }
-
-    public boolean sendNotification(Notification notification) throws SQLException, ClassNotFoundException {
-
-        return true;
-    }
-
 }

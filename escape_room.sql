@@ -57,7 +57,6 @@ CREATE TABLE `notifications_register` (
 	`game_id` int(11),
 	`user_id` int(11),
 	`notification_register_status` enum('SENDED','PENDING','CANCELED') DEFAULT NULL,
-	`notification_register_date_shipping` TIMESTAMP NULL,
 	`notification_register_date_reg` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
 	`notification_register_date_modify` TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
