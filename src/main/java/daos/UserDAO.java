@@ -17,23 +17,27 @@ public class UserDAO extends GenericDAO {
     final String ID_FIELD_NAME = "user_id";
 
     @Override
-    String getTableName(){ return TABLE_NAME; }
+    String getTableName() {
+        return TABLE_NAME;
+    }
 
     @Override
-    String getIdFieldName(){  return ID_FIELD_NAME;  }
+    String getIdFieldName() {
+        return ID_FIELD_NAME;
+    }
 
     public boolean existUserBy(Object object, String fieldName, boolean ignoreCase) throws SQLException, ClassNotFoundException {
 
-        String sqlWhereStr = " WHERE "+fieldName+" = ?";
-        String sqlWhereStrIgnoreCase = " WHERE LOWER(user_nick_name) = LOWER(?)";
-        // String sqlSelectUser = "SELECT EXISTS (SELECT 1 FROM users WHERE LOWER(user_nick_name) = LOWER(?))";
-        String finalSqlSelectr = "SELECT EXISTS (SELECT 1 FROM users XXXX)";
+        String finalSqlSelectr = "SELECT EXISTS (SELECT 1 FROM users WHERE ";
+        String whereClause;
 
-        if (ignoreCase && object instanceof String) {
-            finalSqlSelectr = finalSqlSelectr.replace("XXXX",sqlWhereStrIgnoreCase);
-        }else{
-            finalSqlSelectr = finalSqlSelectr.replace("XXXX",sqlWhereStr);
+        if (ignoreCase && "user_nick_name".equals(fieldName) && object instanceof String) {
+            whereClause = "LOWER(" + fieldName + ") = LOWER(?)";
+        } else {
+            whereClause = fieldName + " = ?";
         }
+
+        finalSqlSelectr += whereClause + ")";
 
         boolean result = false;
         try (Connection conn = getConnection();
@@ -145,7 +149,7 @@ public class UserDAO extends GenericDAO {
     public boolean insertNewUser(User user) {
         if (user == null) return false;
         String sqlStr = "INSERT INTO users (user_nick_name,user_name,user_surname,user_idCard,user_address_street,user_address_number,user_address_floor," +
-                    "user_address_door,user_city,user_zip_code,user_country,user_phone,user_mail) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "user_address_door,user_city,user_zip_code,user_country,user_phone,user_mail) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sqlStr)) {
@@ -155,9 +159,9 @@ public class UserDAO extends GenericDAO {
             ps.setString(4, user.getAddressStreet());
             ps.setString(5, user.getIdCard());
 
-            if(user.getAddressNumber() != null) {
+            if (user.getAddressNumber() != null) {
                 ps.setInt(6, user.getAddressNumber());
-            }else{
+            } else {
                 ps.setNull(6, java.sql.Types.INTEGER);
             }
 
@@ -192,72 +196,72 @@ public class UserDAO extends GenericDAO {
         ArrayList<Object> parameterList = new ArrayList<>();
         ArrayList<String> arrayQueryParams = new ArrayList<>();
 
-        if(EntryUtils.isNotNullOrEmpty(user.getNickName())) {
+        if (EntryUtils.isNotNullOrEmpty(user.getNickName())) {
             arrayQueryParams.add(" user_nick_name = ?");
             parameterList.add(user.getNickName());
         }
 
-        if(EntryUtils.isNotNullOrEmpty(user.getName())) {
+        if (EntryUtils.isNotNullOrEmpty(user.getName())) {
             arrayQueryParams.add(" user_name = ?");
             parameterList.add(user.getName());
         }
 
-        if(EntryUtils.isNotNullOrEmpty(user.getSurname())) {
+        if (EntryUtils.isNotNullOrEmpty(user.getSurname())) {
             arrayQueryParams.add(" user_surname = ?");
             parameterList.add(user.getSurname());
         }
 
-        if(EntryUtils.isNotNullOrEmpty(user.getAddressStreet())) {
+        if (EntryUtils.isNotNullOrEmpty(user.getAddressStreet())) {
             arrayQueryParams.add(" user_address_street = ?");
             parameterList.add(user.getAddressStreet());
         }
 
-        if(EntryUtils.isNotNullOrEmpty(user.getIdCard())) {
+        if (EntryUtils.isNotNullOrEmpty(user.getIdCard())) {
             arrayQueryParams.add(" user_idCard = ?");
             parameterList.add(user.getIdCard());
         }
 
-        if( user.getAddressNumber()!=null) {
+        if (user.getAddressNumber() != null) {
             arrayQueryParams.add(" user_address_number = ?");
             parameterList.add(user.getAddressNumber());
         }
 
-        if(EntryUtils.isNotNullOrEmpty(user.getAddressFloor())) {
+        if (EntryUtils.isNotNullOrEmpty(user.getAddressFloor())) {
             arrayQueryParams.add(" user_address_floor = ?");
             parameterList.add(user.getAddressFloor());
         }
 
-        if(EntryUtils.isNotNullOrEmpty(user.getAddressDoor())) {
+        if (EntryUtils.isNotNullOrEmpty(user.getAddressDoor())) {
             arrayQueryParams.add(" user_address_door = ?");
             parameterList.add(user.getAddressDoor());
         }
 
-        if(EntryUtils.isNotNullOrEmpty(user.getCity())) {
+        if (EntryUtils.isNotNullOrEmpty(user.getCity())) {
             arrayQueryParams.add(" user_city = ?");
             parameterList.add(user.getCity());
         }
 
-        if(EntryUtils.isNotNullOrEmpty(user.getZipCode())) {
+        if (EntryUtils.isNotNullOrEmpty(user.getZipCode())) {
             arrayQueryParams.add(" user_zip_code = ?");
             parameterList.add(user.getZipCode());
         }
 
-        if(EntryUtils.isNotNullOrEmpty(user.getCountry())) {
+        if (EntryUtils.isNotNullOrEmpty(user.getCountry())) {
             arrayQueryParams.add(" user_country = ?");
             parameterList.add(user.getCountry());
         }
 
-        if(EntryUtils.isNotNullOrEmpty(user.getPhoneNumber())) {
+        if (EntryUtils.isNotNullOrEmpty(user.getPhoneNumber())) {
             arrayQueryParams.add(" user_phone = ?");
             parameterList.add(user.getPhoneNumber());
         }
 
-        if(EntryUtils.isNotNullOrEmpty(user.getMail())) {
+        if (EntryUtils.isNotNullOrEmpty(user.getMail())) {
             arrayQueryParams.add(" user_mail = ?");
             parameterList.add(user.getMail());
         }
 
-        if(arrayQueryParams.isEmpty()){
+        if (arrayQueryParams.isEmpty()) {
             System.out.println("\n>>> No changes in user\n");
             return false;
         }
@@ -269,7 +273,7 @@ public class UserDAO extends GenericDAO {
              PreparedStatement ps = conn.prepareStatement(sqlUpdate);
         ) {
             DdBbUtils.preparareUpdate(ps, parameterList);
-            ps.setLong(parameterList.size()+1, user.getId());
+            ps.setLong(parameterList.size() + 1, user.getId());
 
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0) {

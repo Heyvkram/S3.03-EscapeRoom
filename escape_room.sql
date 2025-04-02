@@ -40,27 +40,6 @@ CREATE TABLE `game_sessions` (
   `payment_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE `notifications` (
-  `notification_id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  `notification_title` varchar(50) NOT NULL,
-  `notification_short_description` varchar(100) NOT NULL,
-  `notification_message` varchar(500) NOT NULL,  
-  `notification_shipping_type` enum('SMS','EMAIL') DEFAULT NULL,
-  `notification_type` enum('GENERIC','PERSONAL','SERVICE','PAYMENT','GAME') DEFAULT NULL,
-  `notification_date_reg` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-  `notification_date_modify` TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-CREATE TABLE `notifications_register` (
-	`notification_register_id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	`notification_id` int(11) NOT NULL,
-	`game_id` int(11),
-	`user_id` int(11),
-	`notification_register_status` enum('SENDED','PENDING','CANCELED') DEFAULT NULL,
-	`notification_register_date_reg` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-	`notification_register_date_modify` TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
 CREATE TABLE `payments` (
   `payment_id` int(11) NOT NULL,
   `payment_mode` enum('CREDIT CARD','BIZUM','PAYPAL') DEFAULT NULL,
@@ -77,6 +56,44 @@ CREATE TABLE `rooms` (
   `room_status` enum('Available','Not available') NOT NULL,
   `room_max_players` int(11) NOT NULL,
   `room_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `notifications` (
+  `notification_id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `notification_title` varchar(50) NOT NULL,
+  `notification_short_description` varchar(100) NOT NULL,
+  `notification_message` varchar(500) NOT NULL,  
+  `notification_shipping_type` enum('SMS','EMAIL') DEFAULT NULL,
+  `notification_type` enum('GENERIC','PERSONAL','SERVICE','PAYMENT','GAME') DEFAULT NULL,
+  `notification_date_reg` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+  `notification_date_modify` TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `notifications_user` (
+	`notification_user_id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	`notification_id` int(11) NOT NULL,
+	`user_id` int(11),
+	`notification_register_status` enum('SENDED','PENDING','CANCELED') DEFAULT NULL,
+	`notification_register_date_reg` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+	`notification_register_date_modify` TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `notifications_game` (
+	`notification_register_id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	`notification_id` int(11) NOT NULL,
+	`game_id` int(11),
+	`notification_register_status` enum('SENDED','PENDING','CANCELED') DEFAULT NULL,
+	`notification_register_date_reg` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+	`notification_register_date_modify` TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `generic_notifications_register` (
+	`notification_register_id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	`notification_id` int(11) NOT NULL,	
+	`notification_register_level` enum('Informative ','Important ','Critical ') DEFAULT NULL,
+	`notification_register_status` enum('SENDED','PENDING','CANCELED') DEFAULT NULL,
+	`notification_register_date_reg` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+	`notification_register_date_modify` TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `users` (
@@ -98,6 +115,14 @@ CREATE TABLE `users` (
   INDEX (user_nick_name),
   INDEX (user_surname),
   INDEX (user_idCard)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `user_pssw` (
+  `user_pssw_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `user_pssw_code` varchar(256) NOT NULL,
+  `user_pssw_date_reg` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+  `user_pssw_date_modify` TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
@@ -126,10 +151,6 @@ ALTER TABLE `rooms`
 ALTER TABLE `rooms`
   MODIFY `room_id` int(11) NOT NULL AUTO_INCREMENT;
 
-ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
-
-
 ALTER TABLE `clues`
   ADD CONSTRAINT `fk_clues_room` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`room_id`);
 
@@ -144,4 +165,19 @@ ALTER TABLE `game_sessions`
 
 ALTER TABLE `payments`
   ADD CONSTRAINT `fk_payment_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+ 
+ALTER TABLE `notifications_user`
+  ADD CONSTRAINT `fk_notifications_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
+  ADD CONSTRAINT `fk_notifications_user_notif` FOREIGN KEY (`notification_id`) REFERENCES `notifications` (`notification_id`);
+
+ALTER TABLE `notifications_game`
+  ADD CONSTRAINT `fk_notifications_game` FOREIGN KEY (`game_id`) REFERENCES `game_sessions` (`game_id`),
+  ADD CONSTRAINT `fk_notifications_game_notif` FOREIGN KEY (`notification_id`) REFERENCES `notifications` (`notification_id`);
+
+ALTER TABLE `generic_notifications_register`
+  ADD CONSTRAINT `fk_generic_notifications_register` FOREIGN KEY (`notification_id`) REFERENCES `notifications` (`notification_id`);
+  
+ALTER TABLE `user_pssw`
+  ADD CONSTRAINT `fk_user_pssw` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+  
 COMMIT;
