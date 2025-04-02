@@ -11,9 +11,9 @@ CREATE TABLE `clues` (
   `clue_title` varchar(100) NOT NULL,
   `clue_description_user` varchar(300) NOT NULL,
   `clue_description_admin` varchar(300) NOT NULL,
-  `clue_theme` enum('Terror','Fiction','Fantasy') NOT NULL,
-  `clue_level` enum('Easy','Intermediate','Hard') NOT NULL,
-  `clue_game_phase` varchar(100) NOT NULL,
+  `clue_theme` enum('Terror','Fiction','Fantasy'),
+  `clue_level` enum('Easy','Intermediate','Hard'),
+  `clue_game_phase` varchar(100),
   `clue_date_reg` timestamp NOT NULL DEFAULT current_timestamp(),
   `clue_date_modify` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   `clue_price` int(11) DEFAULT NULL,
@@ -24,26 +24,27 @@ CREATE TABLE `decoration_items` (
   `decoration_item_id` int(11) NOT NULL,
   `decoration_item_name` varchar(20) NOT NULL,
   `decoration_item_description` varchar(200) NOT NULL,
-  `decoration_item_theme` enum('Terror','Fiction','Fantasy') NOT NULL,
-  `decoration_item_price` double NOT NULL,
+  `decoration_item_theme` enum('Terror','Fiction','Fantasy'),
+  `decoration_item_price` double,
   `decoration_item_clue_valor` int(11) DEFAULT NULL,
   `decoration_item_img` varchar(100) DEFAULT NULL,
-  `decoration_item_creation_date` timestamp NOT NULL DEFAULT current_timestamp(),
-  `decoration_item_modification_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `decoration_item_creation_date` timestamp DEFAULT NULL current_timestamp(),
+  `decoration_item_modification_date` timestamp DEFAULT NULL current_timestamp() ON UPDATE current_timestamp(),
   `clue_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `game_sessions` (
   `game_id` int(11) NOT NULL,
   `room_id` int(11) NOT NULL,
-  `payment_id` int(11) NOT NULL
+  `payment_id` int(11) NOT NULL,
+  `accepted` varchar(1)	
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `payments` (
   `payment_id` int(11) NOT NULL,
   `payment_mode` enum('Credit card','Bizum','PayPal') DEFAULT NULL,
   `payment_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `payment_price` int(11) NOT NULL,
+  `payment_price` int(11) DEFAULT NULL,
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -68,9 +69,9 @@ CREATE TABLE `relation_user_game` (
 CREATE TABLE `rooms` (
   `room_id` int(11) NOT NULL,
   `room_name` varchar(100) NOT NULL,
-  `room_theme` enum('Terror','Fiction','Fantasy') NOT NULL,
-  `room_level` enum('Easy','Intermediate','Hard') NOT NULL,
-  `room_status` enum('Available','Not available') NOT NULL,
+  `room_theme` enum('Terror','Fiction','Fantasy'),
+  `room_level` enum('Easy','Intermediate','Hard'),
+  `room_status` enum('Available','Not available'),
   `room_max_players` int(11) NOT NULL,
   `room_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -135,7 +136,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `user_pssw` (
-  `user_pssw_id` int(11) NOT NULL,
+  `user_pssw_id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `user_pssw_code` varchar(256) NOT NULL,
   `user_pssw_date_reg` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
