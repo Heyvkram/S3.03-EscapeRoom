@@ -29,7 +29,7 @@ CREATE TABLE `decoration_items` (
   `decoration_item_clue_valor` int(11) DEFAULT NULL,
   `decoration_item_img` varchar(100) DEFAULT NULL,
   `decoration_item_creation_date` timestamp NOT NULL DEFAULT  current_timestamp(),
-  `decoration_item_modification_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `decoration_item_modification_date` timestamp DEFAULT NULL current_timestamp() ON UPDATE current_timestamp(),
   `clue_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
