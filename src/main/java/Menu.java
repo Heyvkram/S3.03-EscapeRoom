@@ -1,4 +1,5 @@
 import forms.DecorationItemsForm;
+import forms.RoomForm;
 import forms.UserForm;
 import utils.EntryUtils;
 

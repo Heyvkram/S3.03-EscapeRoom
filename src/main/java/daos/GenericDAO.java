@@ -21,17 +21,4 @@ public abstract class GenericDAO {
         return ddBbConnection.getConnection();
     }
 
-    public boolean deleteById(Integer id) throws SQLException, ClassNotFoundException {
-        if (id == null || id <= 0) {
-            throw new IllegalArgumentException("No user");
-        }
-        final String sqlDelete = "DELETE FROM "+TABLE_NAME+" WHERE id=?";
-        try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(sqlDelete)) {
-            ps.setInt(1, id);
-            ps.execute();
-            return true;
-        }
-    }
-
 }
