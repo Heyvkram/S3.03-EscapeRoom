@@ -1,11 +1,11 @@
 package entities;
 
 public class TerrorRoom extends Room implements RoomThemeInterface {
-    // @Override
+    @Override
     public String getDescription() {
         return "Terror room with a dark and mysterious atmosphere"; }
 
-    // @Override
+    @Override
     public void enterRoom() {
         System.out.println("Starting terror room... Prepare to be scared!");
     }

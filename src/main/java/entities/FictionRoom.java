@@ -1,11 +1,11 @@
 package entities;
 
 public class FictionRoom extends Room implements RoomThemeInterface {
-    // @Override
+    @Override
     public String getDescription() {
         return "Sci-Fi room with futuristic technology"; }
 
-    // @Override
+    @Override
     public void enterRoom() {
         System.out.println("Starting Sci-Fi room... Welcome to the future!");
     }
