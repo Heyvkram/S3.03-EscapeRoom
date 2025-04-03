@@ -66,7 +66,14 @@ public class Menu {
                     // ObjectDAO.metode1(scanner);
                     break;
                 case 2:
-                    ClueDAO.printAllClues(scanner);
+                    ClueDAO vv = new ClueDAO();
+                    try {
+                        vv.printAllClues();
+                    } catch (ClassNotFoundException e) {
+                        throw new RuntimeException(e);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
                     break;
                 case 3:
                     // ObjectDAO.metode2(scanner);

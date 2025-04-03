@@ -12,17 +12,14 @@ public class Clues {
     private String descriptionUser;
     private String descriptionAdmin;
     private Theme theme; //ver si utilizamos el mismo enum con Mark
-    private int level;
-    private int gamePhase;
-    private LocalDate date;
+    private String level;
+    private String gamePhase;
+    private LocalDate clue_date_reg;
+    private LocalDate clue_date_modify;
     private double price;
     private double value;
 
-    public String getWholeName() {
-        return id + " : " + title;
-    }
     public void printBasicInfoValues() {
-        System.out.printf("     %-5d  %-25s  %-25s ,Nickname: %-25s%n", getId());
+        System.out.println("Clues list:  " + getId() + " " + getTitle() + " " + getLevel());
     }
-    // printBasicInfoValues() modificar método con los valores correspondientes que quede bien hecho
 }

@@ -98,8 +98,8 @@ public class CluesForm {
         clue.setDescriptionUser(llegirString(scanner, "*User description: ", false));
         clue.setDescriptionAdmin(llegirString(scanner, "Admin description: ", false));
         //clue.setTheme(EntryUtils.llegirString(scanner, "Theme: ", false));
-        clue.setLevel(llegirInt(scanner, "Level: ", false));
-        clue.setGamePhase(llegirInt(scanner, "Game phase: ", false));
+        //clue.setLevel(llegirInt(scanner, "Level: ", false));
+        clue.setGamePhase(llegirString(scanner, "Game phase: ", false));
         scanner.nextLine();
         // clue.setDate(EntryUtils.llegirDate(scanner, "Date: ", false));
         clue.setPrice(llegirDouble(scanner, "Price: ", false));
