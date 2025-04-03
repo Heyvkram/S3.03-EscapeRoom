@@ -4,7 +4,6 @@ package forms;
 import daos.RoomDAO;
 import entities.Room;
 import entities.RoomFactory;
-import forms.RoomForm;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,6 +20,7 @@ public class RoomForm {
     public static void menuRoom(Scanner scanner) {
         int option;
         RoomDAO roomDao = new RoomDAO();
+        RoomFactory factory = new RoomFactory();
         System.out.println("\n");
         do {
             System.out.println("\n-----------------------------------------");
@@ -28,8 +28,8 @@ public class RoomForm {
             System.out.println("-----------------------------------------");
             System.out.println("    1. New room");
             System.out.println("    2. List all rooms");
-            System.out.println("    3. Select theme");
-            System.out.println("    4. Choose difficulty");
+            System.out.println("    3. Edit room");
+            System.out.println("    4. Delete room");
             System.out.println("    5. Back");
 
             System.out.print("\nChoose option > ");
@@ -38,12 +38,12 @@ public class RoomForm {
 
             switch (option) {
                 case 1:
-                    scanner.nextLine();
-                    if(!roomDao.saveOrUpdateRoom(newRoomForm(scanner))){
+                    Room room = newRoomForm(scanner);
+                    if(room!=null && !roomDao.saveOrUpdateRoom(room)){
                         System.out.println("\n   Error: Unable to establish connection to the database.");
                         System.out.println("     (Please contact your system administrator)\n");
                         if(!EntryUtils.readYesNo(scanner," Type 'Y' for continue or 'N' for scape.")){
-                            option=5;
+                            option=4;
                         }
                     }
                     break;
@@ -55,7 +55,6 @@ public class RoomForm {
                     }
                     break;
                 case 3:
-                    RoomFactory factory = new RoomFactory();
                     break;
                 case 4:
                     break;

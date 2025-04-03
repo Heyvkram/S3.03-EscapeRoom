@@ -3,6 +3,8 @@ package daos;
 import entities.Room;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utils.Constants;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,9 +57,9 @@ public class RoomDAO extends GenericDAO {
             try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sqlStr)) {
                 ps.setLong(1, room.getRoomId());
                 ps.setString(2, room.getRoomName());
-                // ps.setTheme(3, room.getRoomTheme());    //ES UN ENUM
-                ps.setString(4, room.getRoomLevel());    //ES UN ENUM
-                ps.setString(5, room.getRoomStatus());   //ES UN ENUM
+                ps.setString(3, String.valueOf(room.getRoomTheme()));
+                ps.setString(4, String.valueOf(room.getRoomLevel()));
+                ps.setString(5, String.valueOf(room.getRoomStatus()));
                 ps.setInt(6, room.getRoomMaxPlayers());
                 //ps.setDate(5, room.getRoomDate());       //ES UNA FECHA
 
@@ -98,9 +100,9 @@ public class RoomDAO extends GenericDAO {
             Room room = new Room();
             room.setRoomId(rs.getLong("room_id"));
             room.setRoomName(rs.getString("room_name"));
-            // room.setRoomTheme(rs.getTheme("room_theme"));              //ES UN ENUM
-            room.setRoomLevel(rs.getString("room_level"));           //ES UN ENUM
-            room.setRoomStatus(rs.getString("room_status"));         //ES UN ENUM
+            room.setRoomTheme(Constants.ROOM_THEME.valueOf(rs.getString("room_theme")));
+            room.setRoomLevel(Constants.GAME_LEVEL.valueOf(rs.getString("room_level")));
+            room.setRoomStatus(Constants.ROOM_STATUS.valueOf(rs.getString("room_status")));
             room.setRoomMaxPlayers(rs.getInt("room_max_players"));
             //room.setRoomDate(rs.getDate("room_date"));            //ES UNA FECHA
             return room;

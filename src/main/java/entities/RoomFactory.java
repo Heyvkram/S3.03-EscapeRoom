@@ -1,12 +1,12 @@
 package entities;
 
-import utils.Themes;
+import utils.Constants;
 import lombok.Data;
 
 @Data
 
 public class RoomFactory {
-    public Room createRoom(Themes theme) {
+    public Room createRoom(Constants.ROOM_THEME theme) {
         switch (theme) {
             case FICTION :
                 return new FictionRoom();
@@ -15,7 +15,7 @@ public class RoomFactory {
             case FANTASY :
                 return new FantasyRoom();
             default :
-                throw new IllegalArgumentException("Not valid theme: " + theme);
+                throw new IllegalArgumentException("Unsupported theme: " + theme);
         }
     }
 }

@@ -1,9 +1,11 @@
+import daos.RoomDAO;
 import forms.DecorationItemsForm;
 import forms.RoomForm;
 import forms.UserForm;
 import utils.EntryUtils;
 
 import java.sql.SQLException;
+import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class Menu {
@@ -88,9 +90,10 @@ public class Menu {
             System.out.println("Room menu:");
             System.out.println("-----------------------------------------");
             System.out.println("    1. New room");
-            System.out.println("    2. Edit room");
-            System.out.println("    3. Delete room");
-            System.out.println("    4. Back");
+            System.out.println("    2. List all rooms");
+            System.out.println("    3. Edit room");
+            System.out.println("    4. Delete room");
+            System.out.println("    5. Back");
 
             System.out.print("\nChoose option > ");
             option = scanner.nextInt();
@@ -100,12 +103,21 @@ public class Menu {
                     // ObjectDAO.metode1(scanner);
                     break;
                 case 2:
-                    // ObjectDAO.metode2(scanner);
+                    RoomDAO listRoomsMenu = new RoomDAO();
+                    try {
+                        listRoomsMenu.printAllRooms();
+                    } catch (ClassNotFoundException e) {
+                        throw new RuntimeException(e);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
                     break;
                 case 3:
                     // ObjectDAO.metode3(scanner);
                     break;
                 case 4:
+                    break;
+                case 5:
                     break;
                 default:
                     System.out.println("Wrong option.");
