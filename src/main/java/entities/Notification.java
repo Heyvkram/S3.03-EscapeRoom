@@ -28,7 +28,13 @@ public class Notification {
         DateUtils dateUtils = new DateUtils();
         System.out.println("            Register date: " + dateUtils.localDateToString_dd_MM_YYYY_HMS(getRegisterDate()));
         System.out.println("            Modification date: " + dateUtils.localDateToString_dd_MM_YYYY_HMS(getModificationDate()));
+    }
 
+    public void printNewInfoValues() {
+        System.out.println("     Title: " + getTitle());
+        System.out.println("    Short description: " + getShortDescription());
+        System.out.println("    Message: " + getMessage());
+        System.out.println("    Type: " + getType());
     }
 }
 
