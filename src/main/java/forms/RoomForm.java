@@ -3,6 +3,7 @@ package forms;
 
 import daos.RoomDAO;
 import entities.Room;
+import entities.RoomFactory;
 import forms.RoomForm;
 
 import org.apache.logging.log4j.LogManager;
@@ -54,6 +55,7 @@ public class RoomForm {
                     }
                     break;
                 case 3:
+                    RoomFactory factory = new RoomFactory();
                     break;
                 case 4:
                     break;

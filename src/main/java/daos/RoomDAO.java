@@ -44,11 +44,12 @@ public class RoomDAO extends GenericDAO {
 
         public boolean saveOrUpdateRoom(Room room) {
             if (room == null) return false;
-            String resultMsg = "Room updated";
+
             String sqlStr = "UPDATE rooms SET room_name = ?, room_theme = ?, room_level = ?, room_status = ?, room_max_players = ?, room_date = ?";
+            String resultMsg = "Room updated";
             if (room.getRoomId() == null) {
                 sqlStr = "INSERT INTO rooms (room_name, room_theme, room_level, room_status, room_max_players, room_date" + "VALUES (?, ?, ?, ?, ?, ?)";
-                resultMsg = "\nRoom inserted";
+                resultMsg = "Room inserted";
             }
 
             try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sqlStr)) {
