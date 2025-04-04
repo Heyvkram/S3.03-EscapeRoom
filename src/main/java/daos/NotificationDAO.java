@@ -107,6 +107,11 @@ public class NotificationDAO extends GenericDAO {
         }
     }
 
+    public boolean sendNotification(Notification notification){
+        // To do
+        return true;
+    }
+
     @Override
     String getTableName(){ return TABLE_NAME; }
 
