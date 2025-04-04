@@ -106,6 +106,25 @@ public class UserDAO extends GenericDAO {
         }
     }
 
+    public List<User> getUsersNotifiables() throws ClassNotFoundException, SQLException {
+        String sqlSelectAllUsers = "SELECT * FROM users WHERE user_notifiable = 'y'";
+        List<User> usersList = new ArrayList<>();
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sqlSelectAllUsers)) {
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    usersList.add(resultSetToUserObject(rs));
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new SQLException("Error getting notifiables users : " + e.getMessage(), e);
+        }
+
+        return usersList;
+    }
+
     public List<User> getUsersLikeSurName(String pLastname) throws ClassNotFoundException, SQLException {
         String sqlSelectAllUsers = "SELECT * FROM users WHERE user_surname LIKE ?";
         List<User> usersList = new ArrayList<>();
@@ -155,7 +174,7 @@ public class UserDAO extends GenericDAO {
     public boolean insertNewUser(User user) {
         if (user == null) return false;
         String sqlStr = "INSERT INTO users (user_nick_name,user_name,user_surname,user_idCard,user_address_street,user_address_number,user_address_floor," +
-                "user_address_door,user_city,user_zip_code,user_country,user_phone,user_mail) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "user_address_door,user_city,user_zip_code,user_country,user_phone,user_mail, user_notifiable ) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sqlStr)) {
@@ -178,9 +197,10 @@ public class UserDAO extends GenericDAO {
             ps.setString(11, user.getCountry());
             ps.setString(12, user.getPhoneNumber());
             ps.setString(13, user.getMail());
+            ps.setString(14, user.getMail());
 
             if (user.getId() != null) {
-                ps.setLong(14, user.getId());
+                ps.setLong(15, user.getId());
             }
 
             int rowsAffected = ps.executeUpdate();
@@ -309,6 +329,7 @@ public class UserDAO extends GenericDAO {
         user.setCountry(rs.getString("user_country"));
         user.setPhoneNumber(rs.getString("user_phone"));
         user.setMail(rs.getString("user_mail"));
+        user.setNotifiable(rs.getString("user_notifiable"));
         return user;
     }
 

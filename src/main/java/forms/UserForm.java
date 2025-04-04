@@ -27,8 +27,9 @@ public class UserForm {
             System.out.println("    2. List users");
             System.out.println("    3. Edit user");
             System.out.println("    4. Delete user");
-            System.out.println("    5. Find user by surname");
-            System.out.println("    6. Back");
+            System.out.println("    5. Find users by surname");
+            System.out.println("    6. Show notifiable users ");
+            System.out.println("    7. Back");
 
             System.out.print("\n>>> Choose option > ");
             option = EntryUtils.llegirInt(scanner, null);
@@ -43,6 +44,7 @@ public class UserForm {
                         }
                     }
                     break;
+
                 case 2:
                     try {
                         userDao.printAllUsers();
@@ -50,6 +52,7 @@ public class UserForm {
                         log.error(e);
                     }
                     break;
+
                 case 3:
 
                     Optional<User> userOptEdit = userDao.getUserById(EntryUtils.readStringLikeLong(scanner, "Type the user id: ", false));
@@ -66,8 +69,8 @@ public class UserForm {
                     } else {
                         System.out.println("\n>>> No user with this id was found.");
                     }
-
                     break;
+
                 case 4:
                     try {
                         Optional<User> userOpt = userDao.getUserById(EntryUtils.readStringLikeLong(scanner, "Type the user to delete id : ", false));
@@ -84,8 +87,8 @@ public class UserForm {
                         log.error(e);
                     }
                     break;
-                case 5:
 
+                case 5:
                     try {
                         List<User> userList = userDao.getUsersLikeSurName(EntryUtils.llegirString(scanner, "Type the user surname to find : ", true));
                         if (!userList.isEmpty()) {
@@ -94,14 +97,26 @@ public class UserForm {
                     } catch (SQLException | ClassNotFoundException e) {
                         log.error(e);
                     }
+                    break;
 
-                    break;
                 case 6:
+                    try {
+                        List<User> userList = userDao.getUsersNotifiables();
+                        if (!userList.isEmpty()) {
+                            userDao.printUsersList(userList);
+                        }
+                    } catch (SQLException | ClassNotFoundException e) {
+                        log.error(e);
+                    }
                     break;
+
+                case 7:
+                    break;
+
                 default:
                     System.out.println(">>> Wrong option.");
             }
-        } while (option != 6);
+        } while (option != 7);
         scanner.nextLine();
     }
 

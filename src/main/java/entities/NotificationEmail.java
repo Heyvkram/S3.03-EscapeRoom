@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 @Data
 public class NotificationEmail extends NotificationGeneric {
 
-    private final String shippingType = "EMAIL";
-    private User user=null;
+    private final String shippingType = "Email";
+    private User user = null;
 
     public NotificationEmail() {
 
@@ -20,8 +20,7 @@ public class NotificationEmail extends NotificationGeneric {
     }
 
     public void printBasicInfoValues() {
-        System.out.printf("     %-5d %-25s | Title: %-30s  short description: %-25s%n", getId(), getTitle(), getType(), getShortDescription());
-        System.out.printf("     %-5d %-25s | Title: %-30s  short description: %-25s%n", getId(), getTitle(), getType(), getShortDescription());
+        System.out.printf("     %-5d %-25s | Title: %-30s  Short description: %-25s Shipping type: %-25s%n", getId(), getTitle(), getType(), getShortDescription(), getshippingType());
     }
 
     public void printInfoValues() {
@@ -29,9 +28,9 @@ public class NotificationEmail extends NotificationGeneric {
         System.out.println("            Short description: " + getShortDescription());
         System.out.println("            Message: " + getMessage());
         System.out.println("            Type: " + getType());
-        if(user!=null && !user.getMail().isEmpty()) {
+        if (user != null && !user.getMail().isEmpty()) {
             System.out.println("            User Email: " + user.getMail());
-        }else{
+        } else {
             System.out.println("            User Email: User not informed");
         }
         DateUtils dateUtils = new DateUtils();
@@ -40,7 +39,7 @@ public class NotificationEmail extends NotificationGeneric {
     }
 
     public void printNewInfoValues() {
-        System.out.println("     Title: " + getTitle());
+        System.out.println("    Title: " + getTitle());
         System.out.println("    Short description: " + getShortDescription());
         System.out.println("    Message: " + getMessage());
         System.out.println("    Type: " + getType());
@@ -48,11 +47,16 @@ public class NotificationEmail extends NotificationGeneric {
 
     @Override
     public boolean send() {
-        if(user!=null && !user.getMail().isEmpty()){
+        if (user != null && !user.getMail().isEmpty()) {
             return true;
-        }else{
+        } else {
             return false;
         }
+    }
+
+    @Override
+    public String getshippingType() {
+        return shippingType;
     }
 
 }

@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Data
 public class NotificationSMS extends NotificationGeneric{
 
-    private final String shippingType = "SMS";
+    private final String shippingType = "Sms";
     private User user;
 
     public NotificationSMS() {
@@ -20,7 +20,7 @@ public class NotificationSMS extends NotificationGeneric{
     }
 
     public void printBasicInfoValues() {
-        System.out.printf("     %-5d %-25s | Title: %-30s  short description: %-25s%n", getId(), getTitle(), getType(), getShortDescription());
+        System.out.printf("     %-5d %-25s | Title: %-30s  Short description: %-25s Shipping type: %-25s%n", getId(), getTitle(), getType(), getShortDescription(), getshippingType());
     }
 
     public void printInfoValues() {
@@ -53,6 +53,12 @@ public class NotificationSMS extends NotificationGeneric{
             return false;
         }
     }
+
+    @Override
+    public String getshippingType() {
+        return shippingType;
+    }
+
 
 }
 

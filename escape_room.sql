@@ -77,8 +77,9 @@ CREATE TABLE `notifications` (
   `notification_title` varchar(50) NOT NULL,
   `notification_short_description` varchar(100) NOT NULL,
   `notification_message` varchar(500) NOT NULL,
-  `notification_shipping_type` enum('SMS','EMAIL') DEFAULT NULL,
-  `notification_type` enum('Generic','Personal','Service','Payment','Game') DEFAULT NULL,
+  `notification_shipping_type` varchar(20) DEFAULT NULL,
+  `notification_type` varchar(20) DEFAULT NULL,
+  `notification_level` varchar(20) DEFAULT NULL,
   `notification_date_reg` timestamp NOT NULL DEFAULT current_timestamp(),
   `notification_date_modify` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -130,7 +131,8 @@ CREATE TABLE `users` (
   `user_city` varchar(30) DEFAULT NULL,
   `user_zip_code` varchar(20) DEFAULT NULL,
   `user_country` varchar(150) DEFAULT NULL,
-  `user_phone` varchar(50) DEFAULT NULL
+  `user_phone` varchar(50) DEFAULT NULL,
+  `user_notifiable` varchar(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `user_pssw` (

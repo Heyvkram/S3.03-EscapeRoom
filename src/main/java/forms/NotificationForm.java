@@ -10,6 +10,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utils.EnumConstants;
 import utils.EntryUtils;
+import utils.PublisherAgent;
+
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.Scanner;
@@ -26,12 +28,13 @@ public class NotificationForm {
             System.out.println("    -----------------------------------------");
             System.out.println("    Notification menu:");
             System.out.println("    -----------------------------------------");
-            System.out.println("    1. New notification");
-            System.out.println("    2. List notifications");
-            System.out.println("    3. Delete notification");
-            System.out.println("    4. Send notification");
-            System.out.println("    5. Show notification");
-            System.out.println("    6. Back");
+            System.out.println("    1. Create notification");
+            System.out.println("    2. List notifications templates");
+            System.out.println("    3. Delete notification template");
+            System.out.println("    4. Send notification to subscribers");
+            System.out.println("    5. Show notification templates");
+            System.out.println("    6. Send notification to session players");
+            System.out.println("    7. Back");
 
             System.out.print("\n>>> Choose option > ");
             // option = scanner.nextInt();
@@ -73,12 +76,12 @@ public class NotificationForm {
                     break;
                 case 4:
                     try {
-                        Optional<NotificationSMS>  notifOpt =  notifDao.getNotificationById(EntryUtils.readStringLikeLong(scanner, "Type the user to delete id : ", false));
+                        Optional<NotificationSMS>  notifOpt =  notifDao.getNotificationById(EntryUtils.readStringLikeLong(scanner, "Type the notification id : ", false));
                         if(notifOpt.isPresent()){
                             System.out.println("\n");
                             notifOpt.get().printBasicInfoValues();
-                            if(EntryUtils.readYesNo(scanner, "\nSend this notification (y/n)? ")){
-                                if(notifDao.sendNotification(notifOpt.get())){
+                            if(EntryUtils.readYesNo(scanner, "\nSend this notification to subscribers (y/n)? ")){
+                                if(PublisherAgent.sendNotificationToSubscribers(notifOpt.get())){
                                     System.out.println("\n>>> Notification sended.");
                                 }
                             }
@@ -100,10 +103,13 @@ public class NotificationForm {
                         log.error(e);
                     }
                     break;
+                case 6:
+                    // ToDo
+                    break;
                 default:
                     System.out.println(">>> Wrong option.");
             }
-        } while (option != 6);
+        } while (option != 7);
         scanner.nextLine();
     }
 
@@ -113,13 +119,14 @@ public class NotificationForm {
 
         Integer noteShippingTypeValue = null;
         do{
-            System.out.println("Choose option : " + EnumConstants.NOTIFICATION_SHIPPING_TYPE.getMenuOptions());
-            noteShippingTypeValue = EntryUtils.llegirInt(scanner, "*Shipping ype: ", false, EnumConstants.NOTIFICATION_SHIPPING_TYPE.getNumberMaxLevelValue() );
+            System.out.println("Choose Shipping type - " + EnumConstants.NOTIFICATION_SHIPPING_TYPE.getMenuOptions());
+            noteShippingTypeValue = EntryUtils.llegirInt(scanner, "*Shipping type: ", false, EnumConstants.NOTIFICATION_SHIPPING_TYPE.getNumberMaxLevelValue() );
             scanner.nextLine();
 
         }while(!EnumConstants.NOTIFICATION_SHIPPING_TYPE.getLevelCodes().contains(noteShippingTypeValue));
 
-        notif = NotificationFactory.getNotification(EnumConstants.NOTIFICATION_SHIPPING_TYPE.getDescriptionFromLevelCode(noteShippingTypeValue));
+        String noteTypeDescription = EnumConstants.NOTIFICATION_SHIPPING_TYPE.getDescriptionFromLevelCode(noteShippingTypeValue);
+        notif = NotificationFactory.getNotification(noteTypeDescription);
 
         notif.setTitle(EntryUtils.llegirString(scanner, "*Title: ", false, 50));
         notif.setShortDescription(EntryUtils.llegirString(scanner, "*Short description: ", false, 100));
@@ -136,15 +143,16 @@ public class NotificationForm {
         notif.setType(EnumConstants.NOTIFICATIONS_TYPE.getDescriptionFromLevelCode(noteTypeValue));
         notif.printNewInfoValues();
 
-        if(!EntryUtils.readYesNo(scanner, "\nSave this notification (y/n)? ")){
-            notif=null;
+        if((EnumConstants.NOTIFICATIONS_TYPE.PERSONAL.getDescription().equals(notif.getType())) && (EntryUtils.readYesNo(scanner, "\nDo you want to add a user? (y/n)? "))){
+            UserDAO userDao = new UserDAO();
+            Optional<User> userOpt = userDao.getUserById(EntryUtils.readStringLikeLong(scanner, "Type the user id: ", true));
+        }
+        if((EnumConstants.NOTIFICATIONS_TYPE.GENERAL.getDescription().equals(notif.getType())) && (EntryUtils.readYesNo(scanner, "\nPublish this notification now (y/n)? "))){
+            PublisherAgent.sendNotificationToSubscribers(notif);
         }
 
-        if(noteShippingTypeValue.equals(EnumConstants.NOTIFICATION_SHIPPING_TYPE.EMPTY.getLevelCode())){
-            if(!EntryUtils.readYesNo(scanner, "\nDo you want to add a user? (y/n)? ")){
-                UserDAO userDao = new UserDAO();
-                Optional<User> userOpt = userDao.getUserById(EntryUtils.readStringLikeLong(scanner, "Type the user id: ", true));
-            }
+        if(!EntryUtils.readYesNo(scanner, "\nSave this notification as a template (y/n)? ")){
+            notif=null;
         }
 
         return notif;

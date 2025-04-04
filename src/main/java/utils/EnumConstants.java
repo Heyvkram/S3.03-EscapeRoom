@@ -7,11 +7,9 @@ import java.util.List;
 public class EnumConstants {
 
     public static enum NOTIFICATIONS_TYPE {
-        GENERIC(0, "Generic"),
+        GENERAL(0, "General"),
         PERSONAL(1, "Personal"),
-        SERVICE(2, "Service"),
-        PAYMENT(3, "Payment"),
-        GAME(4, "Game");
+        GAME(2, "Game");
 
         private final int levelCode;
         private final String description;
@@ -51,7 +49,7 @@ public class EnumConstants {
                     return type.getDescription();
                 }
             }
-            return null; // O podríeu llençar una excepció IllegalArgumentException
+            return null;
         }
 
         public static String getMenuOptions() {
@@ -107,7 +105,7 @@ public class EnumConstants {
                     return type.getDescription();
                 }
             }
-            return null; // O podríeu llençar una excepció IllegalArgumentException
+            return null;
         }
 
         public static String getMenuOptions() {
@@ -163,7 +161,7 @@ public class EnumConstants {
                     return type.getDescription();
                 }
             }
-            return null; // O podríeu llençar una excepció IllegalArgumentException
+            return null;
         }
 
         public static String getMenuOptions() {
@@ -218,7 +216,7 @@ public class EnumConstants {
                     return type.getDescription();
                 }
             }
-            return null; // O podríeu llençar una excepció IllegalArgumentException
+            return null;
         }
 
         public static String getMenuOptions() {
@@ -272,7 +270,7 @@ public class EnumConstants {
                     return type.getDescription();
                 }
             }
-            return null; // O podríeu llençar una excepció IllegalArgumentException
+            return null;
         }
 
         public static String getMenuOptions() {
@@ -327,7 +325,7 @@ public class EnumConstants {
                     return type.getDescription();
                 }
             }
-            return null; // O podríeu llençar una excepció IllegalArgumentException
+            return null;
         }
 
         public static String getMenuOptions() {
@@ -340,9 +338,9 @@ public class EnumConstants {
     }
 
     public static enum NOTIFICATION_SHIPPING_TYPE {
-        EMPTY(0, ""),
         SMS(1, "Sms"),
-        EMAIL(2, "Email");
+        EMAIL(2, "Email"),
+        EMPTY(0, "No shipping type defined");
 
         private final int levelCode;
         private final String description;
@@ -382,7 +380,7 @@ public class EnumConstants {
                     return type.getDescription();
                 }
             }
-            return null; // O podríeu llençar una excepció IllegalArgumentException
+            return null;
         }
 
         public static String getMenuOptions() {
@@ -397,7 +395,8 @@ public class EnumConstants {
     public static enum NOTIFICATION_LEVEL {
         INFORMATIVE(0, "Informative"),
         IMPORTANT(1, "Important"),
-        CRITICAL(2, "Critical"),;
+        CRITICAL(2, "Critical"),
+        ;
 
         private final int levelCode;
         private final String description;
@@ -437,7 +436,7 @@ public class EnumConstants {
                     return type.getDescription();
                 }
             }
-            return null; // O podríeu llençar una excepció IllegalArgumentException
+            return null;
         }
 
         public static String getMenuOptions() {

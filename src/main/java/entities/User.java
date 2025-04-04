@@ -1,12 +1,9 @@
 package entities;
 
 import lombok.Data;
-import utils.EntryUtils;
-
-import java.util.Scanner;
 
 @Data
-public class User {
+public class User implements NotificationSubscriberInterface {
     private Long id;
     private String nickName;
     private String name;
@@ -21,6 +18,7 @@ public class User {
     private String country;
     private String phoneNumber;
     private String mail;
+    private String notifiable;
 
     public String getWholeName() {
         return name + " " + surname ;

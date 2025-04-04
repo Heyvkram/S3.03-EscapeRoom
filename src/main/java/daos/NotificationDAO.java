@@ -2,8 +2,10 @@ package daos;
 
 import entities.NotificationInterface;
 import entities.NotificationSMS;
+import entities.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utils.EnumConstants;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -42,7 +44,7 @@ public class NotificationDAO extends GenericDAO {
     public boolean insertNewNotification(NotificationInterface notif) {
         if (notif == null) return false;
         String sqlStr = "INSERT INTO `notifications`(`notification_id`, `notification_title`, `notification_short_description`, `notification_message`, `notification_type`, `notification_shipping_type`) " +
-                " VALUES (?, ?, ?, ?, ?)";
+                " VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sqlStr)) {
@@ -108,9 +110,39 @@ public class NotificationDAO extends GenericDAO {
         }
     }
 
-    public boolean sendNotification(NotificationSMS notification){
+    public boolean sendSmsNotification(NotificationInterface notification, String phoneNumber){
         // To do
+        System.out.println("    > Notification id:"+notification.getId()+" "+phoneNumber+" : SMS sended");
         return true;
+    }
+
+    public boolean sendEmailNotification(NotificationInterface notification, String email){
+        // To do
+        System.out.println("    > Notification id:"+notification.getId()+" "+email+" : Email sended");
+        return true;
+    }
+
+    public void publishNotification(NotificationInterface notification, List<User> usersList) {
+        for(User user : usersList){
+            publishNotification( notification, user);
+        }
+    }
+
+    public void publishNotification(NotificationInterface notification, User user) {
+        NotificationDAO notificationDAO = new NotificationDAO();
+        if(EnumConstants.NOTIFICATION_SHIPPING_TYPE.SMS.getDescription().equals(notification.getshippingType())){
+            if(user.getPhoneNumber().isEmpty()){
+                System.out.println(" ERROR: The user does not have a registered their phone number. User id : "+ user.getId() );
+            }else{
+                notificationDAO.sendSmsNotification( notification, user.getPhoneNumber());
+            }
+        }else{
+            if(user.getMail().isEmpty()){
+                System.out.println(" ERROR: The user does not have a registered their email. User id : "+ user.getId() );
+            }else{
+                notificationDAO.sendEmailNotification( notification, user.getMail());
+            }
+        }
     }
 
     @Override
