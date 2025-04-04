@@ -1,25 +1,22 @@
 USE escape_room;
 
--- Insertar 5 registros en la tabla 'rooms'
+INSERT INTO `decoration_items` (`decoration_item_name`, `decoration_item_description`, `decoration_item_theme`, `decoration_item_price`, `decoration_item_clue_valor`, `decoration_item_img`) VALUES
+('Calavera', 'Calavera antigua con ojos brillantes.', 'Terror', 25.50, 10, 'calavera.jpg'),
+('Mapa Estelar', 'Mapa detallado de constelaciones.', 'Fantasy', 30.00, 15, 'mapa_estelar.png'),
+('Libro Antiguo', 'Libro con símbolos extraños.', 'Fiction', 18.75, 8, 'libro_antiguo.pdf'),
+('Espada Oxidada', 'Espada de metal con grabados.', 'Fantasy', 40.20, 20, 'espada_oxidada.jpg'),
+('Muñeca Rota', 'Muñeca de porcelana con marcas extrañas.', 'Terror', 22.90, 12, 'muneca_rota.png');
+
+INSERT INTO `clues` (`clue_title`, `clue_description_user`, `clue_description_admin`, `clue_theme`, `clue_level`, `clue_game_phase`, `clue_price`, `clue_value`) VALUES
+('El Secreto del Mapa', 'Descifra los símbolos del mapa.', 'El mapa contiene coordenadas encriptadas.', 'Fantasy', 'Intermediate', 'Fase 2', 15, 15),
+('La Calavera Parlante', 'Encuentra la frase oculta en la calavera.', 'La calavera responde a preguntas específicas.', 'Terror', 'Hard', 'Fase 3', 20, 20),
+('El Código del Libro', 'Resuelve el enigma del libro.', 'El libro tiene un cifrado de sustitución.', 'Fiction', 'Easy', 'Fase 1', 10, 8),
+('La Espada Mágica', 'Descubre el poder de la espada.', 'La espada activa un mecanismo oculto.', 'Fantasy', 'Hard', 'Fase 4', 25, 25),
+('El Misterio de la Muñeca', 'Encuentra el mensaje oculto en la muñeca.', 'La muñeca tiene un compartimento secreto.', 'Terror', 'Intermediate', 'Fase 2', 18, 12);
+
 INSERT INTO `rooms` (`room_name`, `room_theme`, `room_level`, `room_status`, `room_max_players`) VALUES
-('La Mansión Embrujada', 'Terror', 'Hard', 'Available', 6),
-('La Nave Espacial Perdida', 'Fiction', 'Intermediate', 'Available', 4),
-('El Bosque Encantado', 'Fantasy', 'Easy', 'Available', 5),
-('El Laboratorio Secreto', 'Fiction', 'Hard', 'Not available', 3),
-('El Circo Maldito', 'Terror', 'Intermediate', 'Available', 6);
-
--- Insertar 5 registros en la tabla 'clues'
-INSERT INTO `clues` (`clue_id`, `clue_name`, `clue_theme`, `clue_level`, `clue_game_phase`, `clue_price`, `clue_value`, `room_id`) VALUES
-(1, 'El Diario del Fantasma', 'Terror', 'Hard', 'Inicio', 10, 15, 1),
-(2, 'El Mapa de la Galaxia', 'Fiction', 'Intermediate', 'Medio', 8, 12, 2),
-(3, 'La Poción de la Invisibilidad', 'Fantasy', 'Easy', 'Final', 5, 8, 3),
-(4, 'El Código de Seguridad', 'Fiction', 'Hard', 'Medio', 12, 18, 4),
-(5, 'El Espejo Distorsionado', 'Terror', 'Intermediate', 'Inicio', 9, 14, 5);
-
--- Insertar 5 registros en la tabla 'decoration_items'
-INSERT INTO `decoration_items` (`decoration_item_name`, `decoration_item_description`, `decoration_item_price`, `decoration_item_clue_valor`, `decoration_item_img`, `clue_id`, `room_id`) VALUES
-('Espejo Roto', 'Un espejo antiguo con grietas extrañas.', 35.00, 10, 'espejo_roto.jpg', 1, 1),
-('Panel Estelar', 'Un panel con constelaciones brillantes.', 42.50, 12, 'panel_estelar.png', 2, 2),
-('Libro de Hechizos', 'Un libro antiguo con símbolos mágicos.', 30.00, 8, 'libro_hechizos.svg', 3, 3),
-('Terminal de Datos', 'Una terminal con información encriptada.', 50.00, 18, 'terminal_datos.gif', 4, 4),
-('Muñeca Poseída', 'Una muñeca de porcelana con ojos rojos.', 40.00, 14, 'muneca_poseida.jpeg', 5, 5);
+('La Cripta Maldita', 'Terror', 'Hard', 'Available', 4),
+('El Jardín de las Estrellas', 'Fantasy', 'Intermediate', 'Available', 6),
+('El Laboratorio Secreto', 'Fiction', 'Easy', 'Available', 5),
+('La Forja del Dragón', 'Fantasy', 'Hard', 'Not available', 3),
+('La Mansión de los Espejos', 'Terror', 'Intermediate', 'Available', 4);
