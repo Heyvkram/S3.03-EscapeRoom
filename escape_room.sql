@@ -38,6 +38,7 @@ CREATE TABLE `game_sessions` (
   `game_id` int(11) NOT NULL,
   `room_id` int(11) NOT NULL,
   `payment_id` int(11) NOT NULL,
+    `user_id` int(11) NOT NULL,
   `accepted` varchar(1)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -47,12 +48,6 @@ CREATE TABLE `payments` (
   `payment_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `payment_price` int(11) DEFAULT NULL,
   `user_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-CREATE TABLE `relation_clue_room` (
-  `relation_clue_room_id` int(11) NOT NULL,
-  `clue_id` int(11) NOT NULL,
-  `room_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `relation_decoration_item_room` (
@@ -108,18 +103,9 @@ CREATE TABLE `notifications_game` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `relation_clue_room` (
+  `relation_clue_room_id` int(11) NOT NULL,
   `clue_id` int(11) NOT NULL,
   `room_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-CREATE TABLE `relation_decoration_item_room` (
-  `decoration_item_id` int(11) NOT NULL,
-  `room_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-CREATE TABLE `relation_user_game` (
-  `user_id` int(11) NOT NULL,
-  `game_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `generic_notifications_register` (
@@ -246,12 +232,7 @@ ALTER TABLE `rooms`
 ALTER TABLE `users`
   MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
 
-
-ALTER TABLE `clues`
-  ADD CONSTRAINT `fk_clues_room` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`room_id`);
-
 ALTER TABLE `decoration_items`
-  ADD CONSTRAINT `fk_room_decoration` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`room_id`),
   ADD CONSTRAINT `fk_clue_decoration` FOREIGN KEY (`clue_id`) REFERENCES `clues` (`clue_id`);
 
 ALTER TABLE `game_sessions`
