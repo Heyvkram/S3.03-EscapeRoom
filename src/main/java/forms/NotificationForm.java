@@ -4,7 +4,7 @@ import daos.NotificationDAO;
 import entities.Notification;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utils.Constants;
+import utils.EnumConstants;
 import utils.EntryUtils;
 import java.sql.SQLException;
 import java.util.Optional;
@@ -112,13 +112,13 @@ public class NotificationForm {
 
         Integer noteTypeValue =null;
         do{
-            System.out.println("Choose option : " + Constants.NOTIFICATIONS_TYPE.getMenuOptions());
-            noteTypeValue = EntryUtils.llegirInt(scanner, "*Type: ", false,Constants.NOTIFICATIONS_TYPE.getNumberMaxLevelValue() );
+            System.out.println("Choose option : " + EnumConstants.NOTIFICATIONS_TYPE.getMenuOptions());
+            noteTypeValue = EntryUtils.llegirInt(scanner, "*Type: ", false, EnumConstants.NOTIFICATIONS_TYPE.getNumberMaxLevelValue() );
             scanner.nextLine();
 
-        }while(!Constants.NOTIFICATIONS_TYPE.getLevelCodes().contains(noteTypeValue));
+        }while(!EnumConstants.NOTIFICATIONS_TYPE.getLevelCodes().contains(noteTypeValue));
 
-        notif.setType(Constants.NOTIFICATIONS_TYPE.fromLevelCode(noteTypeValue));
+        notif.setType(EnumConstants.NOTIFICATIONS_TYPE.getDescriptionFromLevelCode(noteTypeValue));
         notif.printNewInfoValues();
 
         if(!EntryUtils.readYesNo(scanner, "\nSave this notification (y/n)? ")){

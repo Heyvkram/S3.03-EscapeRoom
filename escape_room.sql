@@ -73,22 +73,21 @@ CREATE TABLE `rooms` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `notifications` (
-  `notification_id` int(11) NOT NULL,
+  `notification_id`  int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `notification_title` varchar(50) NOT NULL,
   `notification_short_description` varchar(100) NOT NULL,
   `notification_message` varchar(500) NOT NULL,
   `notification_shipping_type` enum('SMS','EMAIL') DEFAULT NULL,
-  `notification_type` enum('GENERIC','PERSONAL','SERVICE','PAYMENT','GAME') DEFAULT NULL,
+  `notification_type` enum('Generic','Personal','Service','Payment','Game') DEFAULT NULL,
   `notification_date_reg` timestamp NOT NULL DEFAULT current_timestamp(),
-  `notification_date_modify` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
-  `user_id` int(11) NOT NULL
+  `notification_date_modify` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `notifications_user` (
 	`notification_user_id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	`notification_id` int(11) NOT NULL,
 	`user_id` int(11),
-	`notification_register_status` enum('SENDED','PENDING','CANCELED') DEFAULT NULL,
+	`notification_register_status` enum('Sended','Pending','Canceled') DEFAULT NULL,
 	`notification_register_date_reg` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
 	`notification_register_date_modify` TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -97,7 +96,7 @@ CREATE TABLE `notifications_game` (
 	`notification_register_id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	`notification_id` int(11) NOT NULL,
 	`game_id` int(11),
-	`notification_register_status` enum('SENDED','PENDING','CANCELED') DEFAULT NULL,
+	`notification_register_status` enum('Sended','Pending','Canceled') DEFAULT NULL,
 	`notification_register_date_reg` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
 	`notification_register_date_modify` TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -112,7 +111,7 @@ CREATE TABLE `generic_notifications_register` (
 	`notification_register_id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	`notification_id` int(11) NOT NULL,
 	`notification_register_level` enum('Informative ','Important ','Critical ') DEFAULT NULL,
-	`notification_register_status` enum('SENDED','PENDING','CANCELED') DEFAULT NULL,
+	`notification_register_status` enum('Sended','Pending','Canceled') DEFAULT NULL,
 	`notification_register_date_reg` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
 	`notification_register_date_modify` TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -154,10 +153,6 @@ ALTER TABLE `game_sessions`
   ADD KEY `fk_game_user` (`user_id`),
   ADD KEY `fk_game_room` (`room_id`),
   ADD KEY `fk_game_payment` (`payment_id`);
-
-ALTER TABLE `notifications`
-  ADD PRIMARY KEY (`notification_id`),
-  ADD KEY `fk_notification_user` (`user_id`);
 
 ALTER TABLE `payments`
   ADD PRIMARY KEY (`payment_id`),
@@ -219,9 +214,6 @@ ALTER TABLE `decoration_items`
 
 ALTER TABLE `game_sessions`
   MODIFY `game_id` int(11) NOT NULL AUTO_INCREMENT;
-
-ALTER TABLE `notifications`
-  MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `payments`
   MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT;
