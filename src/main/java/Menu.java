@@ -46,6 +46,7 @@ public class Menu {
                     System.out.println(">>> Wrong option.");
             }
         } while (option != 6);
+        scanner.nextLine();
     }
 
 }
