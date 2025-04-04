@@ -70,8 +70,14 @@ public class UserDAO extends GenericDAO {
         return getUserBy(nickName, "user_mail");
     }
 
-    public Optional<User> getUserById(Long id) throws SQLException, ClassNotFoundException {
-        return getUserBy(id, ID_FIELD_NAME);
+    public Optional<User> getUserById(Long id){
+        Optional<User> user = Optional.empty();;
+        try{
+            user = getUserBy(id, ID_FIELD_NAME);
+        }catch (SQLException | ClassNotFoundException e) {
+            System.out.println("\n>>> No user with this id was found.");
+        }
+        return user;
     }
 
     public Optional<User> getUserBy(Object object, String fieldName) throws SQLException, ClassNotFoundException {

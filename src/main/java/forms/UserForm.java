@@ -52,23 +52,19 @@ public class UserForm {
                     break;
                 case 3:
 
-                    try {
-                        Optional<User> userOpt = userDao.getUserById(EntryUtils.readStringLikeLong(scanner, "Type the user id: ", false));
-                        if (userOpt.isPresent()) {
-                            userOpt.get().printBasicInfoValues();
-                            User usrUpdated = editUserForm(userOpt.get(), scanner);
-                            if (usrUpdated != null) {
-                                userDao.updateUser(usrUpdated);
-                            }
-
-                            userOpt = userDao.getUserById(usrUpdated.getId());
-                            userOpt.get().printBasicInfoValues();
-
-                        } else {
-                            System.out.println("\n>>> No user with this id was found.");
+                    Optional<User> userOptEdit = userDao.getUserById(EntryUtils.readStringLikeLong(scanner, "Type the user id: ", false));
+                    if (userOptEdit.isPresent()) {
+                        userOptEdit.get().printBasicInfoValues();
+                        User usrUpdated = editUserForm(userOptEdit.get(), scanner);
+                        if (usrUpdated != null) {
+                            userDao.updateUser(usrUpdated);
                         }
-                    } catch (SQLException | ClassNotFoundException e) {
-                        log.error(e);
+
+                        userOptEdit = userDao.getUserById(usrUpdated.getId());
+                        userOptEdit.get().printBasicInfoValues();
+
+                    } else {
+                        System.out.println("\n>>> No user with this id was found.");
                     }
 
                     break;
@@ -91,7 +87,6 @@ public class UserForm {
                 case 5:
 
                     try {
-
                         List<User> userList = userDao.getUsersLikeSurName(EntryUtils.llegirString(scanner, "Type the user surname to find : ", true));
                         if (!userList.isEmpty()) {
                             userDao.printUsersList(userList);

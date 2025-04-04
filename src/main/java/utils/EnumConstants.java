@@ -86,23 +86,23 @@ public class EnumConstants {
         }
 
         public static int getNumberOfItems() {
-            return NOTIFICATIONS_TYPE.values().length;
+            return ROOM_THEME.values().length;
         }
 
         public static int getNumberMaxLevelValue() {
-            return NOTIFICATIONS_TYPE.values().length - 1;
+            return ROOM_THEME.values().length - 1;
         }
 
         public static List<Integer> getLevelCodes() {
             List<Integer> levelCodes = new ArrayList<>();
-            for (NOTIFICATIONS_TYPE type : NOTIFICATIONS_TYPE.values()) {
+            for (ROOM_THEME type : ROOM_THEME.values()) {
                 levelCodes.add(type.getLevelCode());
             }
             return levelCodes;
         }
 
         public static String getDescriptionFromLevelCode(int levelCode) {
-            for (NOTIFICATIONS_TYPE type : NOTIFICATIONS_TYPE.values()) {
+            for (ROOM_THEME type : ROOM_THEME.values()) {
                 if (type.getLevelCode() == levelCode) {
                     return type.getDescription();
                 }
@@ -112,7 +112,7 @@ public class EnumConstants {
 
         public static String getMenuOptions() {
             StringBuilder strB = new StringBuilder();
-            for (NOTIFICATIONS_TYPE item : EnumSet.allOf(NOTIFICATIONS_TYPE.class)) {
+            for (ROOM_THEME item : EnumSet.allOf(ROOM_THEME.class)) {
                 strB.append(item.getLevelCode() + " : " + item.getDescription() + " / ");
             }
             return strB.toString();
@@ -142,23 +142,23 @@ public class EnumConstants {
         }
 
         public static int getNumberOfItems() {
-            return NOTIFICATIONS_TYPE.values().length;
+            return PAYMENT_TYPE.values().length;
         }
 
         public static int getNumberMaxLevelValue() {
-            return NOTIFICATIONS_TYPE.values().length - 1;
+            return PAYMENT_TYPE.values().length - 1;
         }
 
         public static List<Integer> getLevelCodes() {
             List<Integer> levelCodes = new ArrayList<>();
-            for (NOTIFICATIONS_TYPE type : NOTIFICATIONS_TYPE.values()) {
+            for (PAYMENT_TYPE type : PAYMENT_TYPE.values()) {
                 levelCodes.add(type.getLevelCode());
             }
             return levelCodes;
         }
 
         public static String getDescriptionFromLevelCode(int levelCode) {
-            for (NOTIFICATIONS_TYPE type : NOTIFICATIONS_TYPE.values()) {
+            for (PAYMENT_TYPE type : PAYMENT_TYPE.values()) {
                 if (type.getLevelCode() == levelCode) {
                     return type.getDescription();
                 }
@@ -168,7 +168,7 @@ public class EnumConstants {
 
         public static String getMenuOptions() {
             StringBuilder strB = new StringBuilder();
-            for (NOTIFICATIONS_TYPE item : EnumSet.allOf(NOTIFICATIONS_TYPE.class)) {
+            for (PAYMENT_TYPE item : EnumSet.allOf(PAYMENT_TYPE.class)) {
                 strB.append(item.getLevelCode() + " : " + item.getDescription() + " / ");
             }
             return strB.toString();
@@ -197,23 +197,23 @@ public class EnumConstants {
         }
 
         public static int getNumberOfItems() {
-            return NOTIFICATIONS_TYPE.values().length;
+            return GAME_LEVEL.values().length;
         }
 
         public static int getNumberMaxLevelValue() {
-            return NOTIFICATIONS_TYPE.values().length - 1;
+            return GAME_LEVEL.values().length - 1;
         }
 
         public static List<Integer> getLevelCodes() {
             List<Integer> levelCodes = new ArrayList<>();
-            for (NOTIFICATIONS_TYPE type : NOTIFICATIONS_TYPE.values()) {
+            for (GAME_LEVEL type : GAME_LEVEL.values()) {
                 levelCodes.add(type.getLevelCode());
             }
             return levelCodes;
         }
 
         public static String getDescriptionFromLevelCode(int levelCode) {
-            for (NOTIFICATIONS_TYPE type : NOTIFICATIONS_TYPE.values()) {
+            for (GAME_LEVEL type : GAME_LEVEL.values()) {
                 if (type.getLevelCode() == levelCode) {
                     return type.getDescription();
                 }
@@ -223,7 +223,7 @@ public class EnumConstants {
 
         public static String getMenuOptions() {
             StringBuilder strB = new StringBuilder();
-            for (NOTIFICATIONS_TYPE item : EnumSet.allOf(NOTIFICATIONS_TYPE.class)) {
+            for (GAME_LEVEL item : EnumSet.allOf(GAME_LEVEL.class)) {
                 strB.append(item.getLevelCode() + " : " + item.getDescription() + " / ");
             }
             return strB.toString();
@@ -251,23 +251,23 @@ public class EnumConstants {
         }
 
         public static int getNumberOfItems() {
-            return NOTIFICATIONS_TYPE.values().length;
+            return ROOM_STATUS.values().length;
         }
 
         public static int getNumberMaxLevelValue() {
-            return NOTIFICATIONS_TYPE.values().length - 1;
+            return ROOM_STATUS.values().length - 1;
         }
 
         public static List<Integer> getLevelCodes() {
             List<Integer> levelCodes = new ArrayList<>();
-            for (NOTIFICATIONS_TYPE type : NOTIFICATIONS_TYPE.values()) {
+            for (ROOM_STATUS type : ROOM_STATUS.values()) {
                 levelCodes.add(type.getLevelCode());
             }
             return levelCodes;
         }
 
         public static String getDescriptionFromLevelCode(int levelCode) {
-            for (NOTIFICATIONS_TYPE type : NOTIFICATIONS_TYPE.values()) {
+            for (ROOM_STATUS type : ROOM_STATUS.values()) {
                 if (type.getLevelCode() == levelCode) {
                     return type.getDescription();
                 }
@@ -277,7 +277,7 @@ public class EnumConstants {
 
         public static String getMenuOptions() {
             StringBuilder strB = new StringBuilder();
-            for (NOTIFICATIONS_TYPE item : EnumSet.allOf(NOTIFICATIONS_TYPE.class)) {
+            for (ROOM_STATUS item : EnumSet.allOf(ROOM_STATUS.class)) {
                 strB.append(item.getLevelCode() + " : " + item.getDescription() + " / ");
             }
             return strB.toString();
@@ -306,23 +306,23 @@ public class EnumConstants {
         }
 
         public static int getNumberOfItems() {
-            return NOTIFICATIONS_TYPE.values().length;
+            return NOTIFICATIONS_STATUS.values().length;
         }
 
         public static int getNumberMaxLevelValue() {
-            return NOTIFICATIONS_TYPE.values().length - 1;
+            return NOTIFICATIONS_STATUS.values().length - 1;
         }
 
         public static List<Integer> getLevelCodes() {
             List<Integer> levelCodes = new ArrayList<>();
-            for (NOTIFICATIONS_TYPE type : NOTIFICATIONS_TYPE.values()) {
+            for (NOTIFICATIONS_STATUS type : NOTIFICATIONS_STATUS.values()) {
                 levelCodes.add(type.getLevelCode());
             }
             return levelCodes;
         }
 
         public static String getDescriptionFromLevelCode(int levelCode) {
-            for (NOTIFICATIONS_TYPE type : NOTIFICATIONS_TYPE.values()) {
+            for (NOTIFICATIONS_STATUS type : NOTIFICATIONS_STATUS.values()) {
                 if (type.getLevelCode() == levelCode) {
                     return type.getDescription();
                 }
@@ -332,7 +332,7 @@ public class EnumConstants {
 
         public static String getMenuOptions() {
             StringBuilder strB = new StringBuilder();
-            for (NOTIFICATIONS_TYPE item : EnumSet.allOf(NOTIFICATIONS_TYPE.class)) {
+            for (NOTIFICATIONS_STATUS item : EnumSet.allOf(NOTIFICATIONS_STATUS.class)) {
                 strB.append(item.getLevelCode() + " : " + item.getDescription() + " / ");
             }
             return strB.toString();
@@ -340,8 +340,9 @@ public class EnumConstants {
     }
 
     public static enum NOTIFICATION_SHIPPING_TYPE {
-        SMS(0, "Sms"),
-        EMAIL(1, "Email");
+        EMPTY(0, ""),
+        SMS(1, "Sms"),
+        EMAIL(2, "Email");
 
         private final int levelCode;
         private final String description;
@@ -360,23 +361,23 @@ public class EnumConstants {
         }
 
         public static int getNumberOfItems() {
-            return NOTIFICATIONS_TYPE.values().length;
+            return NOTIFICATION_SHIPPING_TYPE.values().length;
         }
 
         public static int getNumberMaxLevelValue() {
-            return NOTIFICATIONS_TYPE.values().length - 1;
+            return NOTIFICATION_SHIPPING_TYPE.values().length - 1;
         }
 
         public static List<Integer> getLevelCodes() {
             List<Integer> levelCodes = new ArrayList<>();
-            for (NOTIFICATIONS_TYPE type : NOTIFICATIONS_TYPE.values()) {
+            for (NOTIFICATION_SHIPPING_TYPE type : NOTIFICATION_SHIPPING_TYPE.values()) {
                 levelCodes.add(type.getLevelCode());
             }
             return levelCodes;
         }
 
         public static String getDescriptionFromLevelCode(int levelCode) {
-            for (NOTIFICATIONS_TYPE type : NOTIFICATIONS_TYPE.values()) {
+            for (NOTIFICATION_SHIPPING_TYPE type : NOTIFICATION_SHIPPING_TYPE.values()) {
                 if (type.getLevelCode() == levelCode) {
                     return type.getDescription();
                 }
@@ -386,7 +387,7 @@ public class EnumConstants {
 
         public static String getMenuOptions() {
             StringBuilder strB = new StringBuilder();
-            for (NOTIFICATIONS_TYPE item : EnumSet.allOf(NOTIFICATIONS_TYPE.class)) {
+            for (NOTIFICATION_SHIPPING_TYPE item : EnumSet.allOf(NOTIFICATION_SHIPPING_TYPE.class)) {
                 strB.append(item.getLevelCode() + " : " + item.getDescription() + " / ");
             }
             return strB.toString();
@@ -415,23 +416,23 @@ public class EnumConstants {
         }
 
         public static int getNumberOfItems() {
-            return NOTIFICATIONS_TYPE.values().length;
+            return NOTIFICATION_LEVEL.values().length;
         }
 
         public static int getNumberMaxLevelValue() {
-            return NOTIFICATIONS_TYPE.values().length - 1;
+            return NOTIFICATION_LEVEL.values().length - 1;
         }
 
         public static List<Integer> getLevelCodes() {
             List<Integer> levelCodes = new ArrayList<>();
-            for (NOTIFICATIONS_TYPE type : NOTIFICATIONS_TYPE.values()) {
+            for (NOTIFICATION_LEVEL type : NOTIFICATION_LEVEL.values()) {
                 levelCodes.add(type.getLevelCode());
             }
             return levelCodes;
         }
 
         public static String getDescriptionFromLevelCode(int levelCode) {
-            for (NOTIFICATIONS_TYPE type : NOTIFICATIONS_TYPE.values()) {
+            for (NOTIFICATION_LEVEL type : NOTIFICATION_LEVEL.values()) {
                 if (type.getLevelCode() == levelCode) {
                     return type.getDescription();
                 }
@@ -441,7 +442,7 @@ public class EnumConstants {
 
         public static String getMenuOptions() {
             StringBuilder strB = new StringBuilder();
-            for (NOTIFICATIONS_TYPE item : EnumSet.allOf(NOTIFICATIONS_TYPE.class)) {
+            for (NOTIFICATION_LEVEL item : EnumSet.allOf(NOTIFICATION_LEVEL.class)) {
                 strB.append(item.getLevelCode() + " : " + item.getDescription() + " / ");
             }
             return strB.toString();

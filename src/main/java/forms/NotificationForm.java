@@ -1,7 +1,11 @@
 package forms;
 
 import daos.NotificationDAO;
-import entities.Notification;
+import daos.UserDAO;
+import entities.NotificationFactory;
+import entities.NotificationInterface;
+import entities.NotificationSMS;
+import entities.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utils.EnumConstants;
@@ -35,7 +39,7 @@ public class NotificationForm {
             scanner.nextLine();
             switch (option) {
                 case 1:
-                    Notification newNotification = newNotificationForm(scanner);
+                    NotificationInterface newNotification = newNotificationForm(scanner);
                     if(newNotification!=null && !notifDao.insertNewNotification(newNotification)){
                         System.out.println("\n   Error: Unable to establish connection to the database.");
                         System.out.println("     (Please contact your system administrator)\n");
@@ -53,7 +57,7 @@ public class NotificationForm {
                     break;
                 case 3:
                     try {
-                        Optional<Notification>  notifOpt =  notifDao.getNotificationById(EntryUtils.readStringLikeLong(scanner, "Type the user to delete id : ", false));
+                        Optional<NotificationSMS>  notifOpt =  notifDao.getNotificationById(EntryUtils.readStringLikeLong(scanner, "Type the user to delete id : ", false));
                         if(notifOpt.isPresent()){
                             System.out.println("\n");
                             notifOpt.get().printBasicInfoValues();
@@ -69,7 +73,7 @@ public class NotificationForm {
                     break;
                 case 4:
                     try {
-                        Optional<Notification>  notifOpt =  notifDao.getNotificationById(EntryUtils.readStringLikeLong(scanner, "Type the user to delete id : ", false));
+                        Optional<NotificationSMS>  notifOpt =  notifDao.getNotificationById(EntryUtils.readStringLikeLong(scanner, "Type the user to delete id : ", false));
                         if(notifOpt.isPresent()){
                             System.out.println("\n");
                             notifOpt.get().printBasicInfoValues();
@@ -85,7 +89,7 @@ public class NotificationForm {
                     break;
                 case 5:
                     try{
-                        Optional<Notification>  notifOpt =  notifDao.getNotificationById(EntryUtils.readStringLikeLong(scanner, "Type the notification id : ", false));
+                        Optional<NotificationSMS>  notifOpt =  notifDao.getNotificationById(EntryUtils.readStringLikeLong(scanner, "Type the notification id : ", false));
                         if(notifOpt.isPresent()){
                             notifOpt.get().printInfoValues();
                         }else{
@@ -103,9 +107,20 @@ public class NotificationForm {
         scanner.nextLine();
     }
 
-    public Notification newNotificationForm(Scanner scanner) {
+    public NotificationInterface newNotificationForm(Scanner scanner) {
         System.out.println("\n");
-        Notification notif = new Notification();
+        NotificationInterface notif =null;
+
+        Integer noteShippingTypeValue = null;
+        do{
+            System.out.println("Choose option : " + EnumConstants.NOTIFICATION_SHIPPING_TYPE.getMenuOptions());
+            noteShippingTypeValue = EntryUtils.llegirInt(scanner, "*Shipping ype: ", false, EnumConstants.NOTIFICATION_SHIPPING_TYPE.getNumberMaxLevelValue() );
+            scanner.nextLine();
+
+        }while(!EnumConstants.NOTIFICATION_SHIPPING_TYPE.getLevelCodes().contains(noteShippingTypeValue));
+
+        notif = NotificationFactory.getNotification(EnumConstants.NOTIFICATION_SHIPPING_TYPE.getDescriptionFromLevelCode(noteShippingTypeValue));
+
         notif.setTitle(EntryUtils.llegirString(scanner, "*Title: ", false, 50));
         notif.setShortDescription(EntryUtils.llegirString(scanner, "*Short description: ", false, 100));
         notif.setMessage(EntryUtils.llegirString(scanner, "*Message: ", false, 500));
@@ -123,6 +138,13 @@ public class NotificationForm {
 
         if(!EntryUtils.readYesNo(scanner, "\nSave this notification (y/n)? ")){
             notif=null;
+        }
+
+        if(noteShippingTypeValue.equals(EnumConstants.NOTIFICATION_SHIPPING_TYPE.EMPTY.getLevelCode())){
+            if(!EntryUtils.readYesNo(scanner, "\nDo you want to add a user? (y/n)? ")){
+                UserDAO userDao = new UserDAO();
+                Optional<User> userOpt = userDao.getUserById(EntryUtils.readStringLikeLong(scanner, "Type the user id: ", true));
+            }
         }
 
         return notif;
