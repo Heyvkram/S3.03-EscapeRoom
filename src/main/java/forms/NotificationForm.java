@@ -69,7 +69,7 @@ public class NotificationForm {
                     break;
                 case 4:
                     try {
-                        Optional<Notification>  notifOpt =  notifDao.getNotificationById(EntryUtils.readStringLikeLong(scanner, "Type the user to delete id : ", false));
+                        Optional<Notification>  notifOpt =  notifDao.getNotificationById(EntryUtils.readStringLikeLong(scanner, "Type the notification to send : ", false));
                         if(notifOpt.isPresent()){
                             System.out.println("\n");
                             notifOpt.get().printBasicInfoValues();
