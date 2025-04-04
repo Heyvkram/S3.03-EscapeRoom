@@ -1,7 +1,6 @@
 package daos;
 
-import entities.Notification;
-import entities.User;
+import entities.NotificationSMS;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,12 +20,12 @@ public class NotificationDAO extends GenericDAO {
 
     public void printAllNotifications() throws ClassNotFoundException, SQLException {
         System.out.println("\n    Users list............................");
-        getAllNotifications().forEach(Notification::printBasicInfoValues);
+        getAllNotifications().forEach(NotificationSMS::printBasicInfoValues);
     }
 
-    public List<Notification> getAllNotifications() throws ClassNotFoundException, SQLException {
+    public List<NotificationSMS> getAllNotifications() throws ClassNotFoundException, SQLException {
         String sqlSelectAllUsers = "SELECT * FROM " + TABLE_NAME;
-        List<Notification> notificationList = new ArrayList<>();
+        List<NotificationSMS> notificationList = new ArrayList<>();
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sqlSelectAllUsers);
              ResultSet rs = ps.executeQuery()) {
@@ -39,7 +38,7 @@ public class NotificationDAO extends GenericDAO {
         return notificationList;
     }
 
-    public boolean insertNewNotification(Notification notif) {
+    public boolean insertNewNotification(NotificationSMS notif) {
         if (notif == null) return false;
         String sqlStr = "INSERT INTO `notifications`(`notification_id`, `notification_title`, `notification_short_description`, `notification_message`, `notification_type`) " +
                 " VALUES (?, ?, ?, ?, ?)";
@@ -65,8 +64,8 @@ public class NotificationDAO extends GenericDAO {
         }
     }
 
-    public Notification resultSetToNotificationObject(ResultSet rs) throws SQLException {
-        Notification notif = new Notification();
+    public NotificationSMS resultSetToNotificationObject(ResultSet rs) throws SQLException {
+        NotificationSMS notif = new NotificationSMS();
         notif.setId(rs.getLong("notification_id"));
         notif.setTitle(rs.getString("notification_title"));
         notif.setShortDescription(rs.getString("notification_short_description"));
@@ -77,11 +76,11 @@ public class NotificationDAO extends GenericDAO {
         return notif;
     }
 
-    public Optional<Notification> getNotificationById(Long id) throws SQLException, ClassNotFoundException {
+    public Optional<NotificationSMS> getNotificationById(Long id) throws SQLException, ClassNotFoundException {
         return getNotificationBy(id, ID_FIELD_NAME);
     }
 
-    public Optional<Notification> getNotificationBy(Object object, String fieldName) throws SQLException, ClassNotFoundException {
+    public Optional<NotificationSMS> getNotificationBy(Object object, String fieldName) throws SQLException, ClassNotFoundException {
         if (object == null) {
             return Optional.empty();
         }
@@ -107,7 +106,7 @@ public class NotificationDAO extends GenericDAO {
         }
     }
 
-    public boolean sendNotification(Notification notification){
+    public boolean sendNotification(NotificationSMS notification){
         // To do
         return true;
     }

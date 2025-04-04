@@ -64,7 +64,7 @@ INSERT INTO `notifications` (
 (
     'Recordatori de Pagament',
     'Recordatori de pagament pendent',
-    'El pagament de la factura número 1234 està pendent. Si us plau, realitzi el pagament abans del 30 de juny.',
+    'El pagament de la vostre darrera factura està pendent. Si us plau, realitzi el pagament abans de final de mes.',
     'Personal'
 ),
 (

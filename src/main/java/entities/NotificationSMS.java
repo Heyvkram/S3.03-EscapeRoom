@@ -3,11 +3,10 @@ package entities;
 import lombok.Data;
 import utils.DateUtils;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
-public class Notification {
+public class NotificationSMS implements NotificationInterface {
     private long id;
     private String title;
     private String shortDescription;
@@ -35,6 +34,11 @@ public class Notification {
         System.out.println("    Short description: " + getShortDescription());
         System.out.println("    Message: " + getMessage());
         System.out.println("    Type: " + getType());
+    }
+
+    @Override
+    public boolean sendNotification() {
+        return false;
     }
 }
 
