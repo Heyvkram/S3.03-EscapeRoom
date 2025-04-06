@@ -1,21 +1,25 @@
 package entities;
 
-import utils.Constants;
+import utils.EnumConstants;
 import lombok.Data;
 
 @Data
 
 public class RoomFactory {
-    public Room createRoom(Constants.ROOM_THEME theme) {
+    public Room createRoom(EnumConstants.ROOM_THEME theme) {
         switch (theme) {
-            case FICTION :
+            case FICTION -> {
                 return new FictionRoom();
-            case TERROR :
+            }
+            case TERROR -> {
                 return new TerrorRoom();
-            case FANTASY :
+            }
+            case FANTASY -> {
                 return new FantasyRoom();
-            default :
+            }
+            default -> {
                 throw new IllegalArgumentException("Unsupported theme: " + theme);
+            }
         }
     }
 }

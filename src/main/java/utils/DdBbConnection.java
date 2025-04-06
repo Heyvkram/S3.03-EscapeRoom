@@ -15,6 +15,8 @@ public class DdBbConnection {
 
     private static final Logger log = LogManager.getLogger(DdBbConnection.class);
 
+    static DdBbConnection ddBbConnection = null;
+
     public final Connection getConnection() throws SQLException, ClassNotFoundException {
 
         String connectionUrl = null;
@@ -38,4 +40,12 @@ public class DdBbConnection {
         return DriverManager.getConnection(connectionUrl,user, pssw);
     }
 
+    public static DdBbConnection getInstance(){
+        if(ddBbConnection == null){
+            ddBbConnection = new DdBbConnection();
+        }
+        return ddBbConnection;
+    }
+
+    private DdBbConnection() {}
 }

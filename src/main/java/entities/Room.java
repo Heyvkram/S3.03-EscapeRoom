@@ -1,7 +1,7 @@
 package entities;
 
 import lombok.Data;
-import utils.Constants;
+import utils.EnumConstants;
 import java.time.LocalDateTime;
 
 @Data
@@ -9,9 +9,9 @@ import java.time.LocalDateTime;
 public class Room {
     private Long roomId;
     private String roomName;
-    private Constants.ROOM_THEME roomTheme;
-    private Constants.GAME_LEVEL roomLevel;
-    private Constants.ROOM_STATUS roomStatus;      // ORIGINALMENTE ENUM, PUEDE SER UN BOOLEAN?
+    private EnumConstants.ROOM_THEME roomTheme;
+    private EnumConstants.GAME_LEVEL roomLevel;
+    private EnumConstants.ROOM_STATUS roomStatus;      // ORIGINALMENTE ENUM, PUEDE SER UN BOOLEAN?
     private int roomMaxPlayers;
     private LocalDateTime roomDate;
 

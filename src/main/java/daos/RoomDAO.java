@@ -3,7 +3,7 @@ package daos;
 import entities.Room;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utils.Constants;
+import utils.EnumConstants;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,6 +13,17 @@ import java.util.Optional;
 public class RoomDAO extends GenericDAO {
     private static final Logger log = LogManager.getLogger(RoomDAO.class);
     final String TABLE_NAME = "rooms";
+    final String ID_FIELD_NAME = "room_id";
+
+    @Override
+    String getTableName() {
+        return TABLE_NAME;
+    }
+
+    @Override
+    String getIdFieldName() {
+        return ID_FIELD_NAME;
+    }
 
     public Optional<Room> getRoomBy(Object object, String fieldName, boolean isLikeSearch) throws SQLException, ClassNotFoundException {
         if (object == null) {
@@ -100,9 +111,9 @@ public class RoomDAO extends GenericDAO {
             Room room = new Room();
             room.setRoomId(rs.getLong("room_id"));
             room.setRoomName(rs.getString("room_name"));
-            room.setRoomTheme(Constants.ROOM_THEME.valueOf(rs.getString("room_theme")));
-            room.setRoomLevel(Constants.GAME_LEVEL.valueOf(rs.getString("room_level")));
-            room.setRoomStatus(Constants.ROOM_STATUS.valueOf(rs.getString("room_status")));
+            room.setRoomTheme(EnumConstants.ROOM_THEME.valueOf(rs.getString("room_theme")));
+            room.setRoomLevel(EnumConstants.GAME_LEVEL.valueOf(rs.getString("room_level")));
+            room.setRoomStatus(EnumConstants.ROOM_STATUS.valueOf(rs.getString("room_status")));
             room.setRoomMaxPlayers(rs.getInt("room_max_players"));
             //room.setRoomDate(rs.getDate("room_date"));            //ES UNA FECHA
             return room;
