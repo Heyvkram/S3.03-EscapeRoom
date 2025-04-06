@@ -111,11 +111,14 @@ public class RoomDAO extends GenericDAO {
             Room room = new Room();
             room.setRoomId(rs.getLong("room_id"));
             room.setRoomName(rs.getString("room_name"));
-            room.setRoomTheme(EnumConstants.ROOM_THEME.valueOf(rs.getString("room_theme")));
-            room.setRoomLevel(EnumConstants.GAME_LEVEL.valueOf(rs.getString("room_level")));
-            room.setRoomStatus(EnumConstants.ROOM_STATUS.valueOf(rs.getString("room_status")));
+            String themeValue = rs.getString("room_theme").toUpperCase();
+            room.setRoomTheme(EnumConstants.ROOM_THEME.valueOf(themeValue));
+            String roomLevel = rs.getString("room_level").toUpperCase();
+            room.setRoomLevel(EnumConstants.GAME_LEVEL.valueOf(roomLevel));
+            String statusValue = rs.getString("room_status").replace(" ", "_").toUpperCase();
+            room.setRoomStatus(EnumConstants.ROOM_STATUS.valueOf(statusValue));
             room.setRoomMaxPlayers(rs.getInt("room_max_players"));
-            //room.setRoomDate(rs.getDate("room_date"));            //ES UNA FECHA
+            room.setRoomDate(rs.getTimestamp("room_date").toLocalDateTime());
             return room;
         }
 

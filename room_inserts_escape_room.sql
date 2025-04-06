@@ -123,7 +123,7 @@ INSERT INTO `rooms` (`room_id`, `room_name`, `room_theme`, `room_level`, `room_s
 (2, 'Starship Pegasus', 'Fiction', 'Intermediate', 'Not available', 5, '2025-04-06 11:42:21'),
 (3, 'Enchanted Forest', 'Fantasy', 'Easy', 'Available', 4, '2025-04-06 11:42:21'),
 (4, 'The Cursed Laboratory', 'Terror', 'Intermediate', 'Available', 6, '2025-04-06 11:42:21'),
-(5, 'Virtual Reality: Shattered World', 'Fiction', 'Hard', 'Available', 8, '2025-04-06 11:42:21');
+(5, 'Shattered World', 'Fiction', 'Hard', 'Available', 8, '2025-04-06 11:42:21');
 
 
 

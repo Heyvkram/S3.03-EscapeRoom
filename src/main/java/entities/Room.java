@@ -11,7 +11,7 @@ public class Room {
     private String roomName;
     private EnumConstants.ROOM_THEME roomTheme;
     private EnumConstants.GAME_LEVEL roomLevel;
-    private EnumConstants.ROOM_STATUS roomStatus;      // ORIGINALMENTE ENUM, PUEDE SER UN BOOLEAN?
+    private EnumConstants.ROOM_STATUS roomStatus;
     private int roomMaxPlayers;
     private LocalDateTime roomDate;
 
@@ -20,12 +20,7 @@ public class Room {
     }
 
     public void printBasicInfoValues() {
-        System.out.printf("Room list: " + getRoomId() + " " + getRoomName()
-                + " " + getRoomTheme() + " " +  getRoomLevel()  + " " +  getRoomStatus() + " " +  getRoomMaxPlayers()  + " " +  getRoomDate());
+        System.out.printf("     %-5d %-30s  |  Title: %-20s  |  Level: %-20s  |  Status: %-20s  |  Max Players: %-10d  |  Date: %-10s%n",
+                getRoomId(), getRoomName(), getRoomTheme(), getRoomLevel(), getRoomStatus(), getRoomMaxPlayers(), getRoomDate());
     }
-
-    /* public String getRoomStatus(){
-        return status ? "Not available" : "Available";
-    }
-     */
 }
