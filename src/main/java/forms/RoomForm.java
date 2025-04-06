@@ -58,7 +58,7 @@ public class RoomForm {
                             roomOpt.get().printBasicInfoValues();
                             if (EntryUtils.readYesNo(scanner, "\nDelete this room (y/n)? ")) {
                                 if (roomDao.deleteById(roomOpt.get().getRoomId())) {
-                                    System.out.println("\n>>> User deleted.");
+                                    System.out.println("\n>>> Room deleted.");
                                 }
                             }
                         }
