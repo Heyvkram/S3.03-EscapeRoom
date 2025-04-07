@@ -66,52 +66,14 @@ public class RoomForm {
                                 } catch (SQLException | ClassNotFoundException e) {
                                     System.out.println("error(e)");
                                 }
+                                break;
                             case 2:
-                                int themeListOption = 0;
-                                do {
-                                    System.out.println("\n");
-                                    System.out.println("-----------------------------------------");
-                                    System.out.println("Choose a theme:");
-                                    System.out.println("-----------------------------------------");
-                                    System.out.println("    1. Terror");
-                                    System.out.println("    2. Fiction");
-                                    System.out.println("    3. Fantasy");
-                                    System.out.println("    4. Back");
-
-                                    System.out.print("\n>>> Choose option > ");
-                                    option = EntryUtils.llegirInt(scanner, null);
-                                    switch (themeListOption) {
-                                        case 1:
-                                            try {
-                                                List<Room> terrorRooms = roomDao.getRoomByTheme(EnumConstants.ROOM_THEME.TERROR);
-                                                terrorRooms.forEach(Room::printBasicInfoValues);
-                                            } catch (SQLException | ClassNotFoundException e) {
-                                                System.out.println("error(e)");
-                                            }
-                                            break;
-                                        case 2:
-                                            try {
-                                                List<Room> fictionRooms = roomDao.getRoomByTheme(EnumConstants.ROOM_THEME.FICTION);
-                                                fictionRooms.forEach(Room::printBasicInfoValues);
-                                            } catch (SQLException | ClassNotFoundException e) {
-                                                System.out.println("error(e)");
-                                            }
-                                            break;
-                                        case 3:
-                                            try {
-                                                List<Room> fantasyRooms = roomDao.getRoomByTheme(EnumConstants.ROOM_THEME.FANTASY);
-                                                fantasyRooms.forEach(Room::printBasicInfoValues);
-                                            } catch (SQLException | ClassNotFoundException e) {
-                                                System.out.println("error(e)");
-                                            }
-                                            break;
-                                        case 4:
-                                            break;
-                                        default:
-                                            System.out.println(">>> Wrong option.");
-                                    }
-                                } while (true);
-
+                                RoomByThemeForm roomByThemeForm = new RoomByThemeForm();
+                                try {
+                                    roomByThemeForm.menuRoomByTheme(scanner);
+                                } catch (SQLException | ClassNotFoundException e) {
+                                    System.out.println("error(e)");
+                                }
                             case 3:
                                 try {
                                     roomDao.printRoomsByLevel();
@@ -127,16 +89,11 @@ public class RoomForm {
 
                 case 3:
                     try {
-                        Optional<Room> roomOpt = roomDao.getRoomById(EntryUtils.readStringLikeLong(scanner,
-                                "Type the room to delete id : ", false));
-                        if (roomOpt.isPresent()) {
-                            System.out.println("\n");
-                            roomOpt.get().printBasicInfoValues();
-                            if (EntryUtils.readYesNo(scanner, "\nDelete this room (y/n)? ")) {
-                                if (roomDao.deleteById(roomOpt.get().getRoomId())) {
-                                    System.out.println("\n>>> Room deleted.");
-                                }
-                            }
+                        Long roomId = Long.valueOf(EntryUtils.llegirInt(scanner, "Type the room id: "));
+                        if (roomDao.deleteRoomById(roomId)) {
+                            System.out.println("Room deleted successfully.");
+                        } else {
+                            System.out.println("Error deleting room.");
                         }
                     } catch (SQLException | ClassNotFoundException e) {
                         log.error(e);
@@ -147,7 +104,7 @@ public class RoomForm {
                 default:
                     System.out.println("Wrong option.");
             }
-        } while (option != 3);
+        } while (true);
     }
 
     private Room newRoomForm(Scanner scanner) {

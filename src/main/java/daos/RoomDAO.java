@@ -4,6 +4,7 @@ import entities.Room;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utils.EnumConstants;
+import utils.EnumConstants.ROOM_THEME;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -56,12 +57,15 @@ public class RoomDAO extends GenericDAO {
             return getRoomBy(roomName, "room_name", false);
         }
 
-    public List<Room> getRoomByTheme() throws ClassNotFoundException, SQLException {
-        String sqlSelectAllRoomsByTheme = "SELECT * FROM " + TABLE_NAME + " WHERE room_theme = ?";
+    public List<Room> getRoomByTheme(ROOM_THEME theme) throws ClassNotFoundException, SQLException {
+        String sqlSelectRoomsByTheme = "SELECT * FROM " + TABLE_NAME + " WHERE room_theme = ?";
         List<Room> roomsListByTheme = new ArrayList<>();
+
         try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(sqlSelectAllRoomsByTheme);
-             ResultSet rs = ps.executeQuery()) {
+             PreparedStatement ps = conn.prepareStatement(sqlSelectRoomsByTheme)) {
+            ps.setString(1, theme.toString());
+            ResultSet rs = ps.executeQuery();
+
             while (rs.next()) {
                 roomsListByTheme.add(resultSetToRoomObject(rs));
             }
@@ -69,6 +73,51 @@ public class RoomDAO extends GenericDAO {
             log.error(e);
         }
         return roomsListByTheme;
+    }
+
+    public List<Room> getRoomByThemeTerror(ROOM_THEME TERROR) throws ClassNotFoundException, SQLException {
+        String sqlSelectRoomsByThemeTerror = "SELECT * FROM " + TABLE_NAME + " WHERE room_theme = Terror";
+        List<Room> roomsListByThemeTerror = new ArrayList<>();
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sqlSelectRoomsByThemeTerror);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                roomsListByThemeTerror.add(resultSetToRoomObject(rs));
+            }
+        } catch (SQLException e) {
+            log.error(e);
+        }
+        return roomsListByThemeTerror;
+    }
+
+    public List<Room> getRoomByThemeFiction (ROOM_THEME FICTION) throws ClassNotFoundException, SQLException {
+        String sqlSelectRoomsByThemeFiction = "SELECT * FROM " + TABLE_NAME + " WHERE room_theme = Fiction";
+        List<Room> roomsListByThemeFiction = new ArrayList<>();
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sqlSelectRoomsByThemeFiction);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                roomsListByThemeFiction.add(resultSetToRoomObject(rs));
+            }
+        } catch (SQLException e) {
+            log.error(e);
+        }
+        return roomsListByThemeFiction;
+    }
+
+    public List<Room> getRoomByThemeFantasy(ROOM_THEME FANTASY) throws ClassNotFoundException, SQLException {
+        String sqlSelectRoomsByThemeFantasy = "SELECT * FROM " + TABLE_NAME + " WHERE room_theme = Fantasy";
+        List<Room> roomsListByThemeFantasy = new ArrayList<>();
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sqlSelectRoomsByThemeFantasy);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                roomsListByThemeFantasy.add(resultSetToRoomObject(rs));
+            }
+        } catch (SQLException e) {
+            log.error(e);
+        }
+        return roomsListByThemeFantasy;
     }
 
     public List<Room> getRoomByLevel() throws ClassNotFoundException, SQLException {
@@ -139,9 +188,19 @@ public class RoomDAO extends GenericDAO {
             getAllRooms().forEach(Room::printBasicInfoValues);
         }
 
-        public void printRoomsByTheme() throws ClassNotFoundException, SQLException {
-            System.out.println("Room list by theme ___________ ");
-            getRoomByTheme().forEach(Room::printBasicInfoValues);
+        public void printRoomsByThemeTerror() throws ClassNotFoundException, SQLException {
+        System.out.println("Terror Room list ___________ ");
+        getRoomByTheme(ROOM_THEME.TERROR).forEach(Room::printBasicInfoValues);
+        }
+
+        public void printRoomsByThemeFiction() throws ClassNotFoundException, SQLException {
+        System.out.println("Fiction Room list ___________ ");
+        getRoomByTheme(ROOM_THEME.FICTION).forEach(Room::printBasicInfoValues);
+        }
+
+        public void printRoomsByThemeFantasy() throws ClassNotFoundException, SQLException {
+        System.out.println("Fantasy Room list ___________ ");
+        getRoomByTheme(ROOM_THEME.FANTASY).forEach(Room::printBasicInfoValues);
         }
 
         public void printRoomsByLevel() throws ClassNotFoundException, SQLException {
@@ -154,7 +213,7 @@ public class RoomDAO extends GenericDAO {
             room.setRoomId(rs.getLong("room_id"));
             room.setRoomName(rs.getString("room_name"));
             String themeValue = rs.getString("room_theme").toUpperCase();
-            room.setRoomTheme(EnumConstants.ROOM_THEME.valueOf(themeValue));
+            room.setRoomTheme(ROOM_THEME.valueOf(themeValue));
             String roomLevel = rs.getString("room_level").toUpperCase();
             room.setRoomLevel(EnumConstants.GAME_LEVEL.valueOf(roomLevel));
             String statusValue = rs.getString("room_status").replace(" ", "_").toUpperCase();
