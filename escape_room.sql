@@ -12,20 +12,20 @@ CREATE TABLE `clues` (
   `clue_title` varchar(100) NOT NULL,
   `clue_description_user` varchar(300) NOT NULL,
   `clue_description_admin` varchar(300) NOT NULL,
-  `clue_theme` enum('Terror','Fiction','Fantasy'),
-  `clue_level` enum('Easy','Intermediate','Hard'),
+  `clue_theme` varchar(50) NOT NULL,
+  `clue_level` varchar(50) NOT NULL,
   `clue_game_phase` varchar(100),
   `clue_date_reg` timestamp NOT NULL DEFAULT current_timestamp(),
   `clue_date_modify` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
-  `clue_price` int(11) DEFAULT NULL,
-  `clue_value` int(11) DEFAULT NULL
+  `clue_price` decimal(5,2) DEFAULT 0.0,
+  `clue_value` decimal(5,2) DEFAULT 0.0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `decoration_items` (
   `decoration_item_id` int(11) NOT NULL,
   `decoration_item_name` varchar(20) NOT NULL,
   `decoration_item_description` varchar(200) NOT NULL,
-  `decoration_item_theme` enum('Terror','Fiction','Fantasy'),
+  `decoration_item_theme` varchar(50) NOT NULL,
   `decoration_item_price` double,
   `decoration_item_clue_valor` int(11) DEFAULT NULL,
   `decoration_item_img` varchar(100) DEFAULT NULL,
@@ -44,7 +44,7 @@ CREATE TABLE `game_sessions` (
 
 CREATE TABLE `payments` (
   `payment_id` int(11) NOT NULL,
-  `payment_mode` enum('Credit card','Bizum','PayPal') DEFAULT NULL,
+  `payment_mode`  varchar(50) DEFAULT NULL,
   `payment_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `payment_price` int(11) DEFAULT NULL,
   `user_id` int(11) NOT NULL
@@ -65,9 +65,9 @@ CREATE TABLE `relation_user_game` (
 CREATE TABLE `rooms` (
   `room_id` int(11) NOT NULL,
   `room_name` varchar(100) NOT NULL,
-  `room_theme` enum('Terror','Fiction','Fantasy'),
-  `room_level` enum('Easy','Intermediate','Hard'),
-  `room_status` enum('Available','Not available'),
+  `room_theme` varchar(50) NOT NULL,
+  `room_level` varchar(50) NOT NULL,
+  `room_status` varchar(50) NOT NULL,
   `room_max_players` int(11) NOT NULL,
   `room_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -88,7 +88,7 @@ CREATE TABLE `notifications_user` (
 	`notification_user_id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	`notification_id` int(11) NOT NULL,
 	`user_id` int(11),
-	`notification_register_status` enum('Sended','Pending','Canceled') DEFAULT NULL,
+	`notification_register_status` varchar(50) DEFAULT NULL,
 	`notification_register_date_reg` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
 	`notification_register_date_modify` TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -97,7 +97,7 @@ CREATE TABLE `notifications_game` (
 	`notification_register_id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	`notification_id` int(11) NOT NULL,
 	`game_id` int(11),
-	`notification_register_status` enum('Sended','Pending','Canceled') DEFAULT NULL,
+	`notification_register_status` varchar(50) DEFAULT NULL,
 	`notification_register_date_reg` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
 	`notification_register_date_modify` TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -111,8 +111,8 @@ CREATE TABLE `relation_clue_room` (
 CREATE TABLE `generic_notifications_register` (
 	`notification_register_id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	`notification_id` int(11) NOT NULL,
-	`notification_register_level` enum('Informative ','Important ','Critical ') DEFAULT NULL,
-	`notification_register_status` enum('Sended','Pending','Canceled') DEFAULT NULL,
+	`notification_register_level` varchar(50) DEFAULT NULL,
+	`notification_register_status` varchar(50) DEFAULT NULL,
 	`notification_register_date_reg` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
 	`notification_register_date_modify` TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
