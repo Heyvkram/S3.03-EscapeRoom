@@ -48,6 +48,12 @@ public class ClueDAO extends GenericDAO {
         return getClueBy(theme, "clue_theme", true);
     }
 
+//        public void printCluesByTheme () throws ClassNotFoundException, SQLException {
+//            System.out.println("Clues list by theme ____________________");
+//            getClueByTheme().forEach(Clues::printBasicInfoValues);
+//        }
+//
+
     public Optional<Clues> getClueById(Long id, boolean isMandatory) throws SQLException, ClassNotFoundException {
         return getClueBy(id, "clue_id", isMandatory);
     }

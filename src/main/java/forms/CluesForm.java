@@ -64,17 +64,6 @@ public class CluesForm {
 
                     break;
 
-//                public Optional<Clues> getClueByTheme(String theme) throws SQLException, ClassNotFoundException {
-//                    String sql = "SELECT * FROM clues WHERE clue_theme = ?";
-//                    try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-//                        ps.setString(1, theme);
-//                        try (ResultSet rs = ps.executeQuery()) {
-//                            if (rs.next()) {
-//                                return Optional.of(resultSetToCluesObject(rs));
-//                            }
-//                        }
-//                    }
-//                    return Optional.empty();
                 case 4:
                     try {
                         clueDao.deleteById(llegirInt(scanner, "Type the user id: ", false));
