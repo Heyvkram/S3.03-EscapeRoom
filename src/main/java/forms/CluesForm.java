@@ -66,7 +66,7 @@ public class CluesForm {
 
                 case 4:
                     try {
-                        clueDao.deleteById(llegirInt(scanner, "Type the user id: ", false));
+                        clueDao.deleteById(Long.valueOf(llegirInt(scanner, "Type the user id: ", false)));
                     } catch (SQLException | ClassNotFoundException e) {
                         log.error(e);
                     }
@@ -123,10 +123,10 @@ public class CluesForm {
 //        llegirDate(scanner, ", new value: > ", true);
 
         System.out.print("\n*Price: " + clue.getPrice());
-        llegirDouble(scanner, ", new value: > ", true);
+        llegirDouble(scanner, ", new value: > ");
 
         System.out.print("\n*Value: " + clue.getValue());
-        llegirDouble(scanner, ", new value: > ", true);
+        llegirDouble(scanner, ", new value: > ");
 
     }
 
