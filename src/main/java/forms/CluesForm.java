@@ -3,6 +3,7 @@ package forms;
 import daos.ClueDAO;
 import entities.Clues;
 import utils.EntryUtils;
+import utils.EnumConstants;
 
 import java.sql.SQLException;
 import java.util.Optional;
@@ -87,6 +88,10 @@ public class CluesForm {
         clue.setTitle(llegirString(scanner, "*Title: ", false));
         clue.setDescriptionUser(llegirString(scanner, "*User description: ", false));
         // clue.setDescriptionAdmin(llegirString(scanner, "Admin description: ", false));
+        System.out.println("Choose option : " + EnumConstants.ROOM_THEME.getMenuOptions());
+        int xx=EntryUtils.llegirInt(scanner, "*Type: ", false, EnumConstants.ROOM_THEME.getNumberMaxLevelValue());
+        clue.setTheme(EnumConstants.ROOM_THEME.getDescriptionFromLevelCode(xx));
+        scanner.nextLine();
         //clue.setTheme(EntryUtils.llegirString(scanner, "Theme: ", false));
         //clue.setLevel(llegirInt(scanner, "Level: ", false));
         clue.setGamePhase(llegirString(scanner, "Game phase: ", false));
