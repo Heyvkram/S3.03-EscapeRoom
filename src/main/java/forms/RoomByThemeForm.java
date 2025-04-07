@@ -29,8 +29,8 @@ public class RoomByThemeForm {
             System.out.println("    4. Back");
 
             System.out.print("\n>>> Choose option > ");
-            int themeOption = EntryUtils.llegirInt(scanner, null);
-            EnumConstants.ROOM_THEME theme = getThemeFromOption(themeOption);
+            themeListOption = EntryUtils.llegirInt(scanner, null);
+            EnumConstants.ROOM_THEME theme = getThemeFromOption(themeListOption);
 
             if (theme != null) {
                 try {

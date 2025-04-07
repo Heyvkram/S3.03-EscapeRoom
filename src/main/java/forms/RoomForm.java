@@ -68,24 +68,26 @@ public class RoomForm {
                                 }
                                 break;
                             case 2:
-                                RoomByThemeForm roomByThemeForm = new RoomByThemeForm();
                                 try {
+                                    RoomByThemeForm roomByThemeForm = new RoomByThemeForm();
                                     roomByThemeForm.menuRoomByTheme(scanner);
                                 } catch (SQLException | ClassNotFoundException e) {
                                     System.out.println("error(e)");
                                 }
+                                break;
                             case 3:
                                 try {
                                     roomDao.printRoomsByLevel();
                                 } catch (SQLException | ClassNotFoundException e) {
                                     System.out.println("error(e)");
                                 }
+                                break;
                             case 4:
                                 break;
                             default:
                                 System.out.println(">>> Wrong option.");
                         }
-                    } while (true);
+                    } while (option != 4);
 
                 case 3:
                     try {
