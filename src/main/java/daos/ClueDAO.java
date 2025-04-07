@@ -40,8 +40,12 @@ public class ClueDAO extends GenericDAO {
         }
     }
 
-    public Optional<Clues> getClueByTitle(String title, boolean isMandatory) throws SQLException, ClassNotFoundException {
-        return getClueBy(title, "clue_title", isMandatory);
+    public Optional<Clues> getClueByTitle(String title) throws SQLException, ClassNotFoundException {
+        return getClueBy(title, "clue_title", false);
+    }
+
+    public Optional<Clues> getClueByTheme(String theme) throws SQLException, ClassNotFoundException {
+        return getClueBy(theme, "clue_theme", true);
     }
 
     public Optional<Clues> getClueById(Long id, boolean isMandatory) throws SQLException, ClassNotFoundException {

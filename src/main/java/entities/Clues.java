@@ -11,7 +11,7 @@ public class Clues {
     private String title;
     private String descriptionUser;
     private String descriptionAdmin;
-    private Theme theme; //ver si utilizamos el mismo enum con Mark
+    private String theme;
     private String level;
     private String gamePhase;
     private LocalDate clue_date_reg;
@@ -20,6 +20,6 @@ public class Clues {
     private double value;
 
     public void printBasicInfoValues() {
-        System.out.println("Clues list:  " + getId() + " " + getTitle() + " " + getLevel());
+        System.out.println("Clues list:  " + getId() + " " + getTitle() + " " + getLevel() + getTheme());
     }
 }

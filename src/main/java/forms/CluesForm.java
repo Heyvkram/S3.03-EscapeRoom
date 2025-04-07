@@ -23,7 +23,7 @@ public class CluesForm {
             System.out.println("-----------------------------------------");
             System.out.println("    1. New clue");
             System.out.println("    2. List clues");
-            System.out.println("    3. Edit clue");
+            System.out.println("    3. Find clue by theme");
             System.out.println("    4. Delete clue");
             System.out.println("    5. Back");
 
@@ -41,16 +41,6 @@ public class CluesForm {
                         }
                     }
 
-//                    try {
-//                        for (Clues x : clueDao.getAllClues()) {
-//                            x.printBasicInfoValues();
-//                        }
-//                    } catch (ClassNotFoundException | SQLException e) {
-//                        throw new RuntimeException(e);
-//                    }
-//
-//                    //Hacer lambda para que imprima
-
                     break;
                 case 2:
                     try {
@@ -61,19 +51,30 @@ public class CluesForm {
                     break;
                 case 3:
                     try {
-                        Optional<Clues> clueOpt = clueDao.getClueById( EntryUtils.llegirLong(scanner, "Type clue id: ") , true);
+                        Optional<Clues> clueOpt = clueDao.getClueByTheme(EntryUtils.llegirString(scanner, "Type clue theme: ", true));
                         scanner.nextLine();
                         if (clueOpt.isPresent()) {
                             clueOpt.get().printBasicInfoValues();
-                            editCluesForm(clueOpt.get(), scanner);
                         } else {
-                            System.out.println("No clue found with this ID");
+                            System.out.println("No clue found with this theme");
                         }
                     } catch (SQLException | ClassNotFoundException e) {
                         log.error(e);
                     }
 
                     break;
+
+//                public Optional<Clues> getClueByTheme(String theme) throws SQLException, ClassNotFoundException {
+//                    String sql = "SELECT * FROM clues WHERE clue_theme = ?";
+//                    try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+//                        ps.setString(1, theme);
+//                        try (ResultSet rs = ps.executeQuery()) {
+//                            if (rs.next()) {
+//                                return Optional.of(resultSetToCluesObject(rs));
+//                            }
+//                        }
+//                    }
+//                    return Optional.empty();
                 case 4:
                     try {
                         clueDao.deleteById(llegirInt(scanner, "Type the user id: ", false));
@@ -96,14 +97,14 @@ public class CluesForm {
         Clues clue = new Clues();
         clue.setTitle(llegirString(scanner, "*Title: ", false));
         clue.setDescriptionUser(llegirString(scanner, "*User description: ", false));
-        clue.setDescriptionAdmin(llegirString(scanner, "Admin description: ", false));
+       // clue.setDescriptionAdmin(llegirString(scanner, "Admin description: ", false));
         //clue.setTheme(EntryUtils.llegirString(scanner, "Theme: ", false));
         //clue.setLevel(llegirInt(scanner, "Level: ", false));
         clue.setGamePhase(llegirString(scanner, "Game phase: ", false));
-        scanner.nextLine();
+//        scanner.nextLine();
         // clue.setDate(EntryUtils.llegirDate(scanner, "Date: ", false));
-        clue.setPrice(llegirDouble(scanner, "Price: ", false));
-        clue.setValue(llegirDouble(scanner, "Value: ", false));
+//        clue.setPrice(llegirDouble(scanner, "Price: ", false));
+//        clue.setValue(llegirDouble(scanner, "Value: ", false));
 
         return clue;
     }

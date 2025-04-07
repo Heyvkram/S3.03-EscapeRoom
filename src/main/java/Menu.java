@@ -54,7 +54,7 @@ public class Menu {
             System.out.println("-----------------------------------------");
             System.out.println("    1. New clue");
             System.out.println("    2. List clues");
-            System.out.println("    3. Edit clue");
+            System.out.println("    3. Find clue by theme");
             System.out.println("    4. Delete clue");
             System.out.println("    5. Back");
 
@@ -76,7 +76,14 @@ public class Menu {
                     }
                     break;
                 case 3:
-                    // ObjectDAO.metode2(scanner);
+                    ClueDAO va = new ClueDAO();
+                    try {
+                        va.getClueByTheme("");
+                    } catch (ClassNotFoundException e) {
+                        throw new RuntimeException(e);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
                     break;
                 case 4:
                     // ObjectDAO.metode3(scanner);
