@@ -63,21 +63,21 @@ public class ClueDAO extends GenericDAO {
         String resultMsg = "Clue updated";
         String sqlStr = "UPDATE clues SET clue_id = ?, clue_title = ?,  clue_description_user = ?, clue_description_admin = ?, clue_theme = ?, clue_level = ?, clue_game_phase = ?, clue_date = ?, clue_price = ?, clue_value = ?";
         if (clue.getId() == null) {
-            sqlStr = "INSERT INTO clues (clue_id, clue_title, clue_description_user, clue_description_admin, clue_theme, clue_level, clue_game_phase, clue_date_reg, clue_price, clue_value" + "VALUES (?, ?, ?, ?, ?)";
+            sqlStr = "INSERT INTO clues (clue_title, clue_description_user, clue_description_admin, clue_theme, clue_level, clue_game_phase, clue_date_reg, clue_price, clue_value" + "VALUES (?, ?, ?, ?, ?)";
             resultMsg = "\nClue inserted";
         }
 
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sqlStr)) {
             ps.setString(1, clue.getTitle());
-            ps.setLong(2, clue.getId());
-            ps.setDouble(3, clue.getPrice());
-            ps.setString(4, clue.getLevel());
-            ps.setString(5, clue.getDescriptionAdmin());
-            ps.setString(6, clue.getDescriptionUser());
+            ps.setString(2, clue.getDescriptionUser());
+            ps.setString(3, clue.getDescriptionAdmin());
+            ps.setObject(4, clue.getTheme());  //El Theme quedará así????
+            ps.setString(5, clue.getLevel());
+            ps.setString(6, clue.getGamePhase());
             // ps.setDate(7, clue.getDateReg());
-            ps.setString(8, clue.getGamePhase());
+            ps.setDouble(8, clue.getPrice());
             ps.setDouble(9, clue.getValue());
-            ps.setObject(10, clue.getTheme());  //El Theme quedará así????
+
 
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0) {
@@ -140,4 +140,13 @@ public class ClueDAO extends GenericDAO {
         }
     }
 
+    @Override
+    String getTableName() {
+        return TABLE_NAME;
+    }
+
+    @Override
+    String getIdFieldName() {
+        return "";
+    }
 }
