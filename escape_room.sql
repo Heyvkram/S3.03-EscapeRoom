@@ -39,7 +39,7 @@ CREATE TABLE `game_sessions` (
   `room_id` int(11) NOT NULL,
   `payment_id` int(11) NOT NULL,
     `user_id` int(11) NOT NULL,
-  `accepted` varchar(1)
+  `accepted` TINYINT(1)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `payments` (

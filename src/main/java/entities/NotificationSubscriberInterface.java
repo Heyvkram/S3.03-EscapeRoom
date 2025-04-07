@@ -1,5 +1,5 @@
 package entities;
 
 public interface NotificationSubscriberInterface {
-    public String getNotifiable();
+    public String readNotification();
 }

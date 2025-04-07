@@ -1,12 +1,14 @@
 import java.sql.*;
 import java.util.Scanner;
 
+import entities.GameSession;
+import entities.NotificationSenderInterface;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utils.PublisherAgent;
 
 public class Main {
-    private static final String CABECERA_APP = "\n" +
-            "\n***************************"
+    private static final String HEAD_TITLE= "\n***************************"
             + "\n  VIRTUAL ESCAPE ROOM APP"
             + "\n       Admin menu \n"
             + "***************************\n";
@@ -22,9 +24,8 @@ public class Main {
             log.fatal("fatal message", "Errors crítics que poden fer que l'aplicació falli");
         */
         Scanner scanner = new Scanner(System.in);
-        System.out.println(CABECERA_APP);
+        System.out.println(HEAD_TITLE);
         Menu.principalMenu(scanner);
         scanner.close();
-
     }
 }

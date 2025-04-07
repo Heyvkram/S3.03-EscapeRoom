@@ -6,7 +6,7 @@ INSERT INTO `users` (
 ) VALUES (
     1, 'johndoe', 'John', 'Doe', '12345678A',
     'Main Street', 123, '3rd', 'A',
-    'New York', '10001', 'USA', '+15551234567', 'john.doe@example.com', 'y'
+    'New York', '10001', 'USA', '+15551234567', 'john.doe@example.com', 1
 );
 
 INSERT INTO `users` (
@@ -16,7 +16,7 @@ INSERT INTO `users` (
 ) VALUES (
     2, 'janeSmith', 'Jane', 'Smith', '87654321B',
     'Oak Avenue', 45, '2nd', 'B',
-    'London', 'SW1A 2AA', 'UK', '+442079460991', 'jane.smith@example.co.uk', 'y'
+    'London', 'SW1A 2AA', 'UK', '+442079460991', 'jane.smith@example.co.uk', 1
 );
 
 INSERT INTO `users` (
@@ -42,7 +42,7 @@ INSERT INTO `users` (
 INSERT INTO `users` (
     `user_id`, `user_nick_name`, `user_name`, `user_surname`, `user_idCard`,
     `user_address_street`, `user_address_number`, `user_address_floor`, `user_address_door`,
-    `user_city`, `user_zip_code`, `user_country`, `user_phone`, `user_mail`
+    `user_city`, `user_zip_code`, `user_country`, `user_phone`, `user_mail`, 1
 ) VALUES (
     5, 'marieL', 'Marie', 'Laurent', 'Y1234567E',
     'Rue de la Paix', 22, '5ème', 'E',
@@ -100,3 +100,25 @@ INSERT INTO `users` (`user_nick_name`, `user_name`, `user_surname`, `user_mail`,
 ('emily_clark', 'Emily', 'Clark', 'emily.clarkkk@example.com', '87654321D', 'Avinguda Diagonal', 60, '7', NULL, 'Lleida', '25003', 'Espanya', '+34 973445566', NULL),
 ('kevin_hall', 'Kevin', 'Hall', 'kevin.hallfff@example.com', '65432178E', 'Passeig de Gràcia', 100, NULL, NULL, 'Sabadell', '08201', 'Espanya', '+34 678901234', 'Y'),
 ('olivia_adams', 'Olivia', 'Adams', 'olivia.adamsffff@example.com', '13579246F', 'Gran Via', 75, '1', 'B', 'Terrassa', '08221', 'Espanya', '+34 937890123', 'N');
+
+
+INSERT INTO `rooms` (`room_id`, `room_name`, `room_theme`, `room_level`, `room_status`, `room_max_players`, `room_date`) VALUES
+(101, 'La Mansió Embruixada', 'Terror', 'Intermediate', 'Available', 6, NOW()),
+(102, 'El Laboratori Secret', 'Fiction', 'Hard', 'Not available', 4, NOW()),
+(103, 'El Bosc Màgic', 'Fantasy', 'Easy', 'Available', 8, NOW()),
+(104, 'La Nau Estelar Perduda', 'Fiction', 'Intermediate', 'Available', 5, NOW()),
+(105, 'El Castell del Drac', 'Fantasy', 'Hard', 'Not available', 3, NOW());
+
+INSERT INTO `game_sessions` (`game_id`, `room_id`, `payment_id`, `user_id`, `accepted`) VALUES
+(1, 101, 501, 1001, 1),
+(2, 102, 502, 1002, 0),
+(3, 101, 503, 1003, 1),
+(4, 103, 504, 1004, 1),
+(5, 102, 505, 1005, 0);
+
+
+
+
+
+
+
