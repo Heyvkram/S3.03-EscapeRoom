@@ -1,5 +1,6 @@
 import forms.DecorationItemsForm;
 import forms.NotificationForm;
+import forms.RoomForm;
 import forms.UserForm;
 import utils.EntryUtils;
 
@@ -35,6 +36,8 @@ public class Menu {
                 case 3:
                     break;
                 case 4:
+                    RoomForm roomForm = new RoomForm();
+                    roomForm.menuRoom(scanner);
                     break;
                 case 5:
                     NotificationForm notificationForm = new NotificationForm();

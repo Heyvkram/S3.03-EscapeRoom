@@ -28,8 +28,4 @@ public class User implements NotificationSubscriberInterface {
         System.out.printf("     %-5d %-25s ,%-25s | Email: %-30s  Nickname: %-25s%n", getId(), getSurname(), getName(), getMail(), getNickName());
     }
 
-    @Override
-    public String readNotification() {
-        return getNotifiable();
-    }
 }

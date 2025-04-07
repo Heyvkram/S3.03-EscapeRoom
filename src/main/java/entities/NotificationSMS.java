@@ -61,5 +61,3 @@ public class NotificationSMS extends NotificationGeneric{
 
 
 }
-
-

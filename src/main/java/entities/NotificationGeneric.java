@@ -52,5 +52,3 @@ public class NotificationGeneric implements NotificationInterface {
         return true;
     }
 }
-
-

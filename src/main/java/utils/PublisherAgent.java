@@ -2,30 +2,15 @@ package utils;
 
 import daos.NotificationDAO;
 import daos.UserDAO;
-import entities.*;
+import entities.NotificationInterface;
+import entities.User;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 
-public class PublisherAgent implements NotificationSenderInterface {
+public class PublisherAgent {
 
-    public static final boolean NOTIFICATION_TYPE_ACCEPTED = true;
-    public static final boolean NOTIFICATION_TYPE_REJECTED_OR_OTHER = false;
-
-    public boolean sendNotificationToSubscribers(Long notificationId) {
-        NotificationDAO notifDao = new NotificationDAO();
-        Optional<NotificationSMS> notifOpt = null;
-        try {
-            notifOpt = notifDao.getNotificationById(notificationId);
-        } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        return sendNotificationToSubscribers(notifOpt.get());
-    }
-
-    public boolean sendNotificationToSubscribers(NotificationInterface notification) {
+    public static boolean sendNotificationToSubscribers(NotificationInterface notification) {
         UserDAO userDao = new UserDAO();
 
         List<User> userList = null;
@@ -37,20 +22,10 @@ public class PublisherAgent implements NotificationSenderInterface {
         if (!userList.isEmpty()) {
             NotificationDAO notifDao = new NotificationDAO();
             notifDao.publishNotification(notification, userList);
-        } else {
+        }else{
             System.out.println(">>> There are no subscribers.");
         }
         return true;
-    }
-
-    @Override
-    public void sendNotificationToSessionSubscribers(Long sessionId, boolean message) {
-
-        // LoadSession
-        // Get users email
-        // send notification to session users
-
-        System.out.println("sessionId: " + sessionId +" message:" + sessionId);
     }
 
 }

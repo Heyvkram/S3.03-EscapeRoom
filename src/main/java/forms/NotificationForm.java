@@ -81,8 +81,7 @@ public class NotificationForm {
                             System.out.println("\n");
                             notifOpt.get().printBasicInfoValues();
                             if(EntryUtils.readYesNo(scanner, "\nSend this notification to subscribers (y/n)? ")){
-                                PublisherAgent publisherAgent = new PublisherAgent();
-                                if(publisherAgent.sendNotificationToSubscribers(notifOpt.get())){
+                                if(PublisherAgent.sendNotificationToSubscribers(notifOpt.get())){
                                     System.out.println("\n>>> Notification sended.");
                                 }
                             }
@@ -149,8 +148,7 @@ public class NotificationForm {
             Optional<User> userOpt = userDao.getUserById(EntryUtils.readStringLikeLong(scanner, "Type the user id: ", true));
         }
         if((EnumConstants.NOTIFICATIONS_TYPE.GENERAL.getDescription().equals(notif.getType())) && (EntryUtils.readYesNo(scanner, "\nPublish this notification now (y/n)? "))){
-            PublisherAgent publisherAgent = new PublisherAgent();
-            publisherAgent.sendNotificationToSubscribers(notif);
+            PublisherAgent.sendNotificationToSubscribers(notif);
         }
 
         if(!EntryUtils.readYesNo(scanner, "\nSave this notification as a template (y/n)? ")){
