@@ -8,8 +8,6 @@ public interface RoomThemeInterface {
 
     void setTheme(EnumConstants.ROOM_THEME theme);
 
-
-
     String getDescription();
     void enterRoom();
 }

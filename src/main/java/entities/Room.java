@@ -20,7 +20,7 @@ public class Room {
     }
 
     public void printBasicInfoValues() {
-        System.out.printf("     %-5d %-30s  |  Title: %-20s  |  Level: %-20s  |  Status: %-20s  |  Max Players: %-10d  |  Date: %-10s%n",
+        System.out.printf("     %-5d %-30s  |  Title: %-30s  |  Level: %-15s  |  Status: %-15s  |  Max Players: %-10d  |  Date: %-10s%n",
                 getRoomId(), getRoomName(), getRoomTheme(), getRoomLevel(), getRoomStatus(), getRoomMaxPlayers(), getRoomDate());
     }
 }

@@ -48,12 +48,44 @@ public class RoomDAO extends GenericDAO {
             }
         }
     }
-        public Optional<Room> getRoomById(Long roomId) throws SQLException, ClassNotFoundException {
+    public Optional<Room> getRoomById(Long roomId) throws SQLException, ClassNotFoundException {
         return getRoomBy(roomId, "room_id", false);
         }
-        public Optional<Room> getRoomByName(String roomName) throws SQLException, ClassNotFoundException {
+
+    public Optional<Room> getRoomByName(String roomName) throws SQLException, ClassNotFoundException {
             return getRoomBy(roomName, "room_name", false);
         }
+
+    public List<Room> getRoomByTheme() throws ClassNotFoundException, SQLException {
+        String sqlSelectAllRoomsByTheme = "SELECT * FROM " + TABLE_NAME + " WHERE room_theme = ?";
+        List<Room> roomsListByTheme = new ArrayList<>();
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sqlSelectAllRoomsByTheme);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                roomsListByTheme.add(resultSetToRoomObject(rs));
+            }
+        } catch (SQLException e) {
+            log.error(e);
+        }
+        return roomsListByTheme;
+    }
+
+    public List<Room> getRoomByLevel() throws ClassNotFoundException, SQLException {
+        String sqlSelectAllRoomsByLevel = "SELECT * FROM " + TABLE_NAME + " WHERE room_level = ?";
+        List<Room> roomsListByLevel = new ArrayList<>();
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sqlSelectAllRoomsByLevel);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                roomsListByLevel.add(resultSetToRoomObject(rs));
+            }
+        } catch (SQLException e) {
+            log.error(e);
+        }
+        return roomsListByLevel;
+    }
+
 
         public boolean saveOrUpdateRoom(Room room) {
             if (room == null) return false;
@@ -72,7 +104,7 @@ public class RoomDAO extends GenericDAO {
                 ps.setString(4, String.valueOf(room.getRoomLevel()));
                 ps.setString(5, String.valueOf(room.getRoomStatus()));
                 ps.setInt(6, room.getRoomMaxPlayers());
-                //ps.setDate(5, room.getRoomDate());       //ES UNA FECHA
+                //ps.setDate(7, room.getRoomDate());       //ES UNA FECHA
 
                 int rowsAffected = ps.executeUpdate();
                 if (rowsAffected > 0) {
@@ -103,8 +135,18 @@ public class RoomDAO extends GenericDAO {
         }
 
         public void printAllRooms() throws ClassNotFoundException, SQLException {
-            System.out.println("Rooms list ____________________");
+            System.out.println("Room list ____________________");
             getAllRooms().forEach(Room::printBasicInfoValues);
+        }
+
+        public void printRoomsByTheme() throws ClassNotFoundException, SQLException {
+            System.out.println("Room list by theme ___________ ");
+            getRoomByTheme().forEach(Room::printBasicInfoValues);
+        }
+
+        public void printRoomsByLevel() throws ClassNotFoundException, SQLException {
+            System.out.println("Room list by difficulty ________");
+            getRoomByLevel().forEach(Room::printBasicInfoValues);
         }
 
         public Room resultSetToRoomObject (ResultSet rs) throws SQLException {
