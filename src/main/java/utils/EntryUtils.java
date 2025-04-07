@@ -242,7 +242,7 @@ public class EntryUtils {
                     throw new ConsoleEntryException("   Error: Type 'y' o 'n'.");
                 }
             } catch (ConsoleEntryException e) {
-               log.info(e.getMessage());
+                log.info(e.getMessage());
             }
         }while(retorn==null);
 
@@ -284,4 +284,3 @@ public class EntryUtils {
 
 
 }
-
