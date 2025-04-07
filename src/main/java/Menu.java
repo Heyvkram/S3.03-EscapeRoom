@@ -1,3 +1,5 @@
+import daos.ClueDAO;
+import forms.CluesForm;
 import forms.DecorationItemsForm;
 import forms.NotificationForm;
 import forms.RoomForm;
@@ -34,6 +36,7 @@ public class Menu {
                     userForm.menuUser(scanner);
                     break;
                 case 3:
+                    CluesForm.menuClues(scanner);
                     break;
                 case 4:
                     RoomForm roomForm = new RoomForm();

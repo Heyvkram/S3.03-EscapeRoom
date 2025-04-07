@@ -119,8 +119,9 @@ public class EntryUtils {
     }
 
     public static Integer llegirInt(Scanner scanner, String missatge) {
-        return llegirInt( scanner, missatge, true);
+        return llegirInt(scanner, missatge, true);
     }
+
     public static Integer llegirInt(Scanner scanner, String missatge, Boolean isNullable) {
         return llegirInt(scanner, missatge, isNullable, null);
     }
@@ -149,7 +150,7 @@ public class EntryUtils {
                         entradaValida = true;
                     }
                 } else {
-                    System.out.println("    Error: Please enter a number.");
+                    System.out.println("    Error: Si us plau, introdueix un número.");
                     scanner.nextLine();
                 }
 
@@ -159,12 +160,13 @@ public class EntryUtils {
                 }
 
             } catch (InputMismatchException ee) {
-                System.out.println("    Error: Please enter a number.");
+                System.out.println("    Error: Si us plau, introdueix un número.");
                 scanner.nextLine();
             }
 
-            if ((resultatInt == null && !isNullable)) {
-                System.out.println("    Error: Please enter a number.");
+            if (resultatInt == null && !isNullable && entradaValida) {
+                System.out.println("    Error: Si us plau, introdueix un número.");
+                entradaValida = false;
             }
 
         } while (!entradaValida);
@@ -204,17 +206,40 @@ public class EntryUtils {
         return resultat;
     };
 
-    public static char llegirChar(Scanner scanner, String missatge){
+    public static long llegirLong(Scanner scanner, String missatge) {
+        Long resultado = null;
+        do {
+            System.out.print(missatge + " ");
+            try {
+                resultado = scanner.nextLong();
+                System.out.println(">> " + resultado);
+            } catch (InputMismatchException ee) {
+                System.out.println("Exception InputMismatchException controlled.");
+                scanner.nextLine();
+            }
+        } while (resultado == null);
+
+        return resultado;
+    }
+
+    /*
+        AmidaException (Exception):
+        public static char llegirChar(String missatge);
+        public static String llegirString(String missatge);
+        public static boolean llegirSiNo(String missatge), si l’usuari/ària introdueix “s”,
+        retorna “true”, si l’usuari/ària introdueix “n”, retorna “false”.
+     */
+    public static char llegirChar(Scanner scanner, String missatge) {
         String entrada = null;
         scanner.nextLine();
-        do{
-            System.out.print(missatge+" ");
+        do {
+            System.out.print(missatge + " ");
             entrada = scanner.nextLine();
-            try{
-                if(entrada!=null && entrada.length()>=2){
-                    entrada=null;
+            try {
+                if (entrada != null && entrada.length() >= 2) {
+                    entrada = null;
                     throw new ConsoleEntryException("** Escriu sols un caràcter!");
-                }else{
+                } else {
                     System.out.println(">> " + entrada + " és correcte.");
                 }
 
@@ -222,33 +247,36 @@ public class EntryUtils {
                 System.out.println(e.getMessage());
             }
 
-        }while(entrada==null);
+        } while (entrada == null);
 
         return entrada.charAt(0);
-    };
+    }
+
+    ;
 
     public static boolean readYesNo(Scanner scanner, String missatge) {
         String entrada = null;
         Boolean retorn = null;
-        do{
-            System.out.print(missatge+" ");
+        do {
+            System.out.print(missatge + " ");
             entrada = scanner.nextLine();
-            try{
-                if ("y".equals(entrada) || "Y".equals(entrada)){
+            try {
+                if ("y".equals(entrada) || "Y".equals(entrada)) {
                     retorn = true;
-                }else if ("n".equals(entrada) || "N".equals(entrada)){
+                } else if ("n".equals(entrada) || "N".equals(entrada)) {
                     retorn = false;
-                }else{
+                } else {
                     throw new ConsoleEntryException("   Error: Type 'y' o 'n'.");
                 }
             } catch (ConsoleEntryException e) {
                 log.info(e.getMessage());
             }
-        }while(retorn==null);
+        } while (retorn == null);
 
         return retorn;
 
-    };
+    }
+
 
     public static boolean isInteger(String s) {
         try {

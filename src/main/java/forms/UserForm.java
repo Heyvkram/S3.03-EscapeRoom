@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 public class UserForm {
 
-    private static final Logger log = LogManager.getLogger(UserForm.class);
+    static final Logger log = LogManager.getLogger(UserForm.class);
 
     public void menuUser(Scanner scanner) {
         int option;
