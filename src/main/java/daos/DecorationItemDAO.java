@@ -115,4 +115,13 @@ public class DecorationItemDAO extends GenericDAO{
         }
     }
 
+    @Override
+    String getTableName() {
+        return TABLE_NAME;
+    }
+
+    @Override
+    String getIdFieldName() {
+        return "";
+    }
 }

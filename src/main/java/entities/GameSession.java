@@ -25,10 +25,6 @@ public class GameSession{
     }
 
     public void pushNotification() {
-        if(accepted>0){
-            publisherAgent.sendNotificationToSessionSubscribers(this.id,PublisherAgent.NOTIFICATION_TYPE_ACCEPTED);
-        }else{
-            publisherAgent.sendNotificationToSessionSubscribers(this.id,PublisherAgent.NOTIFICATION_TYPE_REJECTED_OR_OTHER);
-        }
+
     }
 }
