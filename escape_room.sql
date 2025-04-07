@@ -17,8 +17,8 @@ CREATE TABLE `clues` (
   `clue_game_phase` varchar(100),
   `clue_date_reg` timestamp NOT NULL DEFAULT current_timestamp(),
   `clue_date_modify` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
-  `clue_price` double(11) DEFAULT NULL,
-  `clue_value` double(11) DEFAULT NULL
+  `clue_price` decimal(5,2) DEFAULT 0.0,
+  `clue_value` decimal(5,2) DEFAULT 0.0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `decoration_items` (
