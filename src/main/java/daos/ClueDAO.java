@@ -1,7 +1,6 @@
 package daos;
 
 import entities.Clues;
-import entities.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utils.DateUtils;
@@ -10,10 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static java.sql.DriverManager.getConnection;
 
@@ -49,24 +45,25 @@ public class ClueDAO extends GenericDAO {
         }
     }
 
-    public Optional<Clues> getClueById(Long id) {
-        Optional<Clues> clue = getClueById(id);
-        return clue;
-    }
-//    public Clues getClueById(Long aLong) throws SQLException, ClassNotFoundException {
-//        return getClueBy(aLong, "clue_theme", true);
+//    public Optional<Clues> getClueById(Long id) {
+//        Optional<Clues> clue = getClueById(id);
+//        return clue;
 //    }
-
+    public Clues getClueById(Long id) throws SQLException, ClassNotFoundException {
+        String sql = "SELECT * FROM clues WHERE clue_id = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return resultSetToCluesObject(rs);
+                }
+            }
+        }
+        return null;
+    }
     public List<Clues> getClueByTheme(String theme) throws SQLException, ClassNotFoundException {
         return getClueBy(theme, "clue_theme", true);
     }
-
-
-//        public void printCluesByTheme () throws ClassNotFoundException, SQLException {
-//            System.out.println("Clues list by theme ____________________");
-//            getClueByTheme().forEach(Clues::printBasicInfoValues);
-//        }
-//
 
     public boolean saveOrUpdateClue(Clues clue) {
         if (clue == null) return false;
@@ -159,6 +156,33 @@ public class ClueDAO extends GenericDAO {
     @Override
     String getIdFieldName() {
         return ID_FIELD_NAME;
+    }
+
+    public double getTotalCluesPrice() throws SQLException, ClassNotFoundException {
+        String sql = "SELECT SUM(clue_price) AS total_price FROM clues";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getDouble("total_price");
+            }
+        }
+        return 0.0;
+    }
+
+    public Map<String, Double> getTotalCluePriceByTheme() throws SQLException, ClassNotFoundException {
+        Map<String, Double> themePrices = new HashMap<>();
+        String sql = "SELECT clue_theme, SUM(clue_price) AS total_price FROM clues GROUP BY clue_theme";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                String theme = rs.getString("clue_theme");
+                double price = rs.getDouble("total_price");
+                themePrices.put(theme, price);
+            }
+        }
+        return themePrices;
     }
 
 }

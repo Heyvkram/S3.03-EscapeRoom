@@ -257,6 +257,7 @@ public class EntryUtils {
     public static boolean readYesNo(Scanner scanner, String missatge) {
         String entrada = null;
         Boolean retorn = null;
+        scanner.nextLine();
         do {
             System.out.print(missatge + " ");
             entrada = scanner.nextLine();

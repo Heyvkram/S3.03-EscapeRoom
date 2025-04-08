@@ -7,6 +7,7 @@ import utils.EnumConstants;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -15,7 +16,7 @@ import static utils.EntryUtils.*;
 
 public class CluesForm {
 
-    public static void menuClues(Scanner scanner) {
+    public static void menuClues(Scanner scanner) throws SQLException, ClassNotFoundException {
         int option;
         ClueDAO clueDao = new ClueDAO();
         System.out.println("\n");
@@ -27,7 +28,8 @@ public class CluesForm {
             System.out.println("    2. List clues");
             System.out.println("    3. Find clue by theme");
             System.out.println("    4. Delete clue");
-            System.out.println("    5. Back");
+            System.out.println("    5. Calculate price");
+            System.out.println("    6. Back");
 
             System.out.print("\nChoose option > ");
             option = scanner.nextInt();
@@ -38,7 +40,7 @@ public class CluesForm {
                     if (!clueDao.saveOrUpdateClue(newClueForm(scanner))) {
                         System.out.println("\n   Error: Unable to establish connection to the database.");
                         System.out.println("     (Please contact your system administrator)\n");
-                        if (!EntryUtils.readYesNo(scanner, " Type 'Y' for continue or 'N' for scape.")) {
+                        if (!readYesNo(scanner, " Type 'Y' for continue or 'N' for scape.")) {
                             option = 5;
                         }
                     }
@@ -89,6 +91,7 @@ public class CluesForm {
                     break;
 
                 case 4:
+                    deleteClueById(scanner, clueDao);
 //                    try {
 //                        clueDao.deleteById(Long.valueOf(llegirInt(scanner, "Type clue id: ", false)));
 //                    } catch (SQLException | ClassNotFoundException e) {
@@ -96,41 +99,59 @@ public class CluesForm {
 //                    }
 //                    break;
 
-                try {
-                    Long aLong= EntryUtils.readStringLikeLong(scanner, "Type clue id to delete it: ", false);
-                    Optional<Clues> clue = clueDao.getClueById(aLong);
-
-                            System.out.println("\n");
-                            clue.get().printBasicInfoValues();
-
-                            if (EntryUtils.readYesNo(scanner, "\nDelete this clue (y/n)? ")) {
-                                if (clueDao.deleteById(clue.get().getId())) {
-                                    System.out.println("\n>>> Clue deleted.");
-                                }
-                    } else {
-                        System.out.println("No clue found with this ID.");
-                    }
-                } catch (SQLException | ClassNotFoundException e) {
-                    log.error(e);
-                }
-
-//                try {
-//                    List<Clues> userOpt = clueDao.getClueById(EntryUtils.readStringLikeLong(scanner, "Type the user to delete id : ", false));
-//                    if (userOpt.isPresent()) {
+//                    try {
+//                        Long aLong = readStringLikeLong(scanner, "Type clue id to delete it: ", false);
+//                        Optional<Clues> clue = clueDao.getClueById(aLong);
+//
 //                        System.out.println("\n");
-//                        userOpt.get().printBasicInfoValues();
-//                        if (EntryUtils.readYesNo(scanner, "\nDelete this user (y/n)? ")) {
-//                            if (userDao.deleteById(userOpt.get().getId())) {
-//                                System.out.println("\n>>> User deleted.");
+//                        clue.get().printBasicInfoValues();
+//
+//                        if (readYesNo(scanner, "\nDelete this clue (y/n)? ")) {
+//                            if (clueDao.deleteById(clue.get().getId())) {
+//                                System.out.println("\n>>> Clue deleted.");
 //                            }
+//                        } else {
+//                            System.out.println("No clue found with this ID.");
 //                        }
+//                    } catch (SQLException | ClassNotFoundException e) {
+//                        log.error(e);
 //                    }
-//                } catch (SQLException | ClassNotFoundException e) {
-//                    log.error(e);
-//                }
-                break;
-                default:
-                    System.out.println("Wrong option.");
+
+                    break;
+                case 5:
+
+                    System.out.println("-----------------------------------------");
+                    System.out.println("Choose one of this options:");
+                    System.out.println("-----------------------------------------");
+                    System.out.println("    1. " + "Clues total price: ");
+                    System.out.println("    2. " + "Clues prices order by theme: ");
+
+                    option = scanner.nextInt();
+                    int option2;
+                    switch (option) {
+                        case 1:
+                            try {
+                                double total = clueDao.getTotalCluesPrice();
+                                System.out.println("\n>>> Total price of all clues: €" + total);
+                            } catch (Exception e) {
+                                log.error("Error fetching total clue price", e);
+                            }
+
+                            break;
+                        case 2:
+                            try {
+                                Map<String, Double> prices = clueDao.getTotalCluePriceByTheme();
+                                System.out.println("\n>>> Clue price by theme:");
+                                for (Map.Entry<String, Double> entry : prices.entrySet()) {
+                                    System.out.println("- " + entry.getKey() + ": €" + entry.getValue());
+                                }
+                            } catch (Exception e) {
+                                log.error("Error fetching clue price by theme", e);
+                            }
+                            break;
+                        default:
+                            System.out.println("Wrong option.");
+                    }
             }
         } while (option != 4);
     }
@@ -144,22 +165,22 @@ public class CluesForm {
         // clue.setDescriptionAdmin(llegirString(scanner, "Admin description: ", false));
 
         System.out.println("*Choose clue theme: " + EnumConstants.ROOM_THEME.getMenuOptions());
-        int xx=EntryUtils.llegirInt(scanner, "*Type: ", false, EnumConstants.ROOM_THEME.getNumberMaxLevelValue());
+        int xx = llegirInt(scanner, "*Type: ", false, EnumConstants.ROOM_THEME.getNumberMaxLevelValue());
         clue.setTheme(EnumConstants.ROOM_THEME.getDescriptionFromLevelCode(xx));
         scanner.nextLine();
 
         System.out.println("*Choose game level: " + EnumConstants.GAME_LEVEL.getMenuOptions());
-        int xy=EntryUtils.llegirInt(scanner, "*Type: ", false, EnumConstants.GAME_LEVEL.getNumberMaxLevelValue());
+        int xy = llegirInt(scanner, "*Type: ", false, EnumConstants.GAME_LEVEL.getNumberMaxLevelValue());
         clue.setLevel(EnumConstants.GAME_LEVEL.getDescriptionFromLevelCode(xy));
         scanner.nextLine();
         //clue.setLevel(llegirInt(scanner, "Level: ", false));
 
         System.out.println("*Choose game phase: " + EnumConstants.GAME_LEVEL.getMenuOptions());
-        int xr=EntryUtils.llegirInt(scanner, "*Type: ", false, EnumConstants.GAME_LEVEL.getNumberMaxLevelValue());
+        int xr = llegirInt(scanner, "*Type: ", false, EnumConstants.GAME_LEVEL.getNumberMaxLevelValue());
         clue.setLevel(EnumConstants.GAME_LEVEL.getDescriptionFromLevelCode(xr));
         scanner.nextLine();
 
-      //  clue.setGamePhase(llegirString(scanner, "Game phase: ", false));
+        //  clue.setGamePhase(llegirString(scanner, "Game phase: ", false));
 //        scanner.nextLine();
         // clue.setDate(EntryUtils.llegirDate(scanner, "Date: ", false));
         clue.setPrice(llegirDouble(scanner, "Price: "));
@@ -198,6 +219,30 @@ public class CluesForm {
         System.out.print("\n*Value: " + clue.getValue());
         llegirDouble(scanner, ", new value: > ");
 
+    }
+    private static void deleteClueById(Scanner scanner, ClueDAO clueDao) {
+        try {
+            System.out.println("Type a clue ID you want to delete:");
+            Long clueId = scanner.nextLong();
+            Clues clue = clueDao.getClueById(clueId);
+
+            if (clue != null) {
+                clue.printBasicInfoValues();
+                boolean confirm = readYesNo(scanner, "Are you sure you want to delete this clue? (y/n): ");
+                if (confirm) {
+                    boolean deleted = clueDao.deleteById(clueId);
+                    if (deleted) {
+                        System.out.println(">>> Clue successfully deleted.");
+                    } else {
+                        System.out.println(">>> No clue found with this ID.");
+                    }
+                }
+            } else {
+                System.out.println(">>> No clue found with this ID.");
+            }
+        } catch (Exception e) {
+            log.error("Error deleting clue", e);
+        }
     }
 
 }

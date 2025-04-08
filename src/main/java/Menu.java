@@ -36,7 +36,13 @@ public class Menu {
                     userForm.menuUser(scanner);
                     break;
                 case 3:
-                    CluesForm.menuClues(scanner);
+                    try {
+                        CluesForm.menuClues(scanner);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    } catch (ClassNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
                     break;
                 case 4:
                     RoomForm roomForm = new RoomForm();
