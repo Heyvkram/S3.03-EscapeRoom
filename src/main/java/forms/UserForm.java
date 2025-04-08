@@ -89,6 +89,7 @@ public class UserForm {
                     break;
 
                 case 5:
+                    scanner.nextLine();
                     try {
                         List<User> userList = userDao.getUsersLikeSurName(EntryUtils.llegirString(scanner, "Type the user surname to find : ", true));
                         if (!userList.isEmpty()) {

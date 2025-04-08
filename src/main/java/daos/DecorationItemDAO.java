@@ -11,6 +11,7 @@ import java.util.Optional;
 public class DecorationItemDAO extends GenericDAO{
     private static final Logger log = LogManager.getLogger(DecorationItemDAO.class);
     final String TABLE_NAME = "decoration_items";
+    final String TABLE_ID_NAME = "decoration_item_id";
 
     public Optional<DecorationItem> getDecorationItemBy(Object object, String fieldName) throws SQLException, ClassNotFoundException {
         if(object == null){
@@ -115,4 +116,13 @@ public class DecorationItemDAO extends GenericDAO{
         }
     }
 
+    @Override
+    String getTableName() {
+        return TABLE_NAME;
+    }
+
+    @Override
+    String getIdFieldName() {
+        return TABLE_ID_NAME;
+    }
 }
