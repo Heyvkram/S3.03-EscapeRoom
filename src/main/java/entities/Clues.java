@@ -20,6 +20,6 @@ public class Clues {
     private double value;
 
     public void printBasicInfoValues() {
-        System.out.println("Clues list:  " + getId() + " " + getTitle() + " " + getLevel() + getTheme());
+        System.out.println("Clues list:  " + getId() + " " + getTitle() + " " + getLevel() + " " + getTheme());
     }
 }

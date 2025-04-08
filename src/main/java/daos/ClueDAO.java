@@ -1,52 +1,66 @@
 package daos;
 
 import entities.Clues;
+import entities.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utils.DateUtils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+
+import static java.sql.DriverManager.getConnection;
 
 public class ClueDAO extends GenericDAO {
 
     private static final Logger log = LogManager.getLogger(ClueDAO.class);
     final String TABLE_NAME = "clues";
+    final String ID_FIELD_NAME = "clue_id";
 
-    public Optional<Clues> getClueBy(Object object, String fieldName, boolean isLikeSearch) throws SQLException, ClassNotFoundException {
+    public List<Clues> getClueBy(Object object, String fieldName, boolean isLikeSearch) throws SQLException, ClassNotFoundException {
         if (object == null) {
-            return Optional.empty();
+            return Collections.emptyList();
         }
-        final String sqlSelectClue = "SELECT * FROM clues WHERE " + fieldName + "=?";
+        String param = "";
+        if (object instanceof Integer) {
+            param = ((Integer) object).toString();
+        } else if (object instanceof String) {
+            param = (String) object;
+        }
+        final String sqlSelectClue = "SELECT * FROM clues WHERE " + fieldName + "='" + param + "'";
+        List<Clues> cluesList = new ArrayList<>();
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sqlSelectClue)) {
 
-            if (object instanceof Integer) {
-                ps.setInt(1, (Integer) object);
-            } else if (object instanceof String) {
-                ps.setString(1, (String) object);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    cluesList.add(resultSetToCluesObject(rs));
+                }
+            } catch (SQLException e) {
+                log.error(e);
             }
 
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return Optional.of(resultSetToCluesObject(rs));
-                } else {
-                    return Optional.empty();
-                }
-            }
+            return cluesList;
         }
     }
 
-    public Optional<Clues> getClueByTitle(String title) throws SQLException, ClassNotFoundException {
-        return getClueBy(title, "clue_title", false);
+    public Optional<Clues> getClueById(Long id) {
+        Optional<Clues> clue = getClueById(id);
+        return clue;
     }
+//    public Clues getClueById(Long aLong) throws SQLException, ClassNotFoundException {
+//        return getClueBy(aLong, "clue_theme", true);
+//    }
 
-    public Optional<Clues> getClueByTheme(String theme) throws SQLException, ClassNotFoundException {
+    public List<Clues> getClueByTheme(String theme) throws SQLException, ClassNotFoundException {
         return getClueBy(theme, "clue_theme", true);
     }
+
 
 //        public void printCluesByTheme () throws ClassNotFoundException, SQLException {
 //            System.out.println("Clues list by theme ____________________");
@@ -54,16 +68,13 @@ public class ClueDAO extends GenericDAO {
 //        }
 //
 
-    public Optional<Clues> getClueById(Long id, boolean isMandatory) throws SQLException, ClassNotFoundException {
-        return getClueBy(id, "clue_id", isMandatory);
-    }
-
     public boolean saveOrUpdateClue(Clues clue) {
         if (clue == null) return false;
         String resultMsg = "Clue updated";
         String sqlStr = "UPDATE clues SET clue_id = ?, clue_title = ?,  clue_description_user = ?, clue_description_admin = ?, clue_theme = ?, clue_level = ?, clue_game_phase = ?, clue_date = ?, clue_price = ?, clue_value = ?";
         if (clue.getId() == null) {
-            sqlStr = "INSERT INTO clues (clue_title, clue_description_user, clue_description_admin, clue_theme, clue_level, clue_game_phase, clue_date_reg, clue_price, clue_value" + "VALUES (?, ?, ?, ?, ?)";
+            sqlStr = "INSERT INTO clues (clue_title, clue_description_user, clue_theme, clue_level, clue_game_phase, clue_date_reg, clue_price, clue_value" + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
             resultMsg = "\nClue inserted";
         }
 
@@ -71,10 +82,10 @@ public class ClueDAO extends GenericDAO {
             ps.setString(1, clue.getTitle());
             ps.setString(2, clue.getDescriptionUser());
             ps.setString(3, clue.getDescriptionAdmin());
-            ps.setObject(4, clue.getTheme());  //El Theme quedará así????
+            ps.setObject(4, clue.getTheme());
             ps.setString(5, clue.getLevel());
             ps.setString(6, clue.getGamePhase());
-            // ps.setDate(7, clue.getDateReg());
+            ps.setDate(7, null);
             ps.setDouble(8, clue.getPrice());
             ps.setDouble(9, clue.getValue());
 
@@ -118,10 +129,10 @@ public class ClueDAO extends GenericDAO {
         clue.setTitle(rs.getString("clue_title"));
         clue.setDescriptionUser(rs.getString("clue_description_user"));
         clue.setDescriptionAdmin(rs.getString("clue_description_admin"));
-        // clue.setTheme(rs.get("clue_theme"));                      //como pongo al enum????
+        clue.setTheme(rs.getString("clue_theme"));
         clue.setLevel(rs.getString("clue_level"));
         clue.setGamePhase(rs.getString("clue_game_phase"));
-        //clue.setDate(rs.getDate("clue_date_reg"));//como pongo la fecha????
+        clue.setClue_date_reg(DateUtils.parseToLocalDate(rs.getTimestamp("clue_date_reg").toString()));
         clue.setPrice(rs.getDouble("clue_price"));
         clue.setValue(rs.getDouble("clue_value"));
 
@@ -147,6 +158,7 @@ public class ClueDAO extends GenericDAO {
 
     @Override
     String getIdFieldName() {
-        return "";
+        return ID_FIELD_NAME;
     }
+
 }

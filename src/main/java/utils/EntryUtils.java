@@ -76,12 +76,12 @@ public class EntryUtils {
         do{
             if(missatge!=null) System.out.print(missatge+" ");
             entrada = scanner.nextLine();
-            if((entrada.isEmpty() && !isNullable)){
+            if((isNullable && entrada.isEmpty())){
                 System.out.println("  Error: This field is required.");
             }else if(isNumeric(entrada)){
                 sortida = Integer.valueOf(entrada);
             }
-        }while(entrada.isEmpty() && !isNullable);
+        }while(!isNullable && entrada.isEmpty());
         return Long.valueOf(sortida);
     };
 
