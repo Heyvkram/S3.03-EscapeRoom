@@ -175,10 +175,10 @@ public class CluesForm {
         scanner.nextLine();
         //clue.setLevel(llegirInt(scanner, "Level: ", false));
 
-        System.out.println("*Choose game phase: " + EnumConstants.GAME_LEVEL.getMenuOptions());
-        int xr = llegirInt(scanner, "*Type: ", false, EnumConstants.GAME_LEVEL.getNumberMaxLevelValue());
-        clue.setLevel(EnumConstants.GAME_LEVEL.getDescriptionFromLevelCode(xr));
-        scanner.nextLine();
+//        System.out.println("*Choose game phase: " + EnumConstants.GAME_LEVEL.getMenuOptions());
+//        int xr = llegirInt(scanner, "*Type: ", false, EnumConstants.GAME_LEVEL.getNumberMaxLevelValue());
+//        clue.setLevel(EnumConstants.GAME_LEVEL.getDescriptionFromLevelCode(xr));
+//        scanner.nextLine();
 
         //  clue.setGamePhase(llegirString(scanner, "Game phase: ", false));
 //        scanner.nextLine();
