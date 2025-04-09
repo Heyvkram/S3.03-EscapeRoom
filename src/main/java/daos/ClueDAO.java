@@ -5,10 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utils.DateUtils;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.*;
 
 import static java.sql.DriverManager.getConnection;
@@ -70,7 +67,7 @@ public class ClueDAO extends GenericDAO {
         String resultMsg = "Clue updated";
         String sqlStr = "UPDATE clues SET clue_id = ?, clue_title = ?,  clue_description_user = ?, clue_description_admin = ?, clue_theme = ?, clue_level = ?, clue_game_phase = ?, clue_date = ?, clue_price = ?, clue_value = ?";
         if (clue.getId() == null) {
-            sqlStr = "INSERT INTO clues (clue_title, clue_description_user, clue_theme, clue_level, clue_game_phase, clue_date_reg, clue_price, clue_value" + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            sqlStr = "INSERT INTO clues (clue_title, clue_description_user, clue_description_admin, clue_theme, clue_level, clue_game_phase, clue_date_reg, clue_price, clue_value) " + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             resultMsg = "\nClue inserted";
         }
@@ -82,7 +79,7 @@ public class ClueDAO extends GenericDAO {
             ps.setObject(4, clue.getTheme());
             ps.setString(5, clue.getLevel());
             ps.setString(6, clue.getGamePhase());
-            ps.setDate(7, null);
+            ps.setDate(7, null); //cuando viene null  hacer un if
             ps.setDouble(8, clue.getPrice());
             ps.setDouble(9, clue.getValue());
 
@@ -120,7 +117,7 @@ public class ClueDAO extends GenericDAO {
         return cluesList;
     }
 
-    public Clues resultSetToCluesObject(ResultSet rs) throws SQLException {
+    private Clues resultSetToCluesObject(ResultSet rs) throws SQLException {
         Clues clue = new Clues();
         clue.setId(rs.getLong("clue_id"));
         clue.setTitle(rs.getString("clue_title"));
@@ -129,7 +126,10 @@ public class ClueDAO extends GenericDAO {
         clue.setTheme(rs.getString("clue_theme"));
         clue.setLevel(rs.getString("clue_level"));
         clue.setGamePhase(rs.getString("clue_game_phase"));
-        clue.setClue_date_reg(DateUtils.parseToLocalDate(rs.getTimestamp("clue_date_reg").toString()));
+        Timestamp timedate = rs.getTimestamp("clue_date_reg");
+        if (timedate != null) {
+            clue.setClue_date_reg(DateUtils.parseToLocalDate(timedate.toString()));
+        }
         clue.setPrice(rs.getDouble("clue_price"));
         clue.setValue(rs.getDouble("clue_value"));
 
