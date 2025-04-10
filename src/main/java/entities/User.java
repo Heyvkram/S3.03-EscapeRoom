@@ -25,7 +25,8 @@ public class User implements NotificationSubscriberInterface {
     }
 
     public void printBasicInfoValues() {
-        System.out.printf("     %-5d %-25s ,%-25s | Email: %-30s  Nickname: %-25s%n", getId(), getSurname(), getName(), getMail(), getNickName());
+        System.out.printf(" Id: %-5s  %-30s%n",getId(), getWholeName());
+        System.out.printf("     Nickname: %-15s  Notifiable: %-10s  email: %-30s%n", getNickName(), ((getNotifiable()==null)?"":getNotifiable()), getMail() );
     }
 
 }

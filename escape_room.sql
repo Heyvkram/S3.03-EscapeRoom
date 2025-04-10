@@ -1,6 +1,4 @@
 
-
-
 DROP DATABASE IF EXISTS escape_room;
 CREATE DATABASE escape_room;
 USE escape_room;
@@ -128,7 +126,8 @@ CREATE TABLE `users` (
   `user_city` varchar(30) DEFAULT NULL,
   `user_zip_code` varchar(20) DEFAULT NULL,
   `user_country` varchar(150) DEFAULT NULL,
-  `user_phone` varchar(50) DEFAULT NULL
+  `user_phone` varchar(50) DEFAULT NULL,
+  `user_notifiable` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `user_pssw` (

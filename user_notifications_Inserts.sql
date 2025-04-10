@@ -1,53 +1,67 @@
 USE escape_room;
 INSERT INTO `users` (
-    `user_id`, `user_nick_name`, `user_name`, `user_surname`, `user_idCard`,
+    `user_nick_name`, `user_name`, `user_surname`, `user_idCard`,
     `user_address_street`, `user_address_number`, `user_address_floor`, `user_address_door`,
     `user_city`, `user_zip_code`, `user_country`, `user_phone`, `user_mail`, `user_notifiable`
 ) VALUES (
-    1, 'johndoe', 'John', 'Doe', '12345678A',
+    'johndoe', 'John', 'Doe', '12345678A',
     'Main Street', 123, '3rd', 'A',
-    'New York', '10001', 'USA', '+15551234567', 'john.doe@example.com', 1
+    'New York', '10001', 'USA', '+15551234567', 'john.doe@example.com', 'y'
 );
 
 INSERT INTO `users` (
-    `user_id`, `user_nick_name`, `user_name`, `user_surname`, `user_idCard`,
+     `user_nick_name`, `user_name`, `user_surname`, `user_idCard`,
     `user_address_street`, `user_address_number`, `user_address_floor`, `user_address_door`,
     `user_city`, `user_zip_code`, `user_country`, `user_phone`, `user_mail`, `user_notifiable`
 ) VALUES (
-    2, 'janeSmith', 'Jane', 'Smith', '87654321B',
+    'janeSmith', 'Jane', 'Smith', '87654321B',
     'Oak Avenue', 45, '2nd', 'B',
-    'London', 'SW1A 2AA', 'UK', '+442079460991', 'jane.smith@example.co.uk', 1
+    'London', 'SW1A 2AA', 'UK', '+442079460991', 'jane.smith@example.co.uk', 'y'
 );
 
 INSERT INTO `users` (
-    `user_id`, `user_nick_name`, `user_name`, `user_surname`, `user_idCard`,
+    `user_nick_name`, `user_name`, `user_surname`, `user_idCard`,
     `user_address_street`, `user_address_number`, `user_address_floor`, `user_address_door`,
     `user_city`, `user_zip_code`, `user_country`, `user_phone`, `user_mail`
 ) VALUES (
-    3, 'pedroG', 'Pedro', 'García', 'X1234567C',
+    'pedroG', 'Pedro', 'García', 'X1234567C',
     'Calle Mayor', 789, '1º', 'C',
     'Madrid', '28001', 'Spain', '+34911234567', 'pedro.garcia@example.es'
 );
 
 INSERT INTO `users` (
-    `user_id`, `user_nick_name`, `user_name`, `user_surname`, `user_idCard`,
+    `user_nick_name`, `user_name`, `user_surname`, `user_idCard`,
     `user_address_street`, `user_address_number`, `user_address_floor`, `user_address_door`,
     `user_city`, `user_zip_code`, `user_country`, `user_phone`, `user_mail`
 ) VALUES (
-    4, 'yukikoT', 'Yukiko', 'Tanaka', 'Z7654321D',
+    'yukikoT', 'Yukiko', 'Tanaka', 'Z7654321D',
     'Sakura Street', 10, '4th', 'D',
     'Tokyo', '100-0005', 'Japan', '+81312345678', 'yukiko.tanaka@example.jp'
 );
 
 INSERT INTO `users` (
-    `user_id`, `user_nick_name`, `user_name`, `user_surname`, `user_idCard`,
+    `user_nick_name`, `user_name`, `user_surname`, `user_idCard`,
     `user_address_street`, `user_address_number`, `user_address_floor`, `user_address_door`,
-    `user_city`, `user_zip_code`, `user_country`, `user_phone`, `user_mail`, 1
+    `user_city`, `user_zip_code`, `user_country`, `user_phone`, `user_mail`, `user_notifiable`
 ) VALUES (
-    5, 'marieL', 'Marie', 'Laurent', 'Y1234567E',
+    'marieL', 'Marie', 'Laurent', 'Y1234567E',
     'Rue de la Paix', 22, '5ème', 'E',
-    'Paris', '75001', 'France', '+33112345678', 'marie.laurent@example.fr'
+    'Paris', '75001', 'France', '+33112345678', 'marie.laurent@example.fr','y'
 );
+
+INSERT INTO `users` (`user_nick_name`, `user_name`, `user_surname`, `user_mail`, `user_idCard`, `user_address_street`, `user_address_number`, `user_address_floor`, `user_address_door`, `user_city`, `user_zip_code`, `user_country`, `user_phone`, `user_notifiable`) VALUES
+( 'juan doe', 'John', 'Doe', 'john.doe2000@example.com', '12345678A', 'Carrer Fictici', 10, '3', 'B', 'Barcelona', '08001', 'Espanya', '+34 931234567', 'y'),
+( 'Paula smith', 'Jane', 'Smith', 'jane.smithsss@example.com', '98765432Z', 'Avinguda Exemple', 25, '1', 'A', 'Madrid', '28002', 'Espanya', '+34 919876543', 'n')
+( 'petersen jones', 'Peter', 'Jones', 'peter.jonesssss@example.com', '45678912X', 'Plaça Central', 5, NULL, NULL, 'València', '46003', 'Espanya', '+34 666555444', 'y'),
+( 'sara_williams', 'Sara', 'Williams', 'sara.williamsss@example.com', '78912345Y', 'Ronda Universitat', 15, '2', 'C', 'Sevilla', '41004', 'Espanya', '+34 654321789', NULL),
+( 'mike_brown', 'Mike', 'Brown', 'mike.browssss@example.com', '32165498W', 'Travessera de Gràcia', 30, NULL, NULL, 'Bilbao', '48005', 'Espanya', '+34 944112233', 'y');
+
+INSERT INTO `users` (`user_nick_name`, `user_name`, `user_surname`, `user_mail`, `user_idCard`, `user_address_street`, `user_address_number`, `user_address_floor`, `user_address_door`, `user_city`, `user_zip_code`, `user_country`, `user_phone`, `user_notifiable`) VALUES
+('lisa_green', 'Lisa', 'Green', 'lisa.green2000@example.com', '54321876B', 'Carrer de la Pau', 42, '4', 'A', 'Girona', '17001', 'Espanya', '+34 972112233', 'n'),
+('david_white', 'David', 'White', 'david.whitewhite@example.com', '21436587C', 'Rambla Nova', 18, 'baixos', 'D', 'Tarragona', '43002', 'Espanya', '+34 600112233', 'n'),
+('emily_clark', 'Emily', 'Clark', 'emily.clarkkk@example.com', '87654321D', 'Avinguda Diagonal', 60, '7', NULL, 'Lleida', '25003', 'Espanya', '+34 973445566', NULL),
+('kevin_hall', 'Kevin', 'Hall', 'kevin.hallfff@example.com', '65432178E', 'Passeig de Gràcia', 100, NULL, NULL, 'Sabadell', '08201', 'Espanya', '+34 678901234', 'y'),
+('olivia_adams', 'Olivia', 'Adams', 'olivia.adamsffff@example.com', '13579246F', 'Gran Via', 75, '1', 'B', 'Terrassa', '08221', 'Espanya', '+34 937890123', 'n');
 
 INSERT INTO `notifications` (
     `notification_title`,
@@ -86,38 +100,39 @@ INSERT INTO `notifications` (
     'Generic'
 );
 
-
-INSERT INTO `users` (`user_nick_name`, `user_name`, `user_surname`, `user_mail`, `user_idCard`, `user_address_street`, `user_address_number`, `user_address_floor`, `user_address_door`, `user_city`, `user_zip_code`, `user_country`, `user_phone`, `user_notifiable`) VALUES
-( 'juan doe', 'John', 'Doe', 'john.doe2000@example.com', '12345678A', 'Carrer Fictici', 10, '3', 'B', 'Barcelona', '08001', 'Espanya', '+34 931234567', 'Y'),
-( 'Paula smith', 'Jane', 'Smith', 'jane.smithsss@example.com', '98765432Z', 'Avinguda Exemple', 25, '1', 'A', 'Madrid', '28002', 'Espanya', '+34 919876543', 'N'),
-( 'petersen jones', 'Peter', 'Jones', 'peter.jonesssss@example.com', '45678912X', 'Plaça Central', 5, NULL, NULL, 'València', '46003', 'Espanya', '+34 666555444', 'Y'),
-( 'sara_williams', 'Sara', 'Williams', 'sara.williamsss@example.com', '78912345Y', 'Ronda Universitat', 15, '2', 'C', 'Sevilla', '41004', 'Espanya', '+34 654321789', NULL),
-( 'mike_brown', 'Mike', 'Brown', 'mike.browssss@example.com', '32165498W', 'Travessera de Gràcia', 30, NULL, NULL, 'Bilbao', '48005', 'Espanya', '+34 944112233', 'Y');
-
-INSERT INTO `users` (`user_nick_name`, `user_name`, `user_surname`, `user_mail`, `user_idCard`, `user_address_street`, `user_address_number`, `user_address_floor`, `user_address_door`, `user_city`, `user_zip_code`, `user_country`, `user_phone`, `user_notifiable`) VALUES
-('lisa_green', 'Lisa', 'Green', 'lisa.green2000@example.com', '54321876B', 'Carrer de la Pau', 42, '4', 'A', 'Girona', '17001', 'Espanya', '+34 972112233', 'N'),
-('david_white', 'David', 'White', 'david.whitewhite@example.com', '21436587C', 'Rambla Nova', 18, 'baixos', 'D', 'Tarragona', '43002', 'Espanya', '+34 600112233', 'Y'),
-('emily_clark', 'Emily', 'Clark', 'emily.clarkkk@example.com', '87654321D', 'Avinguda Diagonal', 60, '7', NULL, 'Lleida', '25003', 'Espanya', '+34 973445566', NULL),
-('kevin_hall', 'Kevin', 'Hall', 'kevin.hallfff@example.com', '65432178E', 'Passeig de Gràcia', 100, NULL, NULL, 'Sabadell', '08201', 'Espanya', '+34 678901234', 'Y'),
-('olivia_adams', 'Olivia', 'Adams', 'olivia.adamsffff@example.com', '13579246F', 'Gran Via', 75, '1', 'B', 'Terrassa', '08221', 'Espanya', '+34 937890123', 'N');
+INSERT INTO `rooms` (`room_name`, `room_theme`, `room_level`, `room_status`, `room_max_players`, `room_date`) VALUES
+('La Mansió Embruixada', 'Terror', 'Intermediate', 'Available', 6, NOW()),
+('El Laboratori Secret', 'Fiction', 'Hard', 'Not available', 4, NOW()),
+( 'El Bosc Màgic', 'Fantasy', 'Easy', 'Available', 8, NOW()),
+( 'La Nau Estelar Perduda', 'Fiction', 'Intermediate', 'Available', 5, NOW()),
+( 'El Castell del Drac', 'Fantasy', 'Hard', 'Not available', 3, NOW());
 
 
-INSERT INTO `rooms` (`room_id`, `room_name`, `room_theme`, `room_level`, `room_status`, `room_max_players`, `room_date`) VALUES
-(101, 'La Mansió Embruixada', 'Terror', 'Intermediate', 'Available', 6, NOW()),
-(102, 'El Laboratori Secret', 'Fiction', 'Hard', 'Not available', 4, NOW()),
-(103, 'El Bosc Màgic', 'Fantasy', 'Easy', 'Available', 8, NOW()),
-(104, 'La Nau Estelar Perduda', 'Fiction', 'Intermediate', 'Available', 5, NOW()),
-(105, 'El Castell del Drac', 'Fantasy', 'Hard', 'Not available', 3, NOW());
-
-INSERT INTO `game_sessions` (`game_id`, `room_id`, `payment_id`, `user_id`, `accepted`) VALUES
-(1, 101, 501, 1001, 1),
-(2, 102, 502, 1002, 0),
-(3, 101, 503, 1003, 1),
-(4, 103, 504, 1004, 1),
-(5, 102, 505, 1005, 0);
+INSERT INTO payments ( payment_mode, payment_price, user_id)
+VALUES ('Credit card', 55, 1);
 
 
+INSERT INTO payments (payment_mode, payment_price, user_id)
+VALUES ('Bizum', 28, 5);
 
+
+INSERT INTO payments (payment_mode, payment_price, user_id)
+VALUES ( 'PayPal', 72, 1);
+
+
+INSERT INTO payments (payment_mode, payment_price, user_id)
+VALUES ( 'Credit card', 39, 3);
+
+
+INSERT INTO payments (payment_mode, payment_price, user_id)
+VALUES ( 'Bizum', 15, 4);
+
+INSERT INTO `game_sessions` (`room_id`, `payment_id`, `user_id`, `accepted`) VALUES
+(1, 1, 1001, 1),
+(2, 2, 1002, 0),
+(1, 3, 1003, 1),
+(3, 4, 1004, 1),
+(2, 5, 1005, 0);
 
 
 
