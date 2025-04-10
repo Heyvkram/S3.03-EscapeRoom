@@ -197,7 +197,7 @@ public class UserDAO extends GenericDAO {
             ps.setString(11, user.getCountry());
             ps.setString(12, user.getPhoneNumber());
             ps.setString(13, user.getMail());
-            ps.setString(14, user.getMail());
+            ps.setString(14, user.getNotifiable());
 
             if (user.getId() != null) {
                 ps.setLong(15, user.getId());
@@ -285,6 +285,11 @@ public class UserDAO extends GenericDAO {
         if (EntryUtils.isNotNullOrEmpty(user.getMail())) {
             arrayQueryParams.add(" user_mail = ?");
             parameterList.add(user.getMail());
+        }
+
+        if (EntryUtils.isNotNullOrEmpty(user.getNotifiable())) {
+            arrayQueryParams.add(" user_notifiable = ?");
+            parameterList.add(user.getNotifiable());
         }
 
         if (arrayQueryParams.isEmpty()) {
