@@ -17,7 +17,5 @@ public interface RoomThemeInterface {
     void enterRoom();
 
     List<DecorationItem> getDecorationItemsByTheme(EnumConstants.ROOM_THEME theme);
-
-    List<Clues> getClueByTheme(EnumConstants.ROOM_THEME theme);
 }
 

@@ -1,8 +1,11 @@
 package daos;
 
 import entities.DecorationItem;
+import entities.Room;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utils.EnumConstants;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -123,5 +126,25 @@ public class DecorationItemDAO extends GenericDAO{
     @Override
     String getIdFieldName() {
         return "";
+    }
+
+
+    // BORRAR DESPUÉS, PARA PRUEBAS SOLO!!!
+    public List<DecorationItem> getDecorationItemsByTheme(EnumConstants.ROOM_THEME theme) throws ClassNotFoundException, SQLException {
+        String sqlSelectDecorationItemsByTheme = "SELECT * FROM " + TABLE_NAME + " WHERE decoration_item_theme = ?";
+        List<DecorationItem> decorationItemsList= new ArrayList<>();
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sqlSelectDecorationItemsByTheme)) {
+            ps.setString(1, theme.toString());
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                decorationItemsList.add(resultSetToDecorationItemObject(rs));
+            }
+        } catch (SQLException e) {
+            log.error(e);
+        }
+        return decorationItemsList;
     }
 }

@@ -1,15 +1,18 @@
 package daos;
 
 import entities.Room;
+import forms.RoomForm;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utils.EnumConstants;
 import utils.EnumConstants.ROOM_THEME;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Scanner;
 
 public class RoomDAO extends GenericDAO {
     private static final Logger log = LogManager.getLogger(RoomDAO.class);
@@ -223,6 +226,32 @@ public class RoomDAO extends GenericDAO {
             return room;
         }
 
+    public boolean createRoom(Room room) {
+        if (room == null) return false;
+
+        String sqlStr = "INSERT INTO rooms (room_name, room_theme, room_level, room_status, room_max_players, room_date) VALUES (?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sqlStr)) {
+            ps.setString(1, room.getRoomName());
+            ps.setString(2, String.valueOf(room.getRoomTheme()));
+            ps.setString(3, String.valueOf(room.getRoomLevel()));
+            ps.setString(4, String.valueOf(room.getRoomStatus()));
+            ps.setInt(5, room.getRoomMaxPlayers());
+            ps.setTimestamp(6, Timestamp.valueOf(room.getRoomDate()));
+
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Room created");
+            }
+            return rowsAffected > 0;
+
+        } catch (SQLException | ClassNotFoundException e) {
+            log.info("Can't create the room\n");
+            log.error("Can't create the room\n", e);
+        }
+        return false;
+    }
+
         public boolean deleteRoomById (Long roomId) throws SQLException, ClassNotFoundException {
             if (roomId == null || roomId <= 0) {
                 throw new IllegalArgumentException("There is no room with this id");
@@ -235,4 +264,5 @@ public class RoomDAO extends GenericDAO {
                 return true;
             }
         }
+
 }
