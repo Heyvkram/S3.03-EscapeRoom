@@ -29,14 +29,21 @@ public class Menu {
 
             switch (option) {
                 case 1:
-                    DecorationItemsForm.menuDecorationItem(scanner);
+                    try {
+                        DecorationItemsForm.menuDecorationItem(scanner);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    } catch (ClassNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
                     break;
                 case 2:
                     UserForm userForm = new UserForm();
                     userForm.menuUser(scanner);
                     break;
                 case 3:
-                    CluesForm.menuClues(scanner);
+                        CluesForm.menuClues(scanner);
+
                     break;
                 case 4:
                     RoomForm roomForm = new RoomForm();

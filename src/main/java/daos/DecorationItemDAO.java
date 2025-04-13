@@ -1,5 +1,6 @@
 package daos;
 
+import entities.Clues;
 import entities.DecorationItem;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -41,10 +42,14 @@ public class DecorationItemDAO extends GenericDAO{
         return getDecorationItemBy(id, "decoration_item_id");
     }
 
+    public Optional<DecorationItem> getDecorationItemsByTheme(String theme) throws SQLException, ClassNotFoundException {
+        return getDecorationItemBy(theme, "decoration_item_theme");
+    }
+
     public boolean saveOrUpdateDecorationItem(DecorationItem decorationItem) {
         if(decorationItem == null) return false;
-        String sqlStr = "INSERT INTO decoration_items (decoration_item_name, decoration_item_description, decoration_item_price, decoration_item_clue_valor, decoration_item_img) " +
-                    "VALUES (?, ?, ?, ?, ?)";
+        String sqlStr = "INSERT INTO decoration_items (decoration_item_name, decoration_item_description, decoration_item_theme, decoration_item_price, decoration_item_clue_valor, decoration_item_img) " +
+                    "VALUES (?, ?, ?, ?, ?, ?)";
         String resultMsg = "\nDecoration item inserted";
 
 
@@ -52,9 +57,10 @@ public class DecorationItemDAO extends GenericDAO{
             PreparedStatement ps = conn.prepareStatement(sqlStr)) {
             ps.setString(1, decorationItem.getName());
             ps.setString(2, decorationItem.getDescription());
-            ps.setDouble(3, decorationItem.getPrice());
-            ps.setInt(4, decorationItem.getClueValor());
-            ps.setString(5, decorationItem.getImg());
+            ps.setString(3, decorationItem.getTheme());
+            ps.setDouble(4, decorationItem.getPrice());
+            ps.setInt(5, decorationItem.getClueValor());
+            ps.setString(6, decorationItem.getImg());
 
             int rowsAffected = ps.executeUpdate();
             if(rowsAffected > 0){
@@ -75,7 +81,7 @@ public class DecorationItemDAO extends GenericDAO{
         decorationItem.setId(rs.getLong("decoration_item_id"));
         decorationItem.setName(rs.getString("decoration_item_name"));
         decorationItem.setDescription(rs.getString("decoration_item_description"));
-        //decorationItem.setTheme(rs.getTheme("decoration_item_theme"));
+        decorationItem.setTheme(rs.getString("decoration_item_theme"));
         decorationItem.setPrice(rs.getDouble("decoration_item_price"));
         decorationItem.setClueValor(rs.getInt("decoration_item_clue_valor"));
         decorationItem.setImg(rs.getString("decoration_item_img"));
@@ -100,6 +106,46 @@ public class DecorationItemDAO extends GenericDAO{
     public void printAllDecorationItems() throws ClassNotFoundException, SQLException {
         System.out.println("Decoration Items list ____________________");
         getAllDecorationItems().forEach(DecorationItem::printBasicInfoValues);
+    }
+
+    public void printDecorationItemsByTheme(String theme) throws ClassNotFoundException, SQLException {
+        System.out.println("Decoration Items with theme '" + theme + "' ____________________");
+        List<DecorationItem> filteredItems = getAllDecorationItems().stream()
+                .filter(item -> item.getTheme().equalsIgnoreCase(theme))
+                .toList();
+
+        if (filteredItems.isEmpty()) {
+            System.out.println("No decoration items found with the theme: " + theme);
+            return;
+        }
+
+        filteredItems.forEach(DecorationItem::printThemeValorValues);
+
+        double totalPrice = filteredItems.stream()
+                .mapToDouble(DecorationItem::getPrice)
+                .sum();
+
+        System.out.println("------------------------------------------");
+        System.out.println("Total price for theme '" + theme + "': $" + String.format("%.2f", totalPrice));
+    }
+
+    public void printAllDecorationItemsPrices() throws ClassNotFoundException, SQLException {
+        System.out.println("Decoration Items Price list ____________________");
+        List<DecorationItem> allItems = getAllDecorationItems();
+
+        if (allItems.isEmpty()) {
+            System.out.println("No decoration items found.");
+            return;
+        }
+
+        allItems.forEach(DecorationItem::printPriceInfoValues);
+
+        double totalPrice = allItems.stream()
+                .mapToDouble(DecorationItem::getPrice)
+                .sum();
+
+        System.out.println("------------------------------------------");
+        System.out.println("Total price for all decoration items: $" + String.format("%.2f", totalPrice));
     }
 
     public boolean deleteDecorationItemsById(Long id) throws SQLException, ClassNotFoundException {
