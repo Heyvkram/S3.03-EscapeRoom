@@ -22,7 +22,7 @@ CREATE TABLE `decoration_items` (
   `decoration_item_name` varchar(20) NOT NULL,
   `decoration_item_description` varchar(200) NOT NULL,
   `decoration_item_theme` enum('Terror','Fiction','Fantasy'),
-  `decoration_item_price` double,
+  `decoration_item_price` decimal (5, 2),
   `decoration_item_clue_valor` int(11) DEFAULT NULL,
   `decoration_item_img` varchar(100) DEFAULT NULL,
   `decoration_item_creation_date` timestamp NOT NULL DEFAULT current_timestamp(),
