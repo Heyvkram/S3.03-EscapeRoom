@@ -1,6 +1,7 @@
 package daos;
 
 import entities.Clues;
+import entities.DecorationItem;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utils.DateUtils;
@@ -158,7 +159,26 @@ public class ClueDAO extends GenericDAO {
         return ID_FIELD_NAME;
     }
 
-    public double getTotalCluesPrice() throws SQLException, ClassNotFoundException {
+    public void printAllClueItemsPrices() throws ClassNotFoundException, SQLException {
+        System.out.println("Clue Items Price list ____________________");
+        List<Clues> allItems = getAllClues();
+
+        if (allItems.isEmpty()) {
+            System.out.println("No clue items found.");
+            return;
+        }
+
+        allItems.forEach(Clues::printPriceInfoValues);
+
+        double totalPrice = allItems.stream()
+                .mapToDouble(Clues::getPrice)
+                .sum();
+
+        System.out.println("------------------------------------------");
+        System.out.println("Total price for all clue items: $" + String.format("%.2f", totalPrice));
+    }
+
+    /*public double getTotalCluesPrice() throws SQLException, ClassNotFoundException {
         String sql = "SELECT SUM(clue_price) AS total_price FROM clues";
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
@@ -168,7 +188,7 @@ public class ClueDAO extends GenericDAO {
             }
         }
         return 0.0;
-    }
+    }*/
 
     public Map<String, Double> getTotalCluePriceByTheme() throws SQLException, ClassNotFoundException {
         Map<String, Double> themePrices = new HashMap<>();

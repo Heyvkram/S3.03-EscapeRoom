@@ -125,14 +125,13 @@ public class CluesForm {
                     System.out.println("-----------------------------------------");
                     System.out.println("    1. " + "Clues total price: ");
                     System.out.println("    2. " + "Clues prices order by theme: ");
-
+                    System.out.print("\nChoose option > ");
                     option = scanner.nextInt();
                     int option2;
                     switch (option) {
                         case 1:
                             try {
-                                double total = clueDao.getTotalCluesPrice();
-                                System.out.println("\n>>> Total price of all clues: €" + total);
+                                clueDao.printAllClueItemsPrices();
                             } catch (Exception e) {
                                 log.error("Error fetching total clue price", e);
                             }

@@ -27,8 +27,4 @@ public class Clues {
     public void printPriceInfoValues(){
         System.out.printf("    %-5d  %-25s   Price: %.2f%n", getId(), getTitle(), getPrice());
     }
-
-    public void printThemeValorValues(){
-        System.out.printf("    %-5d  %-25s   Theme: %-25s   Price: %.2f%n", getId(), getTitle(), getTheme(), getPrice());
-    }
 }
