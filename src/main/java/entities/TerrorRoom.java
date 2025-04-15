@@ -5,7 +5,6 @@ import utils.EnumConstants;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 
 public class TerrorRoom extends Room implements RoomThemeInterface {
 
@@ -47,14 +46,15 @@ public class TerrorRoom extends Room implements RoomThemeInterface {
      * }
      */
 
-    public List<String> getTerrorDecorationItems() {
+    public List<DecorationItem> getTerrorDecorationItems() {
         DecorationItemDAO decorationItemDAO = new DecorationItemDAO();
-        Optional<DecorationItem> decorationItems = null;
+        List<DecorationItem> decorationItems = null;
         try {
-            decorationItems = decorationItemDAO.getDecorationItemsByTheme(EnumConstants.ROOM_THEME.TERROR.getDescription());
+            decorationItems = decorationItemDAO.getDecorationsItemsBy(EnumConstants.ROOM_THEME.TERROR.getDescription(),"decoration_item_theme");
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+        return decorationItems;
     }
 
 }
