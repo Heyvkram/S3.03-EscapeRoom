@@ -1,6 +1,11 @@
 package entities;
 
+import daos.DecorationItemDAO;
 import utils.EnumConstants;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Optional;
 
 public class TerrorRoom extends Room implements RoomThemeInterface {
 
@@ -41,5 +46,15 @@ public class TerrorRoom extends Room implements RoomThemeInterface {
      * AÑADIR LISTA DE DECORATION ITEMS PARA "TERROR"
      * }
      */
+
+    public List<String> getTerrorDecorationItems() {
+        DecorationItemDAO decorationItemDAO = new DecorationItemDAO();
+        Optional<DecorationItem> decorationItems = null;
+        try {
+            decorationItems = decorationItemDAO.getDecorationItemsByTheme(EnumConstants.ROOM_THEME.TERROR.getDescription());
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }

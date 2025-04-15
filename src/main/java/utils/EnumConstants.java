@@ -7,8 +7,7 @@ import java.util.List;
 public class EnumConstants {
 
     public static enum NOTIFICATIONS_TYPE {
-        GENERAL(0, "General"),
-        PERSONAL(1, "Personal"),
+        GENERAL(1, "General"),
         GAME(2, "Game");
 
         private final int levelCode;
@@ -32,7 +31,7 @@ public class EnumConstants {
         }
 
         public static int getNumberMaxLevelValue() {
-            return NOTIFICATIONS_TYPE.values().length - 1;
+            return NOTIFICATIONS_TYPE.values().length;
         }
 
         public static List<Integer> getLevelCodes() {
@@ -63,9 +62,9 @@ public class EnumConstants {
     }
 
     public static enum ROOM_THEME {
-        TERROR(0, "Terror"),
-        FICTION(1, "Fiction"),
-        FANTASY(2, "Fantasy");
+        TERROR(1, "Terror"),
+        FICTION(2, "Fiction"),
+        FANTASY(3, "Fantasy");
 
         private final int levelCode;
         private final String description;
@@ -88,7 +87,7 @@ public class EnumConstants {
         }
 
         public static int getNumberMaxLevelValue() {
-            return ROOM_THEME.values().length - 1;
+            return ROOM_THEME.values().length;
         }
 
         public static List<Integer> getLevelCodes() {
@@ -119,9 +118,9 @@ public class EnumConstants {
     }
 
     public static enum PAYMENT_TYPE {
-        CREDIT_CARD(0, "Credit card"),
-        BIZUM(1, "Bizum"),
-        PAYPAL(2, "Paypal");
+        CREDIT_CARD(1, "Credit card"),
+        BIZUM(2, "Bizum"),
+        PAYPAL(3, "Paypal");
 
         private final int levelCode;
         private final String description;
@@ -144,7 +143,7 @@ public class EnumConstants {
         }
 
         public static int getNumberMaxLevelValue() {
-            return PAYMENT_TYPE.values().length - 1;
+            return PAYMENT_TYPE.values().length;
         }
 
         public static List<Integer> getLevelCodes() {
@@ -174,9 +173,9 @@ public class EnumConstants {
     }
 
     public static enum GAME_LEVEL {
-        EASY(0, "Easy"),
-        INTERMEDIATE(1, "Intermediate"),
-        HARD(2, "Hard");
+        EASY(1, "Easy"),
+        INTERMEDIATE(2, "Intermediate"),
+        HARD(3, "Hard");
 
         private final int levelCode;
         private final String description;
@@ -199,7 +198,7 @@ public class EnumConstants {
         }
 
         public static int getNumberMaxLevelValue() {
-            return GAME_LEVEL.values().length - 1;
+            return GAME_LEVEL.values().length;
         }
 
         public static List<Integer> getLevelCodes() {
@@ -229,8 +228,8 @@ public class EnumConstants {
     }
 
     public static enum ROOM_STATUS {
-        AVAILABLE(0, "Available"),
-        NOT_AVAILABLE(1, "Not available");
+        AVAILABLE(1, "Available"),
+        NOT_AVAILABLE(2, "Not available");
 
         private final int levelCode;
         private final String description;
@@ -253,7 +252,7 @@ public class EnumConstants {
         }
 
         public static int getNumberMaxLevelValue() {
-            return ROOM_STATUS.values().length - 1;
+            return ROOM_STATUS.values().length;
         }
 
         public static List<Integer> getLevelCodes() {
@@ -283,9 +282,9 @@ public class EnumConstants {
     }
 
     public static enum NOTIFICATIONS_STATUS {
-        SENDED(0, "Sended"),
-        CANCELED(1, "Canceled"),
-        PENDING(2, "Pending");
+        SENDED(1, "Sended"),
+        CANCELED(2, "Canceled"),
+        PENDING(3, "Pending");
 
         private final int levelCode;
         private final String description;
@@ -308,7 +307,7 @@ public class EnumConstants {
         }
 
         public static int getNumberMaxLevelValue() {
-            return NOTIFICATIONS_STATUS.values().length - 1;
+            return NOTIFICATIONS_STATUS.values().length;
         }
 
         public static List<Integer> getLevelCodes() {
@@ -340,7 +339,7 @@ public class EnumConstants {
     public static enum NOTIFICATION_SHIPPING_TYPE {
         SMS(1, "Sms"),
         EMAIL(2, "Email"),
-        EMPTY(0, "No shipping type defined");
+        EMPTY(3, "-");
 
         private final int levelCode;
         private final String description;
@@ -363,7 +362,7 @@ public class EnumConstants {
         }
 
         public static int getNumberMaxLevelValue() {
-            return NOTIFICATION_SHIPPING_TYPE.values().length - 1;
+            return NOTIFICATION_SHIPPING_TYPE.values().length;
         }
 
         public static List<Integer> getLevelCodes() {
@@ -393,9 +392,9 @@ public class EnumConstants {
     }
 
     public static enum NOTIFICATION_LEVEL {
-        INFORMATIVE(0, "Informative"),
-        IMPORTANT(1, "Important"),
-        CRITICAL(2, "Critical"),
+        INFORMATIVE(1, "Informative"),
+        IMPORTANT(2, "Important"),
+        CRITICAL(3, "Critical"),
         ;
 
         private final int levelCode;
@@ -419,7 +418,7 @@ public class EnumConstants {
         }
 
         public static int getNumberMaxLevelValue() {
-            return NOTIFICATION_LEVEL.values().length - 1;
+            return NOTIFICATION_LEVEL.values().length;
         }
 
         public static List<Integer> getLevelCodes() {

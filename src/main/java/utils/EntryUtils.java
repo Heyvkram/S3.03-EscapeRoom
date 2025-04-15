@@ -106,10 +106,14 @@ public class EntryUtils {
                 if( maxValue!=null && (resultInt<minValue || resultInt>maxValue)){
                     System.out.println("    Error: A value must be entered between " + minValue + "  i " + maxValue);
                 }
+            }else{
+                System.out.println("  Error: You must enter a numeric value");
             }
 
-        }while(!isNullable && isNullOrEmpty(entryStr));
+        }while((!isNullable && isNullOrEmpty(entryStr)) || !isNumeric(entryStr));
+
         return resultInt;
+
     };
 
     public static Long llegirIntHasLong(Scanner scanner, String missatge) {
@@ -257,7 +261,6 @@ public class EntryUtils {
     public static boolean readYesNo(Scanner scanner, String missatge) {
         String entrada = null;
         Boolean retorn = null;
-        scanner.nextLine();
         do {
             System.out.print(missatge + " ");
             entrada = scanner.nextLine();

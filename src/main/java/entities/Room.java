@@ -1,8 +1,8 @@
 package entities;
 
 import lombok.Data;
-import utils.EnumConstants;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 
@@ -15,9 +15,8 @@ public class Room {
     private int roomMaxPlayers;
     private LocalDateTime roomDate;
 
-    public String getRoomName(){
-        return roomName;
-    }
+    private List<Clues> clues;
+    private List<DecorationItem> decorationItems;
 
     public void printBasicInfoValues() {
         System.out.printf("     %-5d %-30s  |  Title: %-30s  |  Level: %-15s  |  Status: %-15s  |  Max Players: %-10d  |  Date: %-10s%n",

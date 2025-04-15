@@ -29,10 +29,7 @@ public class RoomForm {
             System.out.println("    3. Delete room");
             System.out.println("    4. Back");
 
-            System.out.print("\n>>> Choose option > ");
-            //option = scanner.nextInt();
-            option = EntryUtils.llegirInt(scanner, null);
-            scanner.nextLine();
+            option = EntryUtils.readStringLikeInt(scanner, "\n>>> Choose option > ", false);
 
             switch (option) {
                 case 1:
@@ -57,8 +54,7 @@ public class RoomForm {
                         System.out.println("    3. List by difficulty");
                         System.out.println("    4. Back");
 
-                        System.out.print("\n>>> Choose option > ");
-                        option2 = EntryUtils.llegirInt(scanner, null);
+                        option2 =  EntryUtils.readStringLikeInt(scanner, "\n>>> Choose option > ", false);
 
                         switch (option2) {
                             case 1:
@@ -113,11 +109,17 @@ public class RoomForm {
     private Room newRoomForm(Scanner scanner) {
         Room room = new Room();
         room.setRoomName(EntryUtils.llegirString(scanner, "*Name: ", true));
+
+        // SetDecorationItems
         room = chooseTheme(scanner, room);
+
+        // SetClues
         room = chooseDifficulty(scanner, room);
+
         room = chooseStatus(scanner, room);
-        scanner.nextLine();
-        room.setRoomMaxPlayers(EntryUtils.readStringLikeInt(scanner, "*Players number: ", true));
+
+        room.setRoomMaxPlayers(EntryUtils.readStringLikeInt(scanner, "*Number of players: ", true));
+
         return room;
     }
 
@@ -134,8 +136,7 @@ public class RoomForm {
             System.out.println("    3. Fantasy");
             System.out.println("    4. Back");
 
-            System.out.print("\n>>> Choose option > ");
-            option = EntryUtils.llegirInt(scanner, null);
+            option = EntryUtils.readStringLikeInt(scanner, "\n>>> Choose option > ", false);
 
             switch (option) {
                 case 1:
@@ -169,8 +170,7 @@ public class RoomForm {
             System.out.println("    3. Hard");
             System.out.println("    4. Back");
 
-            System.out.print("\n>>> Choose option > ");
-            option = EntryUtils.llegirInt(scanner, null);
+            option = EntryUtils.readStringLikeInt(scanner, "\n>>> Choose option > ", false);
 
             switch (option) {
                 case 1:
@@ -191,7 +191,7 @@ public class RoomForm {
 
 
     private Room chooseStatus(Scanner scanner, Room room) {
-        int option;
+        Integer option;
         boolean optionOk = false;
         do {
             System.out.println("\n");
@@ -199,8 +199,8 @@ public class RoomForm {
             System.out.println("Choose a status for the room:");
             System.out.println("-----------------------------------------");
             System.out.println(EnumConstants.ROOM_STATUS.getMenuOptions());
-            System.out.print("\n>>> Choose option > ");
-            option = EntryUtils.llegirInt(scanner, null);
+
+            option = EntryUtils.readStringLikeInt(scanner, "\n>>> Choose option > ", false);
 
             switch (option) {
                 case 0:
@@ -210,9 +210,13 @@ public class RoomForm {
                     room.setRoomStatus(EnumConstants.ROOM_STATUS.NOT_AVAILABLE.getDescription());
                     return room;
                 default:
+                    option = null;
                     System.out.println(">>> Wrong option.");
             }
-        } while (!optionOk);
+
+        } while (option != null);
+
         return null;
+
     }
 }

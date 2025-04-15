@@ -1,7 +1,6 @@
 package daos;
 
-import entities.NotificationInterface;
-import entities.NotificationSMS;
+import entities.NotificationGeneric;
 import entities.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,12 +22,12 @@ public class NotificationDAO extends GenericDAO {
 
     public void printAllNotifications() throws ClassNotFoundException, SQLException {
         System.out.println("\n    Users list............................");
-        getAllNotifications().forEach(NotificationSMS::printBasicInfoValues);
+        getAllNotifications().forEach(NotificationGeneric::printBasicInfoValues);
     }
 
-    public List<NotificationSMS> getAllNotifications() throws ClassNotFoundException, SQLException {
+    public List<NotificationGeneric> getAllNotifications() throws ClassNotFoundException, SQLException {
         String sqlSelectAllUsers = "SELECT * FROM " + TABLE_NAME;
-        List<NotificationSMS> notificationList = new ArrayList<>();
+        List<NotificationGeneric> notificationList = new ArrayList<>();
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sqlSelectAllUsers);
              ResultSet rs = ps.executeQuery()) {
@@ -41,7 +40,7 @@ public class NotificationDAO extends GenericDAO {
         return notificationList;
     }
 
-    public boolean insertNewNotification(NotificationInterface notif) {
+    public boolean insertNewNotification(NotificationGeneric notif) {
         if (notif == null) return false;
         String sqlStr = "INSERT INTO `notifications`(`notification_id`, `notification_title`, `notification_short_description`, `notification_message`, `notification_type`, `notification_shipping_type`) " +
                 " VALUES (?, ?, ?, ?, ?, ?)";
@@ -53,7 +52,7 @@ public class NotificationDAO extends GenericDAO {
             ps.setString(3, notif.getShortDescription());
             ps.setString(4, notif.getMessage());
             ps.setString(5, notif.getType());
-            ps.setString(6, notif.getshippingType());
+            ps.setString(6, notif.getShippingType());
 
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0) {
@@ -68,23 +67,24 @@ public class NotificationDAO extends GenericDAO {
         }
     }
 
-    public NotificationSMS resultSetToNotificationObject(ResultSet rs) throws SQLException {
-        NotificationSMS notif = new NotificationSMS();
+    public NotificationGeneric resultSetToNotificationObject(ResultSet rs) throws SQLException {
+        NotificationGeneric notif = new NotificationGeneric();
         notif.setId(rs.getLong("notification_id"));
         notif.setTitle(rs.getString("notification_title"));
         notif.setShortDescription(rs.getString("notification_short_description"));
         notif.setMessage(rs.getString("notification_message"));
         notif.setType(rs.getString("notification_type"));
+        notif.setShippingType(rs.getString("notification_shipping_type"));
         notif.setRegisterDate(rs.getTimestamp("notification_date_reg").toLocalDateTime());
         notif.setModificationDate((rs.getTimestamp("notification_date_modify")!=null)?rs.getTimestamp("notification_date_modify").toLocalDateTime():null);
         return notif;
     }
 
-    public Optional<NotificationSMS> getNotificationById(Long id) throws SQLException, ClassNotFoundException {
+    public Optional<NotificationGeneric> getNotificationById(Long id) throws SQLException, ClassNotFoundException {
         return getNotificationBy(id, ID_FIELD_NAME);
     }
 
-    public Optional<NotificationSMS> getNotificationBy(Object object, String fieldName) throws SQLException, ClassNotFoundException {
+    public Optional<NotificationGeneric> getNotificationBy(Object object, String fieldName) throws SQLException, ClassNotFoundException {
         if (object == null) {
             return Optional.empty();
         }
@@ -110,27 +110,27 @@ public class NotificationDAO extends GenericDAO {
         }
     }
 
-    public boolean sendSmsNotification(NotificationInterface notification, String phoneNumber){
+    public boolean sendSmsNotification(NotificationGeneric notification, String phoneNumber){
         // To do
         System.out.println("    > Notification id:"+notification.getId()+" "+phoneNumber+" : SMS sended");
         return true;
     }
 
-    public boolean sendEmailNotification(NotificationInterface notification, String email){
+    public boolean sendEmailNotification(NotificationGeneric notification, String email){
         // To do
         System.out.println("    > Notification id:"+notification.getId()+" "+email+" : Email sended");
         return true;
     }
 
-    public void publishNotification(NotificationInterface notification, List<User> usersList) {
+    public void publishNotification(NotificationGeneric notification, List<User> usersList) {
         for(User user : usersList){
             publishNotification( notification, user);
         }
     }
 
-    public void publishNotification(NotificationInterface notification, User user) {
+    public void publishNotification(NotificationGeneric notification, User user) {
         NotificationDAO notificationDAO = new NotificationDAO();
-        if(EnumConstants.NOTIFICATION_SHIPPING_TYPE.SMS.getDescription().equals(notification.getshippingType())){
+        if(EnumConstants.NOTIFICATION_SHIPPING_TYPE.SMS.getDescription().equals(notification.getShippingType())){
             if(user.getPhoneNumber().isEmpty()){
                 System.out.println(" ERROR: The user does not have a registered their phone number. User id : "+ user.getId() );
             }else{

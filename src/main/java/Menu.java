@@ -25,7 +25,7 @@ public class Menu {
             System.out.println("    6. Exit");
 
             System.out.print("\n>>> Choose option : ");
-            option = EntryUtils.llegirInt(scanner,null);
+            option = EntryUtils.readStringLikeInt(scanner,null, false);
 
             switch (option) {
                 case 1:

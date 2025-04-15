@@ -60,7 +60,7 @@ INSERT INTO `users` (`user_nick_name`, `user_name`, `user_surname`, `user_mail`,
 ('lisa_green', 'Lisa', 'Green', 'lisa.green2000@example.com', '54321876B', 'Carrer de la Pau', 42, '4', 'A', 'Girona', '17001', 'Espanya', '+34 972112233', 'n'),
 ('david_white', 'David', 'White', 'david.whitewhite@example.com', '21436587C', 'Rambla Nova', 18, 'baixos', 'D', 'Tarragona', '43002', 'Espanya', '+34 600112233', 'n'),
 ('emily_clark', 'Emily', 'Clark', 'emily.clarkkk@example.com', '87654321D', 'Avinguda Diagonal', 60, '7', NULL, 'Lleida', '25003', 'Espanya', '+34 973445566', NULL),
-('kevin_hall', 'Kevin', 'Hall', 'kevin.hallfff@example.com', '65432178E', 'Passeig de Gràcia', 100, NULL, NULL, 'Sabadell', '08201', 'Espanya', '+34 678901234', 'y'),
+('kevin_hall', 'Kevin', 'Hall', 'kevin.hallfff@example.com', '65432178E', 'Passeig de Gràcia', 100, NULL, NULL, 'Girona', '08201', 'Espanya', '+34 678901234', 'y'),
 ('olivia_adams', 'Olivia', 'Adams', 'olivia.adamsffff@example.com', '13579246F', 'Gran Via', 75, '1', 'B', 'Terrassa', '08221', 'Espanya', '+34 937890123', 'n');
 
 INSERT INTO `notifications` (

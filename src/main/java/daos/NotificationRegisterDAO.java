@@ -1,6 +1,6 @@
 package daos;
 
-import entities.NotificationSMS;
+import entities.NotificationGeneric;
 import entities.User;
 
 public class NotificationRegisterDAO {
@@ -10,7 +10,7 @@ public class NotificationRegisterDAO {
         return null;
     }
 
-    public NotificationSMS getNotification(){
+    public NotificationGeneric getNotification(){
 
         return null;
     }

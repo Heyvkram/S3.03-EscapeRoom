@@ -55,7 +55,7 @@ CREATE TABLE `notifications` (
   `notification_title` varchar(50) NOT NULL,
   `notification_short_description` varchar(100) NOT NULL,
   `notification_message` varchar(500) NOT NULL,
-  `notification_shipping_type` varchar(20) DEFAULT NULL,
+  `notification_shipping_type` varchar(20) DEFAULT '',
   `notification_type` varchar(20) DEFAULT NULL,
   `notification_level` varchar(20) DEFAULT NULL,
   `notification_date_reg` timestamp NOT NULL DEFAULT current_timestamp(),

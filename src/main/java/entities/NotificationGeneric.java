@@ -6,17 +6,19 @@ import utils.DateUtils;
 import java.time.LocalDateTime;
 
 @Data
-public class NotificationGeneric implements NotificationInterface {
+public class NotificationGeneric {
     private long id;
     private String title;
     private String shortDescription;
     private String message;
     private String type;
+    private String shippingType;
     private LocalDateTime registerDate;
     private LocalDateTime  modificationDate;
+    private User  user;
 
     public void printBasicInfoValues() {
-        System.out.printf("     %-5d %-25s | Title: %-30s  short description: %-25s%n", getId(), getTitle(), getType(), getShortDescription());
+        System.out.printf("     %-5d %-25s | Title: %-30s | Shipping type: %-25s | Short description: %-25s%n", getId(), getTitle(), getType(), getShippingType(), getShortDescription());
     }
 
     public void printInfoValues() {
@@ -36,19 +38,4 @@ public class NotificationGeneric implements NotificationInterface {
         System.out.println("    Type: " + getType());
     }
 
-
-    @Override
-    public String getshippingType() {
-        return "";
-    }
-
-    @Override
-    public User getUser() {
-        return null;
-    }
-
-    @Override
-    public boolean send() {
-        return true;
-    }
 }

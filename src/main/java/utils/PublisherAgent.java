@@ -2,7 +2,7 @@ package utils;
 
 import daos.NotificationDAO;
 import daos.UserDAO;
-import entities.NotificationInterface;
+import entities.NotificationGeneric;
 import entities.User;
 
 import java.sql.SQLException;
@@ -10,7 +10,7 @@ import java.util.List;
 
 public class PublisherAgent {
 
-    public static boolean sendNotificationToSubscribers(NotificationInterface notification) {
+    public static boolean sendNotificationToSubscribers(NotificationGeneric notification) {
         UserDAO userDao = new UserDAO();
 
         List<User> userList = null;
