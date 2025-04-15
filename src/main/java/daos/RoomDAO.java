@@ -136,24 +136,18 @@ public class RoomDAO extends GenericDAO {
     }
 
 
-        public boolean saveOrUpdateRoom(Room room) {
+        public boolean saveRoom(Room room) {
             if (room == null) return false;
 
-            String sqlStr = "UPDATE rooms SET room_name = ?, room_theme = ?, room_level = ?, room_status = ?, room_max_players = ?, room_date = ?";
-            String resultMsg = "Room updated";
-            if (room.getRoomId() == null) {
-                sqlStr = "INSERT INTO rooms (room_name, room_theme, room_level, room_status, room_max_players, room_date" + "VALUES (?, ?, ?, ?, ?, ?)";
-                resultMsg = "Room inserted";
-            }
+            String sqlStr = "INSERT INTO rooms (room_name, room_theme, room_level, room_status, room_max_players) VALUES (?, ?, ?, ?, ?)";
+            String resultMsg = "Room inserted";
 
             try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sqlStr)) {
-                ps.setLong(1, room.getRoomId());
-                ps.setString(2, room.getRoomName());
-                ps.setString(3, String.valueOf(room.getRoomTheme()));
-                ps.setString(4, String.valueOf(room.getRoomLevel()));
-                ps.setString(5, String.valueOf(room.getRoomStatus()));
-                ps.setInt(6, room.getRoomMaxPlayers());
-                //ps.setDate(7, room.getRoomDate());       //ES UNA FECHA
+                ps.setString(1, room.getRoomName());
+                ps.setString(2, String.valueOf(room.getRoomTheme()));
+                ps.setString(3, String.valueOf(room.getRoomLevel()));
+                ps.setString(4, String.valueOf(room.getRoomStatus()));
+                ps.setInt(5, room.getRoomMaxPlayers());
 
                 int rowsAffected = ps.executeUpdate();
                 if (rowsAffected > 0) {
@@ -213,11 +207,11 @@ public class RoomDAO extends GenericDAO {
             room.setRoomId(rs.getLong("room_id"));
             room.setRoomName(rs.getString("room_name"));
             String themeValue = rs.getString("room_theme").toUpperCase();
-            room.setRoomTheme(ROOM_THEME.valueOf(themeValue));
+            room.setRoomTheme(themeValue);
             String roomLevel = rs.getString("room_level").toUpperCase();
-            room.setRoomLevel(EnumConstants.GAME_LEVEL.valueOf(roomLevel));
+            room.setRoomLevel(roomLevel);
             String statusValue = rs.getString("room_status").replace(" ", "_").toUpperCase();
-            room.setRoomStatus(EnumConstants.ROOM_STATUS.valueOf(statusValue));
+            room.setRoomStatus(statusValue);
             room.setRoomMaxPlayers(rs.getInt("room_max_players"));
             room.setRoomDate(rs.getTimestamp("room_date").toLocalDateTime());
             return room;

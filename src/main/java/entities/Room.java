@@ -9,9 +9,9 @@ import java.time.LocalDateTime;
 public class Room {
     private Long roomId;
     private String roomName;
-    private EnumConstants.ROOM_THEME roomTheme;
-    private EnumConstants.GAME_LEVEL roomLevel;
-    private EnumConstants.ROOM_STATUS roomStatus;
+    private String roomTheme;
+    private String roomLevel;
+    private String roomStatus;
     private int roomMaxPlayers;
     private LocalDateTime roomDate;
 

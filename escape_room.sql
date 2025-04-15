@@ -59,12 +59,12 @@ CREATE TABLE `relation_user_game` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `rooms` (
-  `room_id` int(11) NOT NULL,
+  `room_id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `room_name` varchar(100) NOT NULL,
-  `room_theme` enum('Terror','Fiction','Fantasy'),
-  `room_level` enum('Easy','Intermediate','Hard'),
-  `room_status` enum('Available','Not available'),
-  `room_max_players` int(11) NOT NULL,
+  `room_theme` varchar(20),
+  `room_level` varchar(20),
+  `room_status` varchar(20),
+  `room_max_players` int(11) TINYINT UNSIGNED NOT NULL DEFAULT 1,
   `room_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -169,9 +169,7 @@ ALTER TABLE `relation_user_game`
   ADD PRIMARY KEY (`relation_user_game_id`),
   ADD KEY `fk_usergame` (`user_id`),
   ADD KEY `fk_game_id` (`game_id`);
-
-ALTER TABLE `rooms`
-  ADD PRIMARY KEY (`room_id`);
+  
 ALTER TABLE `clues`
   MODIFY `clue_id` int(11) NOT NULL AUTO_INCREMENT;
 
@@ -214,9 +212,6 @@ ALTER TABLE `game_sessions`
 
 ALTER TABLE `payments`
   MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT;
-
-ALTER TABLE `rooms`
-  MODIFY `room_id` int(11) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `users`
   MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;

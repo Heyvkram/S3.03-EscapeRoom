@@ -37,15 +37,16 @@ public class RoomForm {
             switch (option) {
                 case 1:
                     Room newRoom = newRoomForm(scanner);
-                    if(newRoom!=null && !roomDao.saveOrUpdateRoom(newRoom)){
+                    if (newRoom != null && !roomDao.saveRoom(newRoom)) {
                         System.out.println("\n   Error: Unable to establish connection to the database.");
                         System.out.println("     (Please contact your system administrator)\n");
-                        if(!EntryUtils.readYesNo(scanner," Type 'Y' for continue or 'N' for scape.")){
-                            option=4;
+                        if (!EntryUtils.readYesNo(scanner, " Type 'Y' for continue or 'N' for scape.")) {
+                            option = 4;
                         }
                     }
                     break;
                 case 2:
+                    int option2;
                     do {
                         System.out.println("\n");
                         System.out.println("-----------------------------------------");
@@ -57,9 +58,9 @@ public class RoomForm {
                         System.out.println("    4. Back");
 
                         System.out.print("\n>>> Choose option > ");
-                        option = EntryUtils.llegirInt(scanner, null);
+                        option2 = EntryUtils.llegirInt(scanner, null);
 
-                        switch (option) {
+                        switch (option2) {
                             case 1:
                                 try {
                                     roomDao.printAllRooms();
@@ -82,12 +83,12 @@ public class RoomForm {
                                     System.out.println("error(e)");
                                 }
                                 break;
-                            case 4:
-                                break;
                             default:
                                 System.out.println(">>> Wrong option.");
                         }
-                    } while (option != 4);
+
+                    } while (option2 != 4);
+                    break;
 
                 case 3:
                     try {
@@ -106,13 +107,17 @@ public class RoomForm {
                 default:
                     System.out.println("Wrong option.");
             }
-        } while (true);
+        } while (option != 4);
     }
 
     private Room newRoomForm(Scanner scanner) {
         Room room = new Room();
+        room.setRoomName(EntryUtils.llegirString(scanner, "*Name: ", true));
         room = chooseTheme(scanner, room);
         room = chooseDifficulty(scanner, room);
+        room = chooseStatus(scanner, room);
+        scanner.nextLine();
+        room.setRoomMaxPlayers(EntryUtils.readStringLikeInt(scanner, "*Players number: ", true));
         return room;
     }
 
@@ -123,6 +128,7 @@ public class RoomForm {
             System.out.println("-----------------------------------------");
             System.out.println("Choose a theme for the room:");
             System.out.println("-----------------------------------------");
+            System.out.println(EnumConstants.ROOM_THEME.getMenuOptions());
             System.out.println("    1. Terror");
             System.out.println("    2. Fiction");
             System.out.println("    3. Fantasy");
@@ -133,20 +139,21 @@ public class RoomForm {
 
             switch (option) {
                 case 1:
-                    room.setRoomTheme(EnumConstants.ROOM_THEME.TERROR);
+                    room.setRoomTheme(EnumConstants.ROOM_THEME.TERROR.getDescription());
                     return room;
                 case 2:
-                    room.setRoomTheme(EnumConstants.ROOM_THEME.FICTION);
+                    room.setRoomTheme(EnumConstants.ROOM_THEME.FICTION.getDescription());
                     return room;
                 case 3:
-                    room.setRoomTheme(EnumConstants.ROOM_THEME.FANTASY);
+                    room.setRoomTheme(EnumConstants.ROOM_THEME.FANTASY.getDescription());
                     return room;
                 case 4:
                     return null;
                 default:
                     System.out.println(">>> Wrong option.");
             }
-        } while (true);
+        } while (option != 4);
+        return null;
     }
 
     private Room chooseDifficulty(Scanner scanner, Room room) {
@@ -156,6 +163,7 @@ public class RoomForm {
             System.out.println("-----------------------------------------");
             System.out.println("Choose a difficulty for the room:");
             System.out.println("-----------------------------------------");
+            System.out.println(EnumConstants.GAME_LEVEL.getMenuOptions());
             System.out.println("    1. Easy");
             System.out.println("    2. Intermediate");
             System.out.println("    3. Hard");
@@ -166,19 +174,45 @@ public class RoomForm {
 
             switch (option) {
                 case 1:
-                    room.setRoomLevel(EnumConstants.GAME_LEVEL.EASY);
+                    room.setRoomLevel(EnumConstants.GAME_LEVEL.EASY.getDescription());
                     return room;
                 case 2:
-                    room.setRoomLevel(EnumConstants.GAME_LEVEL.INTERMEDIATE);
+                    room.setRoomLevel(EnumConstants.GAME_LEVEL.INTERMEDIATE.getDescription());
                     return room;
                 case 3:
-                    room.setRoomLevel(EnumConstants.GAME_LEVEL.HARD);
+                    room.setRoomLevel(EnumConstants.GAME_LEVEL.HARD.getDescription());
                     return room;
-                case 4:
-                    return null;
                 default:
                     System.out.println(">>> Wrong option.");
             }
-        } while (true);
+        } while (option != 4);
+        return null;
+    }
+
+
+    private Room chooseStatus(Scanner scanner, Room room) {
+        int option;
+        boolean optionOk = false;
+        do {
+            System.out.println("\n");
+            System.out.println("-----------------------------------------");
+            System.out.println("Choose a status for the room:");
+            System.out.println("-----------------------------------------");
+            System.out.println(EnumConstants.ROOM_STATUS.getMenuOptions());
+            System.out.print("\n>>> Choose option > ");
+            option = EntryUtils.llegirInt(scanner, null);
+
+            switch (option) {
+                case 0:
+                    room.setRoomStatus(EnumConstants.ROOM_STATUS.AVAILABLE.getDescription());
+                    return room;
+                case 1:
+                    room.setRoomStatus(EnumConstants.ROOM_STATUS.NOT_AVAILABLE.getDescription());
+                    return room;
+                default:
+                    System.out.println(">>> Wrong option.");
+            }
+        } while (!optionOk);
+        return null;
     }
 }
