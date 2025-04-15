@@ -64,7 +64,7 @@ CREATE TABLE `rooms` (
   `room_theme` varchar(20),
   `room_level` varchar(20),
   `room_status` varchar(20),
-  `room_max_players` int(11) TINYINT UNSIGNED NOT NULL DEFAULT 1,
+  `room_max_players` int(11)  UNSIGNED NOT NULL DEFAULT 1,
   `room_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

@@ -152,17 +152,18 @@ public class CluesForm {
                         default:
                             System.out.println("Wrong option.");
                     }
+                case 6:
+                    break;
             }
-        } while (option != 4);
+        } while (option != 6);
     }
-
 
     private static Clues newClueForm(Scanner scanner) {
         System.out.println("\n");
         Clues clue = new Clues();
         clue.setTitle(llegirString(scanner, "*Title: ", false));
         clue.setDescriptionUser(llegirString(scanner, "*User description: ", false));
-        // clue.setDescriptionAdmin(llegirString(scanner, "Admin description: ", false));
+        clue.setDescriptionAdmin(llegirString(scanner, "Admin description: ", false));
 
         System.out.println("*Choose clue theme: " + EnumConstants.ROOM_THEME.getMenuOptions());
         int xx = llegirInt(scanner, "*Type: ", false, EnumConstants.ROOM_THEME.getNumberMaxLevelValue());

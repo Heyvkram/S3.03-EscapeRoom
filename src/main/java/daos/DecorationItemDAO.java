@@ -42,10 +42,6 @@ public class DecorationItemDAO extends GenericDAO{
         return getDecorationItemBy(id, "decoration_item_id");
     }
 
-    public Optional<DecorationItem> getDecorationItemsByTheme(String theme) throws SQLException, ClassNotFoundException {
-        return getDecorationItemBy(theme, "decoration_item_theme");
-    }
-
     public boolean saveOrUpdateDecorationItem(DecorationItem decorationItem) {
         if(decorationItem == null) return false;
         String sqlStr = "INSERT INTO decoration_items (decoration_item_name, decoration_item_description, decoration_item_theme, decoration_item_price, decoration_item_clue_valor, decoration_item_img) " +

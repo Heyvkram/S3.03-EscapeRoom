@@ -51,7 +51,7 @@ INSERT INTO `users` (
 
 INSERT INTO `users` (`user_nick_name`, `user_name`, `user_surname`, `user_mail`, `user_idCard`, `user_address_street`, `user_address_number`, `user_address_floor`, `user_address_door`, `user_city`, `user_zip_code`, `user_country`, `user_phone`, `user_notifiable`) VALUES
 ( 'juan doe', 'John', 'Doe', 'john.doe2000@example.com', '12345678A', 'Carrer Fictici', 10, '3', 'B', 'Barcelona', '08001', 'Espanya', '+34 931234567', 'y'),
-( 'Paula smith', 'Jane', 'Smith', 'jane.smithsss@example.com', '98765432Z', 'Avinguda Exemple', 25, '1', 'A', 'Madrid', '28002', 'Espanya', '+34 919876543', 'n')
+( 'Paula smith', 'Jane', 'Smith', 'jane.smithsss@example.com', '98765432Z', 'Avinguda Exemple', 25, '1', 'A', 'Madrid', '28002', 'Espanya', '+34 919876543', 'n'),
 ( 'petersen jones', 'Peter', 'Jones', 'peter.jonesssss@example.com', '45678912X', 'Plaça Central', 5, NULL, NULL, 'València', '46003', 'Espanya', '+34 666555444', 'y'),
 ( 'sara_williams', 'Sara', 'Williams', 'sara.williamsss@example.com', '78912345Y', 'Ronda Universitat', 15, '2', 'C', 'Sevilla', '41004', 'Espanya', '+34 654321789', NULL),
 ( 'mike_brown', 'Mike', 'Brown', 'mike.browssss@example.com', '32165498W', 'Travessera de Gràcia', 30, NULL, NULL, 'Bilbao', '48005', 'Espanya', '+34 944112233', 'y');

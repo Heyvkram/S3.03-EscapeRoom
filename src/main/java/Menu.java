@@ -17,7 +17,7 @@ public class Menu {
             System.out.println("-----------------------------------------");
             System.out.println("Principal menu :");
             System.out.println("-----------------------------------------");
-            System.out.println("    1. Object menu");
+            System.out.println("    1. Decoration Item menu");
             System.out.println("    2. User menu");
             System.out.println("    3. Clue menu");
             System.out.println("    4. Room menu");

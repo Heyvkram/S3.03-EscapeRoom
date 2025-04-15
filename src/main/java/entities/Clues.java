@@ -19,7 +19,16 @@ public class Clues {
     private double price;
     private double value;
 
+
     public void printBasicInfoValues() {
-        System.out.println("Clues list:  " + getId() + " " + getTitle() + " " + getLevel() + " " + getTheme() + " " + getPrice());
+        System.out.printf("    %-5d  %-25s  Level: %-25s  Theme: %-25s  Price: %.2f%n", getId(), getTitle(), getLevel(), getTheme(), getPrice());
+    }
+
+    public void printPriceInfoValues(){
+        System.out.printf("    %-5d  %-25s   Price: %.2f%n", getId(), getTitle(), getPrice());
+    }
+
+    public void printThemeValorValues(){
+        System.out.printf("    %-5d  %-25s   Theme: %-25s   Price: %.2f%n", getId(), getTitle(), getTheme(), getPrice());
     }
 }
