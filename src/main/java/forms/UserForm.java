@@ -29,10 +29,10 @@ public class UserForm {
             System.out.println("    4. Delete user");
             System.out.println("    5. Find users by surname");
             System.out.println("    6. Show notifiable users ");
-            System.out.println("    7. Back");
+            System.out.println("    7. Mark / unmark user as notifiable ");
+            System.out.println("    8. Back");
 
-            System.out.print("\n>>> Choose option > ");
-            option = EntryUtils.llegirInt(scanner, null);
+            option = EntryUtils.readStringLikeInt(scanner, "\n>>> Choose option > ", false);
             switch (option) {
                 case 1:
                     User user = newUserForm(scanner);
@@ -111,12 +111,29 @@ public class UserForm {
                     break;
 
                 case 7:
+                    Optional<User> userOpt = userDao.getUserById(EntryUtils.readStringLikeLong(scanner, "Type the user id : ", false));
+                    if (userOpt.isPresent()) {
+                        System.out.println("\n");
+                        userOpt.get().printBasicInfoValues();
+                        boolean result = userDao.updateUserNotificationStatus(userOpt.get().getId(), EntryUtils.readYesNo(scanner, "\nSet this user as notifiable (y/n)? "));
+
+                        Optional<User> userOptUpdated = userDao.getUserById(userOpt.get().getId());
+                        if(result && userOptUpdated.isPresent()){
+                            System.out.println("\n");
+                            userOptUpdated.get().printBasicInfoValues();
+                            System.out.println("\n>>> User updated.");
+                        }
+
+                    }
+                    break;
+
+                case 8:
                     break;
 
                 default:
                     System.out.println(">>> Wrong option.");
             }
-        } while (option != 7);
+        } while (option != 8);
         scanner.nextLine();
     }
 

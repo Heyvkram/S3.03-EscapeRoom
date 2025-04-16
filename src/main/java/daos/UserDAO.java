@@ -217,6 +217,26 @@ public class UserDAO extends GenericDAO {
         }
     }
 
+    public boolean updateUserNotificationStatus(long userId, boolean userNotifiable) {
+        String sqlUpdate = "UPDATE users SET user_notifiable = ?  WHERE user_id = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sqlUpdate);
+        ) {
+            ps.setString(1, (userNotifiable)?"y":"n" );
+            ps.setLong(2, userId);
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println(">>> User updated\n");
+            }
+            return rowsAffected > 0;
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("!!!! Can't save the information\n");
+            log.error("!!!! Can't save the information\n", e);
+        }
+        return false;
+    }
+
     public boolean updateUser(User user) {
         if (user == null) return false;
 
