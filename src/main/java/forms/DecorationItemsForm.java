@@ -32,7 +32,7 @@ public class DecorationItemsForm {
             switch (option) {
                 case 1:
                     scanner.nextLine();
-                    if(!decorationItem.saveOrUpdateDecorationItem(newDecorationItemForm(scanner))){
+                    if(!decorationItem.saveDecorationItem(newDecorationItemForm(scanner))){
                         System.out.println("\n   Error: Unable to establish connection to the database.");
                         System.out.println("     (Please contact your system administrator)\n");
                         if(!EntryUtils.readYesNo(scanner," Type 'Y' for continue or 'N' for scape.")){
