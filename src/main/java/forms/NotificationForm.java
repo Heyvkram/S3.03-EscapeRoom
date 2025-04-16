@@ -27,9 +27,9 @@ public class NotificationForm {
             System.out.println("    -----------------------------------------");
             System.out.println("    1. Create notification");
             System.out.println("    2. List notifications templates");
-            System.out.println("    3. Delete notification template");
-            System.out.println("    4. Send notification to subscribers");
-            System.out.println("    5. Show notification templates");
+            System.out.println("    3. Show notification template");
+            System.out.println("    4. Delete notification template");
+            System.out.println("    5. Send notification to subscribers");
             System.out.println("    6. Send notification to session players");
             System.out.println("    7. Back");
 
@@ -56,6 +56,19 @@ public class NotificationForm {
                     break;
                 case 3:
                     try {
+                        Optional<NotificationGeneric> notifOpt = notifDao.getNotificationById(EntryUtils.readStringLikeLong(scanner, "Type the notification id : ", false));
+                        if (notifOpt.isPresent()) {
+                            notifOpt.get().printInfoValues();
+                        } else {
+                            System.out.println("\n>>> Notification not found.");
+                        }
+                    } catch (SQLException | ClassNotFoundException e) {
+                        System.out.println(">>> ERROR: " + e);
+                        log.error(e);
+                    }
+                    break;
+                case 4:
+                    try {
                         Optional<NotificationGeneric> notifOpt = notifDao.getNotificationById(EntryUtils.readStringLikeLong(scanner, "Type the user to delete id : ", false));
                         if (notifOpt.isPresent()) {
                             System.out.println("\n");
@@ -70,7 +83,7 @@ public class NotificationForm {
                         log.error(e);
                     }
                     break;
-                case 4:
+                case 5:
                     try {
                         Optional<NotificationGeneric> notifOpt = notifDao.getNotificationById(EntryUtils.readStringLikeLong(scanner, "Type the notification id : ", false));
                         if (notifOpt.isPresent()) {
@@ -88,21 +101,8 @@ public class NotificationForm {
                         log.error(e);
                     }
                     break;
-                case 5:
-                    try {
-                        Optional<NotificationGeneric> notifOpt = notifDao.getNotificationById(EntryUtils.readStringLikeLong(scanner, "Type the notification id : ", false));
-                        if (notifOpt.isPresent()) {
-                            notifOpt.get().printInfoValues();
-                        } else {
-                            System.out.println("\n>>> Notification not found.");
-                        }
-                    } catch (SQLException | ClassNotFoundException e) {
-                        System.out.println(">>> ERROR: " + e);
-                        log.error(e);
-                    }
-                    break;
                 case 6:
-                    // ToDo
+                    // ToDo "Send notification to session players"
                     break;
                 default:
                     System.out.println(">>> Wrong option.");

@@ -1,10 +1,11 @@
 package daos;
 
+import entities.CalculablePriceInterface;
 import entities.Clues;
-import entities.DecorationItem;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utils.DateUtils;
+import utils.UtilsEscape;
 
 import java.sql.*;
 import java.util.*;
@@ -170,25 +171,12 @@ public class ClueDAO extends GenericDAO {
 
         allItems.forEach(Clues::printPriceInfoValues);
 
-        double totalPrice = allItems.stream()
-                .mapToDouble(Clues::getPrice)
-                .sum();
+        List<CalculablePriceInterface> priceInterfaceItems = new ArrayList<>(allItems);
+        double totalPrice = UtilsEscape.sumAllPrices(priceInterfaceItems);
 
         System.out.println("------------------------------------------");
         System.out.println("Total price for all clue items: $" + String.format("%.2f", totalPrice));
     }
-
-    /*public double getTotalCluesPrice() throws SQLException, ClassNotFoundException {
-        String sql = "SELECT SUM(clue_price) AS total_price FROM clues";
-        try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-            if (rs.next()) {
-                return rs.getDouble("total_price");
-            }
-        }
-        return 0.0;
-    }*/
 
     public Map<String, Double> getTotalCluePriceByTheme() throws SQLException, ClassNotFoundException {
         Map<String, Double> themePrices = new HashMap<>();

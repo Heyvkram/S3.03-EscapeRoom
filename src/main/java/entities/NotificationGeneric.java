@@ -18,7 +18,7 @@ public class NotificationGeneric {
     private User  user;
 
     public void printBasicInfoValues() {
-        System.out.printf("     %-5d %-25s | Title: %-30s | Shipping type: %-25s | Short description: %-25s%n", getId(), getTitle(), getType(), getShippingType(), getShortDescription());
+        System.out.printf("     %-5d  Shipping type: %-10s   Type: %-10s   Title: %-30s    Short description: %-25s%n", getId(), getShippingType(), getType(), getTitle(),  getShortDescription());
     }
 
     public void printInfoValues() {

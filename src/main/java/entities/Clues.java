@@ -6,7 +6,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class Clues {
+public class Clues implements CalculablePriceInterface {
     private Long id;
     private String title;
     private String descriptionUser;
@@ -21,10 +21,11 @@ public class Clues {
 
 
     public void printBasicInfoValues() {
-        System.out.printf("    %-5d  %-25s  Level: %-25s  Theme: %-25s  Price: %.2f%n", getId(), getTitle(), getLevel(), getTheme(), getPrice());
+        System.out.printf("    %-5d  Level: %-15s  Price: %4.2f   Theme: %-15s   Title: %-25s%n", getId(), getLevel(), getPrice(), getTheme(), getTitle());
     }
 
     public void printPriceInfoValues(){
-        System.out.printf("    %-5d  %-25s   Price: %.2f%n", getId(), getTitle(), getPrice());
+        // System.out.printf("    %-5d  %-25s   Price: %.2f%n", getId(), getTitle(), getPrice());
+        System.out.printf("    %-5d Price: %4.2f   Title: %-25s%n", getId(), getPrice(), getTitle());
     }
 }

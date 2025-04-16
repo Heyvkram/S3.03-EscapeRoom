@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utils.DdBbUtils;
 import utils.EntryUtils;
+import utils.UtilsEscape;
 
 import java.sql.*;
 import java.util.*;
@@ -222,27 +223,27 @@ public class UserDAO extends GenericDAO {
         ArrayList<Object> parameterList = new ArrayList<>();
         ArrayList<String> arrayQueryParams = new ArrayList<>();
 
-        if (EntryUtils.isNotNullOrEmpty(user.getNickName())) {
+        if (UtilsEscape.isNotNullOrEmpty(user.getNickName())) {
             arrayQueryParams.add(" user_nick_name = ?");
             parameterList.add(user.getNickName());
         }
 
-        if (EntryUtils.isNotNullOrEmpty(user.getName())) {
+        if (UtilsEscape.isNotNullOrEmpty(user.getName())) {
             arrayQueryParams.add(" user_name = ?");
             parameterList.add(user.getName());
         }
 
-        if (EntryUtils.isNotNullOrEmpty(user.getSurname())) {
+        if (UtilsEscape.isNotNullOrEmpty(user.getSurname())) {
             arrayQueryParams.add(" user_surname = ?");
             parameterList.add(user.getSurname());
         }
 
-        if (EntryUtils.isNotNullOrEmpty(user.getAddressStreet())) {
+        if (UtilsEscape.isNotNullOrEmpty(user.getAddressStreet())) {
             arrayQueryParams.add(" user_address_street = ?");
             parameterList.add(user.getAddressStreet());
         }
 
-        if (EntryUtils.isNotNullOrEmpty(user.getIdCard())) {
+        if (UtilsEscape.isNotNullOrEmpty(user.getIdCard())) {
             arrayQueryParams.add(" user_idCard = ?");
             parameterList.add(user.getIdCard());
         }
@@ -252,42 +253,42 @@ public class UserDAO extends GenericDAO {
             parameterList.add(user.getAddressNumber());
         }
 
-        if (EntryUtils.isNotNullOrEmpty(user.getAddressFloor())) {
+        if (UtilsEscape.isNotNullOrEmpty(user.getAddressFloor())) {
             arrayQueryParams.add(" user_address_floor = ?");
             parameterList.add(user.getAddressFloor());
         }
 
-        if (EntryUtils.isNotNullOrEmpty(user.getAddressDoor())) {
+        if (UtilsEscape.isNotNullOrEmpty(user.getAddressDoor())) {
             arrayQueryParams.add(" user_address_door = ?");
             parameterList.add(user.getAddressDoor());
         }
 
-        if (EntryUtils.isNotNullOrEmpty(user.getCity())) {
+        if (UtilsEscape.isNotNullOrEmpty(user.getCity())) {
             arrayQueryParams.add(" user_city = ?");
             parameterList.add(user.getCity());
         }
 
-        if (EntryUtils.isNotNullOrEmpty(user.getZipCode())) {
+        if (UtilsEscape.isNotNullOrEmpty(user.getZipCode())) {
             arrayQueryParams.add(" user_zip_code = ?");
             parameterList.add(user.getZipCode());
         }
 
-        if (EntryUtils.isNotNullOrEmpty(user.getCountry())) {
+        if (UtilsEscape.isNotNullOrEmpty(user.getCountry())) {
             arrayQueryParams.add(" user_country = ?");
             parameterList.add(user.getCountry());
         }
 
-        if (EntryUtils.isNotNullOrEmpty(user.getPhoneNumber())) {
+        if (UtilsEscape.isNotNullOrEmpty(user.getPhoneNumber())) {
             arrayQueryParams.add(" user_phone = ?");
             parameterList.add(user.getPhoneNumber());
         }
 
-        if (EntryUtils.isNotNullOrEmpty(user.getMail())) {
+        if (UtilsEscape.isNotNullOrEmpty(user.getMail())) {
             arrayQueryParams.add(" user_mail = ?");
             parameterList.add(user.getMail());
         }
 
-        if (EntryUtils.isNotNullOrEmpty(user.getNotifiable())) {
+        if (UtilsEscape.isNotNullOrEmpty(user.getNotifiable())) {
             arrayQueryParams.add(" user_notifiable = ?");
             parameterList.add(user.getNotifiable());
         }

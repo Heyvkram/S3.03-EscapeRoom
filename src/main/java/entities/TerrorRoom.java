@@ -41,11 +41,6 @@ public class TerrorRoom extends Room implements RoomThemeInterface {
         System.out.println("Starting terror room... Prepare to be scared!");
     }
 
-    /* public List<String> getTerrorDecorationItems() {
-     * AÑADIR LISTA DE DECORATION ITEMS PARA "TERROR"
-     * }
-     */
-
     public List<DecorationItem> getTerrorDecorationItems() {
         DecorationItemDAO decorationItemDAO = new DecorationItemDAO();
         List<DecorationItem> decorationItems = null;

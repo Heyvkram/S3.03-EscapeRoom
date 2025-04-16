@@ -56,7 +56,7 @@ public class EntryUtils {
                 entrada="validationError";
             }
 
-            if(regExp!=null && isNotNullOrEmpty(entrada)){
+            if(regExp!=null && UtilsEscape.isNotNullOrEmpty(entrada)){
                 Pattern pattern = Pattern.compile(EMAIL_REGEX, Pattern.CASE_INSENSITIVE);
                 Matcher matcher = pattern.matcher(entrada);
                 if(!matcher.matches()){
@@ -65,7 +65,7 @@ public class EntryUtils {
                 }
             }
 
-        }while((!isNotNullOrEmpty(entrada) && !isNullable) || "validationError".equals(entrada));
+        }while((!UtilsEscape.isNotNullOrEmpty(entrada) && !isNullable) || "validationError".equals(entrada));
         return entrada;
 
     };
@@ -110,7 +110,7 @@ public class EntryUtils {
                 System.out.println("  Error: You must enter a numeric value");
             }
 
-        }while((!isNullable && isNullOrEmpty(entryStr)) || !isNumeric(entryStr));
+        }while((!isNullable && UtilsEscape.isNullOrEmpty(entryStr)) || !isNumeric(entryStr));
 
         return resultInt;
 
@@ -307,12 +307,6 @@ public class EntryUtils {
         return true;
     }
 
-    public static boolean isNotNullOrEmpty(String strObj){
-        return !(strObj==null || strObj.isEmpty() || strObj.isBlank());
-    }
-    public static boolean isNullOrEmpty(String strObj){
-        return (strObj==null || strObj.isEmpty() || strObj.isBlank());
-    }
 
 
 }

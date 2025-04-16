@@ -1,11 +1,10 @@
 package entities;
 
 import lombok.Data;
-import utils.Themes;
 
 @Data
 
-public class DecorationItem {
+public class DecorationItem implements CalculablePriceInterface {
     private Long id;
     private String name;
     private String description;

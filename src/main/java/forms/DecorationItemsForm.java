@@ -16,7 +16,7 @@ public class DecorationItemsForm {
         DecorationItemDAO decorationItem = new DecorationItemDAO();
         System.out.println("\n");
         do {
-            System.out.println("-----------------------------------------");
+            System.out.println("\n-----------------------------------------");
             System.out.println("Decoration items menu:");
             System.out.println("-----------------------------------------");
             System.out.println("    1. New decoration item");
@@ -83,6 +83,7 @@ public class DecorationItemsForm {
                     }
                     break;
                 case 6:
+                    scanner.nextLine();
                     break;
                 default:
                     System.out.println("Wrong option.");

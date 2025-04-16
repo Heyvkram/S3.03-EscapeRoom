@@ -79,6 +79,8 @@ public class RoomForm {
                                     System.out.println("error(e)");
                                 }
                                 break;
+                            case 4:
+                                break;
                             default:
                                 System.out.println(">>> Wrong option.");
                         }

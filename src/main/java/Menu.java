@@ -14,6 +14,7 @@ public class Menu {
     public static void principalMenu(Scanner scanner ) {
         int option;
         do {
+            System.out.println("\n");
             System.out.println("-----------------------------------------");
             System.out.println("Principal menu :");
             System.out.println("-----------------------------------------");
@@ -64,7 +65,6 @@ public class Menu {
                     System.out.println(">>> Wrong option.");
             }
         } while (option != 6);
-        scanner.nextLine();
     }
 
 }

@@ -1,6 +1,10 @@
 package entities;
 
+import daos.DecorationItemDAO;
 import utils.EnumConstants;
+
+import java.sql.SQLException;
+import java.util.List;
 
 public class FantasyRoom extends Room implements RoomThemeInterface{
 
@@ -35,9 +39,16 @@ public class FantasyRoom extends Room implements RoomThemeInterface{
         System.out.println("Starting fantasy room... Enter a magical world!");
     }
 
-    /* public List<String> getFantasyDecorationItems() {
-     * AÑADIR LISTA DE DECORATION ITEMS PARA "FANTASY"
-     * }
-     */
+    public List<DecorationItem> getTerrorDecorationItems() {
+        DecorationItemDAO decorationItemDAO = new DecorationItemDAO();
+        List<DecorationItem> decorationItems = null;
+        try {
+            decorationItems = decorationItemDAO.getDecorationsItemsBy(EnumConstants.ROOM_THEME.FANTASY.getDescription(),"decoration_item_theme");
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return decorationItems;
+    }
+
 }
 

@@ -21,7 +21,7 @@ public class CluesForm {
         ClueDAO clueDao = new ClueDAO();
         System.out.println("\n");
         do {
-            System.out.println("-----------------------------------------");
+            System.out.println("\n-----------------------------------------");
             System.out.println("Clue menu:");
             System.out.println("-----------------------------------------");
             System.out.println("    1. New clue");
@@ -61,7 +61,7 @@ public class CluesForm {
                         System.out.println("    1. " + EnumConstants.ROOM_THEME.TERROR.getDescription());
                         System.out.println("    2. " + EnumConstants.ROOM_THEME.FICTION.getDescription());
                         System.out.println("    3. " + EnumConstants.ROOM_THEME.FANTASY.getDescription());
-                        System.out.println("Type clue theme:");
+                        System.out.print("Type clue theme:");
                         option = scanner.nextInt();
                         String themeName = "";
                         switch (option) {
@@ -92,31 +92,6 @@ public class CluesForm {
 
                 case 4:
                     deleteClueById(scanner, clueDao);
-//                    try {
-//                        clueDao.deleteById(Long.valueOf(llegirInt(scanner, "Type clue id: ", false)));
-//                    } catch (SQLException | ClassNotFoundException e) {
-//                        log.error(e);
-//                    }
-//                    break;
-
-//                    try {
-//                        Long aLong = readStringLikeLong(scanner, "Type clue id to delete it: ", false);
-//                        Optional<Clues> clue = clueDao.getClueById(aLong);
-//
-//                        System.out.println("\n");
-//                        clue.get().printBasicInfoValues();
-//
-//                        if (readYesNo(scanner, "\nDelete this clue (y/n)? ")) {
-//                            if (clueDao.deleteById(clue.get().getId())) {
-//                                System.out.println("\n>>> Clue deleted.");
-//                            }
-//                        } else {
-//                            System.out.println("No clue found with this ID.");
-//                        }
-//                    } catch (SQLException | ClassNotFoundException e) {
-//                        log.error(e);
-//                    }
-
                     break;
                 case 5:
 
@@ -152,6 +127,7 @@ public class CluesForm {
                             System.out.println("Wrong option.");
                     }
                 case 6:
+                    scanner.nextLine();
                     break;
             }
         } while (option != 6);
@@ -199,19 +175,12 @@ public class CluesForm {
         System.out.print("\n*Admin description: " + clue.getDescriptionAdmin());
         llegirString(scanner, ", new value: > ", true);
 
-//        System.out.print("\n*Theme: "+ clue.getTheme());
-//        llegirEn(scanner, ", new value: > ", true);
-
         System.out.print("\n*Level: " + clue.getLevel());
         llegirInt(scanner, ", new value: > ", true);
         scanner.nextLine();
 
         System.out.print("\n*Game phase: " + clue.getGamePhase());
         llegirInt(scanner, ", new value: > ", true);
-
-
-//        System.out.print("\n*Date: "+ clue.getDate());
-//        llegirDate(scanner, ", new value: > ", true);
 
         System.out.print("\n*Price: " + clue.getPrice());
         llegirDouble(scanner, ", new value: > ");
@@ -222,12 +191,13 @@ public class CluesForm {
     }
     private static void deleteClueById(Scanner scanner, ClueDAO clueDao) {
         try {
-            System.out.println("Type a clue ID you want to delete:");
+            System.out.print("Type a clue ID you want to delete: ");
             Long clueId = scanner.nextLong();
             Clues clue = clueDao.getClueById(clueId);
 
             if (clue != null) {
                 clue.printBasicInfoValues();
+                scanner.nextLine();
                 boolean confirm = readYesNo(scanner, "Are you sure you want to delete this clue? (y/n): ");
                 if (confirm) {
                     boolean deleted = clueDao.deleteById(clueId);
