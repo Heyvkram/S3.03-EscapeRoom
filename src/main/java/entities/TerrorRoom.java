@@ -41,15 +41,4 @@ public class TerrorRoom extends Room implements RoomThemeInterface {
         System.out.println("Starting terror room... Prepare to be scared!");
     }
 
-    public List<DecorationItem> getTerrorDecorationItems() {
-        DecorationItemDAO decorationItemDAO = new DecorationItemDAO();
-        List<DecorationItem> decorationItems = null;
-        try {
-            decorationItems = decorationItemDAO.getDecorationsItemsBy(EnumConstants.ROOM_THEME.TERROR.getDescription(),"decoration_item_theme");
-        } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        return decorationItems;
-    }
-
 }

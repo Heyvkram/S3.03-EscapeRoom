@@ -32,7 +32,7 @@ public class DecorationItemDAO extends GenericDAO {
             }
 
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
+                while(rs.next()) {
                     resultList.add(resultSetToDecorationItemObject(rs));
                 }
             }
@@ -130,11 +130,15 @@ public class DecorationItemDAO extends GenericDAO {
         getAllDecorationItems().forEach(DecorationItem::printBasicInfoValues);
     }
 
-    public void printDecorationItemsByTheme(String theme) throws ClassNotFoundException, SQLException {
-        System.out.println("Decoration Items with theme '" + theme + "' ____________________");
-        List<DecorationItem> filteredItems = getAllDecorationItems().stream()
+    public List<DecorationItem> getDecorationItemsByTheme(List<DecorationItem> _itemsList, String theme) throws ClassNotFoundException, SQLException {
+        return _itemsList.stream()
                 .filter(item -> item.getTheme().equalsIgnoreCase(theme))
                 .toList();
+    }
+
+    public void printDecorationItemsByTheme(String theme) throws ClassNotFoundException, SQLException {
+        System.out.println("Decoration Items with theme '" + theme + "' ____________________");
+        List<DecorationItem> filteredItems = getDecorationItemsByTheme(getAllDecorationItems(), theme);
 
         if (filteredItems.isEmpty()) {
             System.out.println("No decoration items found with the theme: " + theme);
@@ -151,6 +155,11 @@ public class DecorationItemDAO extends GenericDAO {
         System.out.println("Total price for theme '" + theme + "': $" + String.format("%.2f", totalPrice));
     }
 
+    public double getDecorationItemsListTotalPrice(List<DecorationItem> itemsList){
+        List<CalculablePriceInterface> priceInterfaceItems = new ArrayList<>(itemsList);
+        return UtilsEscape.sumAllPrices(priceInterfaceItems);
+    }
+
     public void printAllDecorationItemsPrices() throws ClassNotFoundException, SQLException {
         System.out.println("Decoration Items Price list ____________________");
         List<DecorationItem> allItems = getAllDecorationItems();
@@ -159,12 +168,8 @@ public class DecorationItemDAO extends GenericDAO {
             System.out.println("No decoration items found.");
             return;
         }
-
         allItems.forEach(DecorationItem::printPriceInfoValues);
-
-        List<CalculablePriceInterface> priceInterfaceItems = new ArrayList<>(allItems);
-        double totalPrice = UtilsEscape.sumAllPrices(priceInterfaceItems);
-
+        double totalPrice = getDecorationItemsListTotalPrice(allItems);
         System.out.println("------------------------------------------");
         System.out.println("Total price for all decoration items: $" + String.format("%.2f", totalPrice));
     }
@@ -179,6 +184,65 @@ public class DecorationItemDAO extends GenericDAO {
             ps.setLong(1, id);
             ps.execute();
             return true;
+        }
+    }
+
+    public List<DecorationItem> getDecorationItemOfRoom(long roomID) throws ClassNotFoundException, SQLException  {
+        List<DecorationItem> resultList = new ArrayList<>();
+        final String sqlSelectDecorationItem = "select * from decoration_items where " +
+                "decoration_item_id in (SELECT decoration_item_id FROM relation_decoration_item_room where room_id=?)";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sqlSelectDecorationItem)) {
+            ps.setLong(1, (Long) roomID);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    resultList.add(resultSetToDecorationItemObject(rs));
+                }
+            }
+        }
+        return resultList;
+    }
+
+    public boolean saveDecorationItemRoomRelations(long roomID, List<DecorationItem> relations) {
+        if (relations == null || relations.isEmpty()) {
+            log.warn("Lista de relaciones nula o vacía. No se realiza ninguna inserción.");
+            return true; // Consideramos que no hay error si no hay nada que insertar
+        }
+
+        String sqlStr = "INSERT INTO relation_decoration_item_room (decoration_item_id, room_id) VALUES (?, ?)";
+        int totalRelations = relations.size();
+        int successfulInsertions = 0;
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sqlStr)) {
+
+            conn.setAutoCommit(false); // Iniciamos una transacción para hacer la operación atómica
+
+            for (DecorationItem decoItem : relations) {
+                ps.setLong(1, decoItem.getId());
+                ps.setLong(2, roomID);
+                ps.addBatch(); // Añadimos la inserción al batch
+            }
+
+            int[] results = ps.executeBatch(); // Ejecutamos el batch completo
+
+            for (int result : results) {
+                if (result == 1 || result == 0) { // Verifica si la inserción fue exitosa (1) o no hubo error (0 en algunos drivers)
+                    successfulInsertions++;
+                } else {
+                    log.error("Error al insertar una relación. Resultado: {}", result);
+                    conn.rollback(); // Si una inserción falla, hacemos rollback de toda la transacción
+                    return false; // Devolvemos false para indicar el fallo
+                }
+            }
+
+            conn.commit(); // Si todas las inserciones fueron exitosas, hacemos commit de la transacción
+            log.info("Se insertaron {} de {} relaciones entre elementos y habitaciones.", successfulInsertions, totalRelations);
+            return successfulInsertions == totalRelations; // Devolvemos true si todas fueron exitosas
+
+        } catch (SQLException | ClassNotFoundException e) {
+            log.error("Error al guardar las relaciones entre elementos y habitaciones", e);
+            return false; // Devolvemos false en caso de excepción
         }
     }
 

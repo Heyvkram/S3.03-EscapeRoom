@@ -1,3 +1,5 @@
+USE escape_room;
+
 INSERT INTO `decoration_items` (`decoration_item_name`, `decoration_item_description`, `decoration_item_theme`, `decoration_item_price`, `decoration_item_clue_valor`, `decoration_item_img`) VALUES
 ('Crani Realista', 'Crani humà de mida natural amb detalls esgarrifosos. Perfecte per a decoracions embruixades.', 'Terror', 29.99, 7, 'crani.jpg'),
 ('Aranya Gegant', 'Aranya peluda de grans dimensions amb ulls brillants. Ideal per penjar al sostre o col·locar en una cantonada.', 'Terror', 39.95, 9, 'aranya_gegant.png'),
@@ -19,7 +21,6 @@ INSERT INTO `decoration_items` (`decoration_item_name`, `decoration_item_descrip
 ('Estàtua de Unicorn', 'Petita estàtua elegant d\'un unicorn amb crinera i cua brillants. Un símbol de màgia i puresa.', 'Fantasy', 40.00, 8, 'estatua_unicorn.svg'),
 ('Llibre d\'Encanteris', 'Rèplica d\'un llibre antic amb símbols misteriosos a la coberta. Perfecte per a crear un ambient de biblioteca encantada.', 'Fantasy', 21.25, 5, 'llibre_encanteris.jpg');
 
-
 INSERT INTO `clues` (`clue_title`, `clue_description_user`, `clue_description_admin`, `clue_theme`, `clue_level`, `clue_game_phase`, `clue_price`, `clue_value`) VALUES
 ('El Murmur a les Fosques', 'Sento un murmuri constant que prové de les parets. Què vol dir?', 'Un so preenregistrat d\'un murmuri inquietant s\'activa en una zona específica. Pot indicar la presència d\'un esperit o un altre element.', 'Terror', 'Intermediate', 'Ambientació', 15, 8),
 ('L\'Ombra que Es Mou', 'He vist una ombra allargada que s\'ha mogut sola en aquesta habitació. Estic imaginant coses?', 'Un efecte de llum projecta una ombra que es mou lentament per la paret o el terra, creant una il·lusió de presència.', 'Terror', 'Easy', 'Observació', 10, 5),
@@ -40,4 +41,30 @@ INSERT INTO `clues` (`clue_title`, `clue_description_user`, `clue_description_ad
 ('El Fragment del Mapa Màgic', 'Tinc un tros d\'un mapa amb dibuixos de criatures mítiques i llocs desconeguts. On em porta?', 'Un fragment d\'un mapa il·lustrat amb elements de fantasia. En combinar-lo amb altres fragments (si n\'hi ha), pot revelar una ubicació.', 'Fantasy', 'Intermediate', 'Visual/Puzzle', 18, 11),
 ('El Jeroglífic de la Criatura Alada', 'Hi ha un escrit amb símbols que representen animals fantàstics. Puc desxifrar-lo?', 'Una sèrie de jeroglífics o pictogrames que representen criatures mítiques (dracs, grifons, etc.). Cada símbol pot correspondre a una lletra o un número.', 'Fantasy', 'Hard', 'Símbol/Text', 23, 12),
 ('L\'Objecte Imbuït de Màgia', 'He trobat un objecte que em transmet una energia estranya. Quines propietats té?', 'Un objecte (un anell, un amulet, etc.) amb un aspecte distintiu. Pot reaccionar a la llum ultraviolada revelant un missatge ocult, o tenir un mecanisme senzill amagat.', 'Fantasy', 'Easy', 'Objecte/Sensorial', 13, 7);
+
+
+
+INSERT INTO decoration_items (
+    decoration_item_name,
+    decoration_item_description,
+    decoration_item_theme,
+    decoration_item_price,
+    decoration_item_clue_valor,
+    decoration_item_img
+) VALUES
+('Crani Lluentor', 'Crani humà amb ulls LED vermells brillants.', 'Terror', 29.99, 10, 'crani_lluentor.jpg'),
+('Aranya Gegant de Peluix', 'Aranya de peluix gegant amb potes articulades i so esgarrifós.', 'Terror', 39.95, 12, 'aranya_peluix.png'),
+('Mirall Embruixat', 'Mirall antic que mostra reflexos distorsionats i figures fantasmals.', 'Terror', 49.99, 15, 'mirall_embruixat.jpeg'),
+('Calabaza Possessa', 'Calabaza amb llum interior i expressió malévola, que sembla moure\'s sola.', 'Terror', 34.99, 11, 'calabaza_possessa.gif'),
+('Làpida Emergent', 'Làpida de làtex que emergeix del terra, amb efectes de so de cementiri.', 'Terror', 59.95, 14, 'lapida_emergent.jpg'),
+('Espasa de Llum', 'Rèplica d\'espasa de llum amb efectes de so i llum.', 'Fiction', 79.99, 10, 'espasa_llum.jpg'),
+('Robot Androide', 'Figura d\'androide amb articulacions mòbils i ulls brillants.', 'Fiction', 99.95, 12, 'robot_androide.png'),
+('Nau Espacial', 'Model detallat de nau espacial amb llums i sons.', 'Fiction', 149.99, 15, 'nau_espacial.jpeg'),
+('Portal Dimensional', 'Rèplica de portal dimensional amb efectes de llum i fum.', 'Fiction', 129.99, 11, 'portal_dimensional.gif'),
+('Mapa Estel·lar', 'Mapa detallat de la galàxia amb constel·lacions i planetes.', 'Fiction', 49.95, 14, 'mapa_estellar.jpg'),
+('Espasa Màgica', 'Espasa amb gravats rúnics brillants i empunyadura ornamentada.', 'Fantasy', 89.99, 11, 'espasa_magica.jpg'),
+( 'Drac Petit', 'Figura de drac detallada amb ales articulades i escates brillants.', 'Fantasy', 129.95, 14, 'drac_petit.png'),
+('Bosc Encantat en Ampolla', 'Rèplica d\'un bosc en miniatura dins d\'una ampolla de vidre amb llum suau.', 'Fantasy', 99.99, 13, 'bosc_ampolla.jpeg'),
+('Mapa del Tresor Perdut', 'Mapa antic amb símbols misteriosos i marques que indiquen un tresor amagat.', 'Fantasy', 69.99, 10, 'mapa_tresor.gif'),
+('Calze de l\'Elixir', 'Calze daurat amb incrustacions de gemmes, per contenir pocions màgiques.', 'Fantasy', 79.95, 12, 'calze_elixir.jpg');
 

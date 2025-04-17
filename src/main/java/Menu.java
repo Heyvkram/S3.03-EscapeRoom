@@ -1,9 +1,5 @@
 import daos.ClueDAO;
-import forms.CluesForm;
-import forms.DecorationItemsForm;
-import forms.NotificationForm;
-import forms.RoomForm;
-import forms.UserForm;
+import forms.*;
 import utils.EntryUtils;
 
 import java.sql.SQLException;
@@ -23,7 +19,8 @@ public class Menu {
             System.out.println("    3. Clue menu");
             System.out.println("    4. Room menu");
             System.out.println("    5. Notification menu");
-            System.out.println("    6. Exit");
+            System.out.println("    6. Session menu");
+            System.out.println("    7. Exit");
 
             System.out.print("\n>>> Choose option : ");
             option = EntryUtils.readStringLikeInt(scanner,null, false);
@@ -60,11 +57,17 @@ public class Menu {
                     notificationForm.menuNotification(scanner);
                     break;
                 case 6:
+                    SessionForm sessionForm = new SessionForm();
+                    sessionForm.menuSession(scanner);
                     break;
+
+                case 7:
+                    break;
+
                 default:
                     System.out.println(">>> Wrong option.");
             }
-        } while (option != 6);
+        } while (option != 7);
     }
 
 }

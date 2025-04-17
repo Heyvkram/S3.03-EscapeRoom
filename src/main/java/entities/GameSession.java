@@ -7,10 +7,13 @@ import utils.PublisherAgent;
 public class GameSession{
 
     private Long id;
-    private Long room_id;
-    private Long payment_id;
-    private Long user_id;
-    private int accepted;
+    private Long roomId;
+    private String roomName;
+    private Long userId;
+    private String userNickname;
+    private double price;
+    private String status;
+    private String paymentType;
     private NotificationSenderInterface publisherAgent;
 
     public GameSession() {
@@ -19,12 +22,20 @@ public class GameSession{
         this.publisherAgent=publisherAgent;
     }
 
-    public void setAccepted(int accepted) {
-        this.accepted = accepted;
+    public void setAccepted(String accepted) {
+        this.status = accepted;
         pushNotification();
     }
 
     public void pushNotification() {
 
     }
+
+    public void printBasicInfoValues() {
+        System.out.printf("  -  Id: %-5s  Nickname: %-30s%n", getId(), getUserNickname());
+        System.out.printf("                Room name: %-15s    Price: %-30s%n", getRoomName(), getPrice());
+        System.out.printf("                Status: %-30s%n", getStatus());
+        System.out.println("\n");
+    }
+
 }

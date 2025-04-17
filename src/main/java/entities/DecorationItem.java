@@ -18,14 +18,14 @@ public class DecorationItem implements CalculablePriceInterface {
     }
 
     public void printBasicInfoValues() {
-        System.out.printf("    %-5d  %-25s   Description: %-50s  Clue Valor: %-5d%n", getId(), getName(), getDescription(), getClueValor());
+        System.out.printf("     %-5d   %-25s   Description: %-50s   Clue Valor: %-5d%n", getId(), getName(), getDescription(), getClueValor());
     }
 
     public void printPriceInfoValues(){
-        System.out.printf("    %-5d  %-25s   Price: %.2f%n", getId(), getName(), getPrice());
+        System.out.printf("    %-5d   Price: %.2f   Name: %-25s%n", getId(), getPrice(), getName());
     }
 
     public void printThemeValorValues(){
-        System.out.printf("    %-5d  %-25s   Theme: %-25s   Price: %.2f%n", getId(), getName(), getTheme(), getPrice());
+        System.out.printf("    %-5d   Price: %.2f   Name: %-25s   Theme: %-25s   %n", getId(), getPrice(), getName(), getTheme());
     }
 }

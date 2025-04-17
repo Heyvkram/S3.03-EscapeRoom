@@ -1,53 +1,96 @@
 package forms;
 
+import daos.RoomDAO;
 import daos.UserDAO;
+import daos.GameSessionDAO;
+import entities.GameSession;
+import entities.Room;
 import entities.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utils.EntryUtils;
+import utils.EnumConstants;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
-public class UserForm {
+public class SessionForm {
 
-    static final Logger log = LogManager.getLogger(UserForm.class);
+    static final Logger log = LogManager.getLogger(SessionForm.class);
 
-    public void menuUser(Scanner scanner) {
+    public void menuSession(Scanner scanner) {
         int option;
         UserDAO userDao = new UserDAO();
+        RoomDAO roomDao = new RoomDAO();
+        GameSessionDAO gsDao = new GameSessionDAO();
         do {
             System.out.println("\n");
             System.out.println("    -----------------------------------------");
-            System.out.println("    User menu:");
+            System.out.println("    Session menu:");
             System.out.println("    -----------------------------------------");
-            System.out.println("    1. New user");
-            System.out.println("    2. List users");
-            System.out.println("    3. Edit user");
-            System.out.println("    4. Delete user");
-            System.out.println("    5. Find users by surname");
-            System.out.println("    6. Show notifiable users ");
-            System.out.println("    7. Mark / unmark user as notifiable ");
-            System.out.println("    8. Back");
+            System.out.println("    1. New user session");
+            System.out.println("    2. List all sessions");
+            System.out.println("    3. List open sessions");
+            System.out.println("    4. List close sessions");
+            System.out.println("    5. Delete user session");
+            System.out.println("    6. Open / close user session");
+            System.out.println("    7. Back");
 
             option = EntryUtils.readStringLikeInt(scanner, "\n>>> Choose option > ", false);
             switch (option) {
                 case 1:
-                    User user = newUserForm(scanner);
-                    if (user != null && !userDao.insertNewUser(user)) {
-                        System.out.println("\n   Error: Unable to establish connection to the database.");
-                        System.out.println("     (Please contact your system administrator)\n");
-                        if (!EntryUtils.readYesNo(scanner, " Type 'y' for continue or 'n' for escape.")) {
-                            option = 4;
-                        }
+                    GameSession gameSession = new GameSession();
+                    Optional<User> userOpt = userDao.getUserById(EntryUtils.readStringLikeLong(scanner, "Type the user id: ", false));
+                    if(userOpt.isPresent()){
+                        System.out.println("\nUser : ");
+                        userOpt.ifPresent(User::printBasicInfoValues);
+                        gameSession.setUserId(userOpt.get().getId());
+                        gameSession.setUserNickname(userOpt.get().getNickName());
+                        System.out.println("\n");
+                    }else{
+                        System.out.println("\n>>> No user with this id was found.");
+                        break;
+                    }
+                    Optional<Room> roomOpt = Optional.empty();
+                    try {
+                        roomOpt = roomDao.getRoomById(EntryUtils.readStringLikeLong(scanner, "Type the room id: ", false));
+                    } catch (SQLException | ClassNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
+                    if(roomOpt.isPresent()){
+                        System.out.println("\nRoom : ");
+                        roomOpt.ifPresent(Room::printBasicInfoValues);
+                        gameSession.setRoomId(roomOpt.get().getRoomId());
+                        gameSession.setRoomName(roomOpt.get().getRoomName());
+                        gameSession.setPrice(roomOpt.get().getPrice());
+                    }else{
+                        System.out.println("\n>>> No Room with this id was found.");
+                        break;
+                    }
+                    System.out.println("\n");
+                    Integer notePaymentType = null;
+                    do {
+                        System.out.println("Choose payment type - " + EnumConstants.PAYMENT_TYPE.getMenuOptions());
+                        notePaymentType = EntryUtils.readStringLikeInt(scanner, "*Payment type: ", false, EnumConstants.NOTIFICATION_SHIPPING_TYPE.getNumberMaxLevelValue());
+                        gameSession.setPaymentType(EnumConstants.PAYMENT_TYPE.getDescriptionFromLevelCode(notePaymentType));
+                    } while (!EnumConstants.PAYMENT_TYPE.getLevelCodes().contains(notePaymentType));
+
+                    if (EntryUtils.readYesNo(scanner, "\nOpen session (y/n)? ")) {
+                        gameSession.setAccepted(EnumConstants.ITEM_STATUS.AVAILABLE.getDescription());
+                    }else{
+                        gameSession.setAccepted(EnumConstants.ITEM_STATUS.NOT_AVAILABLE.getDescription());
+                    }
+
+                    if (EntryUtils.readYesNo(scanner, "\nSave this session (y/n)? ")) {
+                        gsDao.insertNewUserSession(gameSession);
                     }
                     break;
 
                 case 2:
                     try {
-                        userDao.printAllUsers();
+                        gsDao.printAllSessions();
                     } catch (SQLException | ClassNotFoundException e) {
                         log.error(e);
                     }
@@ -72,59 +115,15 @@ public class UserForm {
                     break;
 
                 case 4:
-                    try {
-                        Optional<User> userOpt = userDao.getUserById(EntryUtils.readStringLikeLong(scanner, "Type the user to delete id : ", false));
-                        if (userOpt.isPresent()) {
-                            System.out.println("\n");
-                            userOpt.get().printBasicInfoValues();
-                            if (EntryUtils.readYesNo(scanner, "\nDelete this user (y/n)? ")) {
-                                if (userDao.deleteById(userOpt.get().getId())) {
-                                    System.out.println("\n>>> User deleted.");
-                                }
-                            }
-                        }
-                    } catch (SQLException | ClassNotFoundException e) {
-                        log.error(e);
-                    }
                     break;
 
                 case 5:
-                    try {
-                        List<User> userList = userDao.getUsersLikeSurName(EntryUtils.llegirString(scanner, "Type the user surname to find : ", true));
-                        if (!userList.isEmpty()) {
-                            userDao.printUsersList(userList);
-                        }
-                    } catch (SQLException | ClassNotFoundException e) {
-                        log.error(e);
-                    }
                     break;
 
                 case 6:
-                    try {
-                        List<User> userList = userDao.getUsersNotifiables();
-                        if (!userList.isEmpty()) {
-                            userDao.printUsersList(userList);
-                        }
-                    } catch (SQLException | ClassNotFoundException e) {
-                        log.error(e);
-                    }
                     break;
 
                 case 7:
-                    Optional<User> userOpt = userDao.getUserById(EntryUtils.readStringLikeLong(scanner, "Type the user id : ", false));
-                    if (userOpt.isPresent()) {
-                        System.out.println("\n");
-                        userOpt.get().printBasicInfoValues();
-                        boolean result = userDao.updateUserNotificationStatus(userOpt.get().getId(), EntryUtils.readYesNo(scanner, "\nSet this user as notifiable (y/n)? "));
-
-                        Optional<User> userOptUpdated = userDao.getUserById(userOpt.get().getId());
-                        if(result && userOptUpdated.isPresent()){
-                            System.out.println("\n");
-                            userOptUpdated.get().printBasicInfoValues();
-                            System.out.println("\n>>> User updated.");
-                        }
-
-                    }
                     break;
 
                 case 8:

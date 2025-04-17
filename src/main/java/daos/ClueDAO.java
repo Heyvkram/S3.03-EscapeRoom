@@ -2,6 +2,7 @@ package daos;
 
 import entities.CalculablePriceInterface;
 import entities.Clues;
+import entities.DecorationItem;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utils.DateUtils;
@@ -44,10 +45,6 @@ public class ClueDAO extends GenericDAO {
         }
     }
 
-//    public Optional<Clues> getClueById(Long id) {
-//        Optional<Clues> clue = getClueById(id);
-//        return clue;
-//    }
     public Clues getClueById(Long id) throws SQLException, ClassNotFoundException {
         String sql = "SELECT * FROM clues WHERE clue_id = ?";
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -60,19 +57,44 @@ public class ClueDAO extends GenericDAO {
         }
         return null;
     }
-    public List<Clues> getClueByTheme(String theme) throws SQLException, ClassNotFoundException {
+
+    public List<Clues> getCluesByTheme(String theme) throws SQLException, ClassNotFoundException {
         return getClueBy(theme, "clue_theme", true);
     }
 
-    public boolean saveOrUpdateClue(Clues clue) {
-        if (clue == null) return false;
-        String resultMsg = "Clue updated";
-        String sqlStr = "UPDATE clues SET clue_id = ?, clue_title = ?,  clue_description_user = ?, clue_description_admin = ?, clue_theme = ?, clue_level = ?, clue_game_phase = ?, clue_date = ?, clue_price = ?, clue_value = ?";
-        if (clue.getId() == null) {
-            sqlStr = "INSERT INTO clues (clue_title, clue_description_user, clue_description_admin, clue_theme, clue_level, clue_game_phase, clue_date_reg, clue_price, clue_value) " + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public List<Clues> getCluesByThemeAndLevel(String theme, String level) throws SQLException, ClassNotFoundException {
+        List<Clues> clueList = getCluesByTheme(theme);
+        return clueList.stream().filter(item -> item.getLevel().equalsIgnoreCase(level)).toList();
+    }
 
-            resultMsg = "\nClue inserted";
+    public boolean saveClueRoomRelation(List<Clues> clueList, long roomId) {
+        boolean result = false;
+        String resultMsg = "Clues room relation created ";
+        String sqlStr = "INSERT INTO relation_clue_room (clue_id, room_id,) " + "VALUES (?, ?);";
+
+        for(Clues clue : clueList){
+            try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sqlStr)) {
+                ps.setLong(1, clue.getId());
+                ps.setLong(2, roomId);
+
+                int rowsAffected = ps.executeUpdate();
+                if (rowsAffected > 0) {
+                    System.out.println(resultMsg + clue.getId() + roomId );
+                }
+
+            } catch (SQLException | ClassNotFoundException e) {
+                log.info("Can't save the information\n");
+                log.error("Can't save the information\n", e);
+            }
         }
+        return result;
+    }
+
+
+    public boolean saveClue(Clues clue) {
+        if (clue == null) return false;
+        String resultMsg = "Clue inserted";
+        String sqlStr = "INSERT INTO clues (clue_title, clue_description_user, clue_description_admin, clue_theme, clue_level, clue_game_phase, clue_date_reg, clue_price, clue_value) " + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sqlStr)) {
             ps.setString(1, clue.getTitle());
@@ -160,6 +182,11 @@ public class ClueDAO extends GenericDAO {
         return ID_FIELD_NAME;
     }
 
+    public double getClueItemsPrices(List<Clues> itemsList){
+        List<CalculablePriceInterface> priceInterfaceItems = new ArrayList<>(itemsList);
+        return UtilsEscape.sumAllPrices(priceInterfaceItems);
+    }
+
     public void printAllClueItemsPrices() throws ClassNotFoundException, SQLException {
         System.out.println("Clue Items Price list ____________________");
         List<Clues> allItems = getAllClues();
@@ -192,5 +219,65 @@ public class ClueDAO extends GenericDAO {
         }
         return themePrices;
     }
+
+    public List<Clues> getCluesOfRoom(long roomID) throws ClassNotFoundException, SQLException  {
+        List<Clues> resultList = new ArrayList<>();
+        final String sqlSelectDecorationItem = "select * from clues where " +
+                "clue_id in (SELECT clue_id FROM relation_clue_room where room_id=?)";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sqlSelectDecorationItem)) {
+            ps.setLong(1, (Long) roomID);
+            try (ResultSet rs = ps.executeQuery()) {
+                while(rs.next()) {
+                    resultList.add(resultSetToCluesObject(rs));
+                }
+            }
+        }
+        return resultList;
+    }
+
+    public boolean saveCluesRoomRelations(long roomID, List<Clues> relations) {
+        if (relations == null || relations.isEmpty()) {
+            log.warn("Lista de relaciones nula o vacía. No se realiza ninguna inserción.");
+            return true; // Consideramos que no hay error si no hay nada que insertar
+        }
+
+        String sqlStr = "INSERT INTO relation_clue_room (room_id, clue_id) VALUES (?, ?)";
+        int totalRelations = relations.size();
+        int successfulInsertions = 0;
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sqlStr)) {
+
+            conn.setAutoCommit(false); // Iniciamos una transacción para hacer la operación atómica
+
+            for (Clues clue : relations) {
+                ps.setLong(1, roomID);
+                ps.setLong(2, clue.getId());
+                ps.addBatch(); // Añadimos la inserción al batch
+            }
+
+            int[] results = ps.executeBatch(); // Ejecutamos el batch completo
+
+            for (int result : results) {
+                if (result == 1 || result == 0) { // Verifica si la inserción fue exitosa (1) o no hubo error (0 en algunos drivers)
+                    successfulInsertions++;
+                } else {
+                    log.error("Error al insertar una relación. Resultado: {}", result);
+                    conn.rollback(); // Si una inserción falla, hacemos rollback de toda la transacción
+                    return false; // Devolvemos false para indicar el fallo
+                }
+            }
+
+            conn.commit(); // Si todas las inserciones fueron exitosas, hacemos commit de la transacción
+            log.info("Se insertaron {} de {} relaciones entre pistas y habitaciones.", successfulInsertions, totalRelations);
+            return successfulInsertions == totalRelations; // Devolvemos true si todas fueron exitosas
+
+        } catch (SQLException | ClassNotFoundException e) {
+            log.error("Error al guardar las relaciones entre pistas y habitaciones", e);
+            return false; // Devolvemos false en caso de excepción
+        }
+    }
+
 
 }

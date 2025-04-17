@@ -227,14 +227,15 @@ public class EnumConstants {
         }
     }
 
-    public static enum ROOM_STATUS {
+    public static enum ITEM_STATUS {
         AVAILABLE(1, "Available"),
-        NOT_AVAILABLE(2, "Not available");
+        NOT_AVAILABLE(2, "Not available"),
+        CONSUMED(3, "Consumed");
 
         private final int levelCode;
         private final String description;
 
-        ROOM_STATUS(int levelCode, String description) {
+        ITEM_STATUS(int levelCode, String description) {
             this.levelCode = levelCode;
             this.description = description;
         }
@@ -248,23 +249,23 @@ public class EnumConstants {
         }
 
         public static int getNumberOfItems() {
-            return ROOM_STATUS.values().length;
+            return ITEM_STATUS.values().length;
         }
 
         public static int getNumberMaxLevelValue() {
-            return ROOM_STATUS.values().length;
+            return ITEM_STATUS.values().length;
         }
 
         public static List<Integer> getLevelCodes() {
             List<Integer> levelCodes = new ArrayList<>();
-            for (ROOM_STATUS type : ROOM_STATUS.values()) {
+            for (ITEM_STATUS type : ITEM_STATUS.values()) {
                 levelCodes.add(type.getLevelCode());
             }
             return levelCodes;
         }
 
         public static String getDescriptionFromLevelCode(int levelCode) {
-            for (ROOM_STATUS type : ROOM_STATUS.values()) {
+            for (ITEM_STATUS type : ITEM_STATUS.values()) {
                 if (type.getLevelCode() == levelCode) {
                     return type.getDescription();
                 }
@@ -274,7 +275,7 @@ public class EnumConstants {
 
         public static String getMenuOptions() {
             StringBuilder strB = new StringBuilder();
-            for (ROOM_STATUS item : EnumSet.allOf(ROOM_STATUS.class)) {
+            for (ITEM_STATUS item : EnumSet.allOf(ITEM_STATUS.class)) {
                 strB.append(item.getLevelCode() + " : " + item.getDescription() + " / ");
             }
             return strB.toString();

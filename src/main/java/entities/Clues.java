@@ -25,7 +25,6 @@ public class Clues implements CalculablePriceInterface {
     }
 
     public void printPriceInfoValues(){
-        // System.out.printf("    %-5d  %-25s   Price: %.2f%n", getId(), getTitle(), getPrice());
         System.out.printf("    %-5d Price: %4.2f   Title: %-25s%n", getId(), getPrice(), getTitle());
     }
 }

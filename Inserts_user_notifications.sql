@@ -1,4 +1,5 @@
 USE escape_room;
+
 INSERT INTO `users` (
     `user_nick_name`, `user_name`, `user_surname`, `user_idCard`,
     `user_address_street`, `user_address_number`, `user_address_floor`, `user_address_door`,
@@ -100,40 +101,117 @@ INSERT INTO `notifications` (
     'Generic'
 );
 
-INSERT INTO `rooms` (`room_name`, `room_theme`, `room_level`, `room_status`, `room_max_players`, `room_date`) VALUES
-('La Mansió Embruixada', 'Terror', 'Intermediate', 'Available', 6, NOW()),
-('El Laboratori Secret', 'Fiction', 'Hard', 'Not available', 4, NOW()),
-( 'El Bosc Màgic', 'Fantasy', 'Easy', 'Available', 8, NOW()),
-( 'La Nau Estelar Perduda', 'Fiction', 'Intermediate', 'Available', 5, NOW()),
-( 'El Castell del Drac', 'Fantasy', 'Hard', 'Not available', 3, NOW());
+INSERT INTO `rooms` (`room_name`, `room_theme`, `room_level`, `room_status`, `room_max_players`, `room_date`, `room_price`) VALUES
+('La Mansió Embruixada', 'Terror', 'Intermediate', 'Available', 6, NOW(),10.7),
+('El Laboratori Secret', 'Fiction', 'Hard', 'Not available', 4, NOW(),6.7),
+( 'El Bosc Màgic', 'Fantasy', 'Easy', 'Available', 8, NOW(),0.7),
+( 'La Nau Estelar Perduda', 'Fiction', 'Intermediate', 'Available', 5, NOW(),1.7),
+( 'El Castell del Drac', 'Fantasy', 'Hard', 'Not available', 3, NOW(),6.7);
 
 
-INSERT INTO payments ( payment_mode, payment_price, user_id)
-VALUES ('Credit card', 55, 1);
+INSERT INTO `rooms` (`room_name`, `room_theme`, `room_level`, `room_status`, `room_max_players`, `room_date`, `room_price`) VALUES
+('La Mansió Embruixada', 'Terror', 'Intermediate', 'Available', 6, NOW(),10.7),
+('El Laboratori Secret', 'Fiction', 'Hard', 'Not available', 4, NOW(),6.7),
+( 'El Bosc Màgic', 'Fantasy', 'Easy', 'Available', 8, NOW(),0.7),
+( 'La Nau Estelar Perduda', 'Fiction', 'Intermediate', 'Available', 5, NOW(),1.7),
+( 'El Castell del Drac', 'Fantasy', 'Hard', 'Not available', 3, NOW(),6.7);
 
-
-INSERT INTO payments (payment_mode, payment_price, user_id)
-VALUES ('Bizum', 28, 5);
-
-
-INSERT INTO payments (payment_mode, payment_price, user_id)
-VALUES ( 'PayPal', 72, 1);
-
-
-INSERT INTO payments (payment_mode, payment_price, user_id)
-VALUES ( 'Credit card', 39, 3);
-
-
-INSERT INTO payments (payment_mode, payment_price, user_id)
-VALUES ( 'Bizum', 15, 4);
-
-INSERT INTO `game_sessions` (`room_id`, `payment_id`, `user_id`, `accepted`) VALUES
-(1, 1, 1001, 1),
-(2, 2, 1002, 0),
-(1, 3, 1003, 1),
-(3, 4, 1004, 1),
-(2, 5, 1005, 0);
-
-
-
-
+INSERT INTO game_sessions (
+    room_id,
+    room_name,
+    user_id,
+    user_nick_name,
+    room_price,
+    payment_type,
+    status
+) VALUES
+(
+    1,
+    'La Mansió Embruixada',
+    1,
+    'AventuraHeroi',
+    45.00,
+    'Credit Card',
+    'Consumed'
+),
+(
+    1,
+    'La Mansió Embruixada',
+    2,
+    'MestreClau',
+    50.00,
+    'Cash',
+    'Consumed'
+),
+(
+    1,
+    'La Mansió Embruixada',
+    3,
+    'NavegantEstelar',
+    48.00,
+    'PayPal',
+    'Consumed'
+),
+(
+    2,
+    'El Laboratori Secret',
+    4,
+    'Enigmatic',
+    42.50,
+    'Bizum',
+    'Consumed'
+),
+(
+    2,
+    'El Laboratori Secret',
+    5,
+    'CercadorTresors',
+    55.00,
+    'Credit Card',
+    'Consumed'
+),
+(
+    3,
+    'La Nau Estelar Perduda',
+    1,
+    'DrMisteri',
+    47.00,
+    'Cash',
+    'Consumed'
+),
+(
+    3,
+    'La Nau Estelar Perduda',
+    2,
+    'CapitàEnigma',
+    52.00,
+    'PayPal',
+    'Consumed'
+),
+(
+    3,
+    'La Nau Estelar Perduda',
+    3,
+    'ExploradorLunar',
+    49.90,
+    'Bizum',
+    'Consumed'
+),
+(
+    3,
+    'La Nau Estelar Perduda',
+    4,
+    'AgentSecret',
+    46.00,
+    'Credit Card',
+    'Consumed'
+),
+(
+    3,
+    'La Nau Estelar Perduda',
+    5,
+    'GuardiàPortes',
+    51.50,
+    'Cash',
+    'Consumed'
+);

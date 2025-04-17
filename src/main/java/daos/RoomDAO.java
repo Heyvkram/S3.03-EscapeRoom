@@ -3,7 +3,6 @@ package daos;
 import entities.Room;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utils.EnumConstants;
 import utils.EnumConstants.ROOM_THEME;
 
 import java.sql.*;
@@ -34,9 +33,11 @@ public class RoomDAO extends GenericDAO {
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sqlSelectRoom)) {
 
-            if(object instanceof Integer){
+            if (object instanceof Integer) {
                 ps.setInt(1, (Integer) object);
-            }else if(object instanceof String){
+            } else if (object instanceof Long) {
+                ps.setLong(1, (Long) object);
+            } else if (object instanceof String) {
                 ps.setString(1, (String) object);
             }
 
@@ -51,7 +52,7 @@ public class RoomDAO extends GenericDAO {
     }
     public Optional<Room> getRoomById(Long roomId) throws SQLException, ClassNotFoundException {
         return getRoomBy(roomId, "room_id", false);
-        }
+    }
 
     public Optional<Room> getRoomByName(String roomName) throws SQLException, ClassNotFoundException {
             return getRoomBy(roomName, "room_name", false);
@@ -90,7 +91,7 @@ public class RoomDAO extends GenericDAO {
         return roomsListByThemeTerror;
     }
 
-    public List<Room> getRoomByThemeFiction (ROOM_THEME FICTION) throws ClassNotFoundException, SQLException {
+    public List<Room> getRoomByThemeFiction(ROOM_THEME FICTION) throws ClassNotFoundException, SQLException {
         String sqlSelectRoomsByThemeFiction = "SELECT * FROM " + TABLE_NAME + " WHERE room_theme = Fiction";
         List<Room> roomsListByThemeFiction = new ArrayList<>();
         try (Connection conn = getConnection();
@@ -135,98 +136,139 @@ public class RoomDAO extends GenericDAO {
         return roomsListByLevel;
     }
 
+    public boolean saveRoom(Room room) {
+        if (room == null) return false;
 
-        public boolean saveRoom(Room room) {
-            if (room == null) return false;
+        String sqlStr = "INSERT INTO rooms (room_name, room_theme, room_level, room_status, room_max_players, room_price) VALUES (?, ?, ?, ?, ?, ?)";
+        String resultMsg = "Room inserted";
 
-            String sqlStr = "INSERT INTO rooms (room_name, room_theme, room_level, room_status, room_max_players) VALUES (?, ?, ?, ?, ?)";
-            String resultMsg = "Room inserted";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sqlStr)) {
+            ps.setString(1, room.getRoomName());
+            ps.setString(2, String.valueOf(room.getRoomTheme()));
+            ps.setString(3, String.valueOf(room.getRoomLevel()));
+            ps.setString(4, String.valueOf(room.getRoomStatus()));
+            ps.setInt(5, room.getRoomMaxPlayers());
+            ps.setDouble(6, room.getPrice());
 
-            try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sqlStr)) {
-                ps.setString(1, room.getRoomName());
-                ps.setString(2, String.valueOf(room.getRoomTheme()));
-                ps.setString(3, String.valueOf(room.getRoomLevel()));
-                ps.setString(4, String.valueOf(room.getRoomStatus()));
-                ps.setInt(5, room.getRoomMaxPlayers());
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println(resultMsg);
+            }
+            return rowsAffected > 0;
 
-                int rowsAffected = ps.executeUpdate();
-                if (rowsAffected > 0) {
-                    System.out.println(resultMsg);
+        } catch (SQLException | ClassNotFoundException e) {
+            log.info("Can't save the information\n");
+            log.error("Can't save the information\n", e);
+        }
+        return false;
+    }
+
+
+    public Room saveNewRoom(Room room) {
+        String sqlStr = "INSERT INTO rooms (room_name, room_theme, room_level, room_status, room_max_players, room_price, room_cost_value) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String resultMsg = "\n New room inserted with id: ";
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sqlStr, Statement.RETURN_GENERATED_KEYS)) {
+
+            ps.setString(1, room.getRoomName());
+            ps.setString(2, String.valueOf(room.getRoomTheme()));
+            ps.setString(3, String.valueOf(room.getRoomLevel()));
+            ps.setString(4, String.valueOf(room.getRoomStatus()));
+            ps.setInt(5, room.getRoomMaxPlayers());
+            ps.setDouble(6, room.getPrice());
+            ps.setDouble(7, room.getTotalCostValue());
+
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        long generatedId = generatedKeys.getInt(1);
+                        room.setRoomId(generatedId);
+                        log.info(resultMsg + generatedId);
+                        return room;
+                    } else {
+                        log.warn("No ID generated for the inserted room.");
+                        return null;
+                    }
                 }
-                return rowsAffected > 0;
-
-            } catch (SQLException | ClassNotFoundException e) {
-                log.info("Can't save the information\n");
-                log.error("Can't save the information\n", e);
+            } else {
+                log.warn("Could not insert the room.");
+                return null;
             }
-            return false;
-        }
 
-        public List<Room> getAllRooms() throws ClassNotFoundException, SQLException {
-            String sqlSelectAllRooms = "SELECT * FROM " + TABLE_NAME;
-            List<Room> roomsList = new ArrayList<>();
-            try (Connection conn = getConnection();
-                 PreparedStatement ps = conn.prepareStatement(sqlSelectAllRooms);
-                 ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    roomsList.add(resultSetToRoomObject(rs));
-                }
-            } catch (SQLException e) {
-                log.error(e);
+        } catch (SQLException | ClassNotFoundException e) {
+            log.error("Error saving the room information", e);
+            return null;
+        }
+    }
+
+    public List<Room> getAllRooms() throws ClassNotFoundException, SQLException {
+        String sqlSelectAllRooms = "SELECT * FROM " + TABLE_NAME;
+        List<Room> roomsList = new ArrayList<>();
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sqlSelectAllRooms);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                roomsList.add(resultSetToRoomObject(rs));
             }
-            return roomsList;
+        } catch (SQLException e) {
+            log.error(e);
         }
+        return roomsList;
+    }
 
-        public void printAllRooms() throws ClassNotFoundException, SQLException {
-            System.out.println("Room list ____________________");
-            getAllRooms().forEach(Room::printBasicInfoValues);
-        }
+    public void printAllRooms() throws ClassNotFoundException, SQLException {
+        System.out.println("Room list ____________________");
+        getAllRooms().forEach(Room::printBasicInfoValues);
+    }
 
-        public void printRoomsByThemeTerror() throws ClassNotFoundException, SQLException {
-        System.out.println("Terror Room list ___________ ");
-        getRoomByTheme(ROOM_THEME.TERROR).forEach(Room::printBasicInfoValues);
-        }
+    public void printRoomsByThemeTerror() throws ClassNotFoundException, SQLException {
+    System.out.println("Terror Room list ___________ ");
+    getRoomByTheme(ROOM_THEME.TERROR).forEach(Room::printBasicInfoValues);
+    }
 
-        public void printRoomsByThemeFiction() throws ClassNotFoundException, SQLException {
-        System.out.println("Fiction Room list ___________ ");
-        getRoomByTheme(ROOM_THEME.FICTION).forEach(Room::printBasicInfoValues);
-        }
+    public void printRoomsByThemeFiction() throws ClassNotFoundException, SQLException {
+    System.out.println("Fiction Room list ___________ ");
+    getRoomByTheme(ROOM_THEME.FICTION).forEach(Room::printBasicInfoValues);
+    }
 
-        public void printRoomsByThemeFantasy() throws ClassNotFoundException, SQLException {
-        System.out.println("Fantasy Room list ___________ ");
-        getRoomByTheme(ROOM_THEME.FANTASY).forEach(Room::printBasicInfoValues);
-        }
+    public void printRoomsByThemeFantasy() throws ClassNotFoundException, SQLException {
+    System.out.println("Fantasy Room list ___________ ");
+    getRoomByTheme(ROOM_THEME.FANTASY).forEach(Room::printBasicInfoValues);
+    }
 
-        public void printRoomsByLevel() throws ClassNotFoundException, SQLException {
-            System.out.println("Room list by difficulty ________");
-            getRoomByLevel().forEach(Room::printBasicInfoValues);
-        }
+    public void printRoomsByLevel() throws ClassNotFoundException, SQLException {
+        System.out.println("Room list by difficulty ________");
+        getRoomByLevel().forEach(Room::printBasicInfoValues);
+    }
 
-        public Room resultSetToRoomObject (ResultSet rs) throws SQLException {
-            Room room = new Room();
-            room.setRoomId(rs.getLong("room_id"));
-            room.setRoomName(rs.getString("room_name"));
-            String themeValue = rs.getString("room_theme").toUpperCase();
-            room.setRoomTheme(themeValue);
-            String roomLevel = rs.getString("room_level").toUpperCase();
-            room.setRoomLevel(roomLevel);
-            String statusValue = rs.getString("room_status").replace(" ", "_").toUpperCase();
-            room.setRoomStatus(statusValue);
-            room.setRoomMaxPlayers(rs.getInt("room_max_players"));
-            room.setRoomDate(rs.getTimestamp("room_date").toLocalDateTime());
-            return room;
-        }
+    public Room resultSetToRoomObject (ResultSet rs) throws SQLException {
+        Room room = new Room();
+        room.setRoomId(rs.getLong("room_id"));
+        room.setRoomName(rs.getString("room_name"));
+        String themeValue = rs.getString("room_theme").toUpperCase();
+        room.setRoomTheme(themeValue);
+        String roomLevel = rs.getString("room_level").toUpperCase();
+        room.setRoomLevel(roomLevel);
+        String statusValue = rs.getString("room_status").replace(" ", "_").toUpperCase();
+        room.setRoomStatus(statusValue);
+        room.setRoomMaxPlayers(rs.getInt("room_max_players"));
+        room.setRoomDate(rs.getTimestamp("room_date").toLocalDateTime());
+        room.setPrice(rs.getDouble("room_price"));
+        return room;
+    }
 
-        public boolean deleteRoomById (Long roomId) throws SQLException, ClassNotFoundException {
-            if (roomId == null || roomId <= 0) {
-                throw new IllegalArgumentException("There is no room with this id");
-            }
-            final String sqlDelete = "DELETE FROM " + TABLE_NAME + " WHERE room_id=?";
-            try (Connection conn = getConnection();
-                 PreparedStatement ps = conn.prepareStatement(sqlDelete)) {
-                ps.setLong(1, roomId);
-                ps.execute();
-                return true;
-            }
+    public boolean deleteRoomById (Long roomId) throws SQLException, ClassNotFoundException {
+        if (roomId == null || roomId <= 0) {
+            throw new IllegalArgumentException("There is no room with this id");
         }
+        final String sqlDelete = "DELETE FROM " + TABLE_NAME + " WHERE room_id=?";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sqlDelete)) {
+            ps.setLong(1, roomId);
+            ps.execute();
+            return true;
+        }
+    }
 }

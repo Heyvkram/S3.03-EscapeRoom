@@ -37,7 +37,7 @@ public class CluesForm {
             switch (option) {
                 case 1:
                     scanner.nextLine();
-                    if (!clueDao.saveOrUpdateClue(newClueForm(scanner))) {
+                    if (!clueDao.saveClue(newClueForm(scanner))) {
                         System.out.println("\n   Error: Unable to establish connection to the database.");
                         System.out.println("     (Please contact your system administrator)\n");
                         if (!readYesNo(scanner, " Type 'Y' for continue or 'N' for scape.")) {
@@ -77,7 +77,7 @@ public class CluesForm {
                             default:
                                 System.out.println("Wrong option.");
                         }
-                        List<Clues> clues = clueDao.getClueByTheme(themeName);
+                        List<Clues> clues = clueDao.getCluesByTheme(themeName);
                         if (!clues.isEmpty()) {
                             for (Clues clue : clues) {
                                 clue.printBasicInfoValues();

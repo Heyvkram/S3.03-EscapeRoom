@@ -5,9 +5,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class Main {
-   private static final String CABECERA_APP = "\n***************************\n***************************"
-            + "\n  VIRTUAL ESCAPE ROOM APP \n"
-            + "***************************\n***************************";
+
+    private static final String CABECERA_APP = String.format(
+            "\n%c%s%c%n%c  %s  %c%n%c%s%c%n",
+            '\u2554', String.valueOf('\u2550').repeat(27), '\u2557',
+            '\u2551', "VIRTUAL ESCAPE ROOM APP", '\u2551',
+            '\u255A', String.valueOf('\u2550').repeat(27), '\u255D'
+    );
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         /*
