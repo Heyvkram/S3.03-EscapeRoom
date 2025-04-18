@@ -3,6 +3,13 @@
 
 # SPRINT 3 TASK 3 - Developers Team
 
+## Authors
+
+* [Heyvkram](https://github.com/Heyvkram)
+* [alescu](https://github.com/alescu)
+* [itsAidenDev](https://github.com/itsAidenDev)
+* [VaninaVega](https://github.com/VaninaVega)
+
 ## Summary
 
 This exercise involves developing an application to manage a virtual Escape Room. The application will allow the creation and management of themed rooms, intriguing clues, unique decoration items, and maintain an up-to-date inventory. Additionally, functionalities for tracking income, and user notifications will be implemented. Data persistence will be achieved using MySQL.
