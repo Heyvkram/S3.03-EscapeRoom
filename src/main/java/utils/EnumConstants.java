@@ -229,8 +229,7 @@ public class EnumConstants {
 
     public static enum ITEM_STATUS {
         AVAILABLE(1, "Available"),
-        NOT_AVAILABLE(2, "Not available"),
-        CONSUMED(3, "Consumed");
+        NOT_AVAILABLE(2, "Not available");
 
         private final int levelCode;
         private final String description;
@@ -442,6 +441,62 @@ public class EnumConstants {
         public static String getMenuOptions() {
             StringBuilder strB = new StringBuilder();
             for (NOTIFICATION_LEVEL item : EnumSet.allOf(NOTIFICATION_LEVEL.class)) {
+                strB.append(item.getLevelCode() + " : " + item.getDescription() + " / ");
+            }
+            return strB.toString();
+        }
+    }
+
+    public static enum GAMESESSION_STATUS {
+        AVAILABLE(1, "Available"),
+        NOT_AVAILABLE(2, "Not available"),
+        CONSUMED(3, "Consumed"),
+        UNPAIED(4, "Unpaied");
+
+        private final int levelCode;
+        private final String description;
+
+        GAMESESSION_STATUS(int levelCode, String description) {
+            this.levelCode = levelCode;
+            this.description = description;
+        }
+
+        public int getLevelCode() {
+            return levelCode;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public static int getNumberOfItems() {
+            return GAMESESSION_STATUS.values().length;
+        }
+
+        public static int getNumberMaxLevelValue() {
+            return GAMESESSION_STATUS.values().length;
+        }
+
+        public static List<Integer> getLevelCodes() {
+            List<Integer> levelCodes = new ArrayList<>();
+            for (GAMESESSION_STATUS type : GAMESESSION_STATUS.values()) {
+                levelCodes.add(type.getLevelCode());
+            }
+            return levelCodes;
+        }
+
+        public static String getDescriptionFromLevelCode(int levelCode) {
+            for (GAMESESSION_STATUS type : GAMESESSION_STATUS.values()) {
+                if (type.getLevelCode() == levelCode) {
+                    return type.getDescription();
+                }
+            }
+            return null;
+        }
+
+        public static String getMenuOptions() {
+            StringBuilder strB = new StringBuilder();
+            for (GAMESESSION_STATUS item : EnumSet.allOf(GAMESESSION_STATUS.class)) {
                 strB.append(item.getLevelCode() + " : " + item.getDescription() + " / ");
             }
             return strB.toString();

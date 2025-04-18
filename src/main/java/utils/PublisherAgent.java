@@ -28,4 +28,16 @@ public class PublisherAgent {
         return true;
     }
 
+    public static boolean sendNotificationToUser(NotificationGeneric notification) {
+        UserDAO userDao = new UserDAO();
+        User user = notification.getUser();
+        if (user != null) {
+            NotificationDAO notifDao = new NotificationDAO();
+            notifDao.publishNotificationToUser(notification, user);
+        }else{
+            System.out.println("\n>>> There are no subscribers.");
+        }
+        return true;
+    }
+
 }

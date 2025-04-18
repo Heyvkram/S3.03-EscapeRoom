@@ -124,11 +124,11 @@ public class NotificationDAO extends GenericDAO {
 
     public void publishNotification(NotificationGeneric notification, List<User> usersList) {
         for(User user : usersList){
-            publishNotification( notification, user);
+            publishNotificationToUser( notification, user);
         }
     }
 
-    public void publishNotification(NotificationGeneric notification, User user) {
+    public void publishNotificationToUser(NotificationGeneric notification, User user) {
         NotificationDAO notificationDAO = new NotificationDAO();
         if(EnumConstants.NOTIFICATION_SHIPPING_TYPE.SMS.getDescription().equals(notification.getShippingType())){
             if(user.getPhoneNumber().isEmpty()){

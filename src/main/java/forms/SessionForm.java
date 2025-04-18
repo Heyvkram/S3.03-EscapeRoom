@@ -1,18 +1,17 @@
 package forms;
 
+import daos.NotificationDAO;
 import daos.RoomDAO;
 import daos.UserDAO;
 import daos.GameSessionDAO;
-import entities.GameSession;
-import entities.Room;
-import entities.User;
+import entities.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utils.EntryUtils;
 import utils.EnumConstants;
+import utils.PublisherAgent;
 
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -32,24 +31,21 @@ public class SessionForm {
             System.out.println("    -----------------------------------------");
             System.out.println("    1. New user session");
             System.out.println("    2. List all sessions");
-            System.out.println("    3. List open sessions");
-            System.out.println("    4. List close sessions");
-            System.out.println("    5. Delete user session");
-            System.out.println("    6. Open / close user session");
-            System.out.println("    7. Back");
+            System.out.println("    3. Edit user session status");
+            System.out.println("    4. Back");
 
             option = EntryUtils.readStringLikeInt(scanner, "\n>>> Choose option > ", false);
             switch (option) {
                 case 1:
                     GameSession gameSession = new GameSession();
                     Optional<User> userOpt = userDao.getUserById(EntryUtils.readStringLikeLong(scanner, "Type the user id: ", false));
-                    if(userOpt.isPresent()){
+                    if (userOpt.isPresent()) {
                         System.out.println("\nUser : ");
                         userOpt.ifPresent(User::printBasicInfoValues);
                         gameSession.setUserId(userOpt.get().getId());
                         gameSession.setUserNickname(userOpt.get().getNickName());
                         System.out.println("\n");
-                    }else{
+                    } else {
                         System.out.println("\n>>> No user with this id was found.");
                         break;
                     }
@@ -59,13 +55,13 @@ public class SessionForm {
                     } catch (SQLException | ClassNotFoundException e) {
                         throw new RuntimeException(e);
                     }
-                    if(roomOpt.isPresent()){
+                    if (roomOpt.isPresent()) {
                         System.out.println("\nRoom : ");
                         roomOpt.ifPresent(Room::printBasicInfoValues);
                         gameSession.setRoomId(roomOpt.get().getRoomId());
                         gameSession.setRoomName(roomOpt.get().getRoomName());
                         gameSession.setPrice(roomOpt.get().getPrice());
-                    }else{
+                    } else {
                         System.out.println("\n>>> No Room with this id was found.");
                         break;
                     }
@@ -78,9 +74,9 @@ public class SessionForm {
                     } while (!EnumConstants.PAYMENT_TYPE.getLevelCodes().contains(notePaymentType));
 
                     if (EntryUtils.readYesNo(scanner, "\nOpen session (y/n)? ")) {
-                        gameSession.setAccepted(EnumConstants.ITEM_STATUS.AVAILABLE.getDescription());
-                    }else{
-                        gameSession.setAccepted(EnumConstants.ITEM_STATUS.NOT_AVAILABLE.getDescription());
+                        gameSession.setAccepted(EnumConstants.GAMESESSION_STATUS.AVAILABLE.getDescription());
+                    } else {
+                        gameSession.setAccepted(EnumConstants.GAMESESSION_STATUS.NOT_AVAILABLE.getDescription());
                     }
 
                     if (EntryUtils.readYesNo(scanner, "\nSave this session (y/n)? ")) {
@@ -97,42 +93,46 @@ public class SessionForm {
                     break;
 
                 case 3:
+                    Optional<GameSession> gs = gsDao.getGameSessionById(EntryUtils.readStringLikeLong(scanner, "Type the game session id : ", false));
+                    if (gs.isPresent()) {
+                        System.out.println("\nGameSession : ");
+                        gs.ifPresent(GameSession::printBasicInfoValues);
+                        System.out.println("Choose status - " + EnumConstants.GAMESESSION_STATUS.getMenuOptions());
+                        int newStatusCode = EntryUtils.readStringLikeInt(scanner, "*status: ", false, EnumConstants.GAMESESSION_STATUS.getNumberMaxLevelValue());
+                        String newStatus = EnumConstants.GAMESESSION_STATUS.getDescriptionFromLevelCode(newStatusCode);
+                        gsDao.updateGameSessionStatus(gs.get().getId(), newStatus);
 
-                    Optional<User> userOptEdit = userDao.getUserById(EntryUtils.readStringLikeLong(scanner, "Type the user id: ", false));
-                    if (userOptEdit.isPresent()) {
-                        userOptEdit.get().printBasicInfoValues();
-                        User usrUpdated = editUserForm(userOptEdit.get(), scanner);
-                        if (usrUpdated != null) {
-                            userDao.updateUser(usrUpdated);
+                        if(gs.get().getStatus().equals(newStatus)){
+                            System.out.println(">>> Not changes detected.");
+                        }else{
+                            NotificationDAO notificationDAO = new NotificationDAO();
+                            UserDAO userDAO = new UserDAO();
+                            Optional<User> optUser = userDAO.getUserById(gs.get().getUserId());
+
+                            if (optUser.isPresent()) {
+                                String message = "Dear user, Your game session is now " + newStatusCode;
+                                String shippingType = EnumConstants.NOTIFICATION_SHIPPING_TYPE.EMAIL.getDescription();
+
+                                NotificationGeneric notif = new NotificationGeneric(message, optUser.get(), shippingType);
+                                PublisherAgent.sendNotificationToUser(notif);
+
+                            } else {
+                                System.out.println("\n>>> No game session user with this id was found.");
+                            }
                         }
 
-                        userOptEdit = userDao.getUserById(usrUpdated.getId());
-                        userOptEdit.get().printBasicInfoValues();
-
                     } else {
-                        System.out.println("\n>>> No user with this id was found.");
+                        System.out.println("\n>>> No game session with this id was found.");
                     }
                     break;
 
                 case 4:
                     break;
 
-                case 5:
-                    break;
-
-                case 6:
-                    break;
-
-                case 7:
-                    break;
-
-                case 8:
-                    break;
-
                 default:
                     System.out.println(">>> Wrong option.");
             }
-        } while (option != 8);
+        } while (option != 4);
     }
 
     public User newUserForm(Scanner scanner) {
@@ -250,7 +250,6 @@ public class SessionForm {
             result = userDao.existUserBy(entrada, fieldName, ignoreCase);
         } catch (SQLException | ClassNotFoundException e) {
             System.out.println((">>> No s'ha pogut comprovar el camp " + fieldName));
-            // log.error(new RuntimeException(e));
         }
         return result;
     }

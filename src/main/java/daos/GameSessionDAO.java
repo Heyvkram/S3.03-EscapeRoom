@@ -1,8 +1,10 @@
 package daos;
 
-import entities.GameSession;
+import entities.*;
+import escapeRoomExceptions.PrintableException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utils.UtilsEscape;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class GameSessionDAO extends GenericDAO {
 
@@ -48,12 +51,11 @@ public class GameSessionDAO extends GenericDAO {
             return rowsAffected > 0;
 
         } catch (SQLException | ClassNotFoundException e) {
-            log.info("Can't save the information\n");
-            log.error("Can't save the information\n", e);
+            log.info("!!!! Can't save the information\n");
+            log.error("!!!! Can't save the information\n", e);
             return false;
         }
     }
-
 
     public List<GameSession> getAllSessions() throws ClassNotFoundException, SQLException {
         String sqlSelectAllUsers = "SELECT * FROM " + TABLE_NAME;
@@ -62,7 +64,7 @@ public class GameSessionDAO extends GenericDAO {
              PreparedStatement ps = conn.prepareStatement(sqlSelectAllUsers);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
-                sessionsList.add(resultSetToUserObject(rs));
+                sessionsList.add(resultSetToGameSessionObject(rs));
             }
         } catch (SQLException e) {
             log.error(e);
@@ -70,7 +72,78 @@ public class GameSessionDAO extends GenericDAO {
         return sessionsList;
     }
 
-    public GameSession resultSetToUserObject(ResultSet rs) throws SQLException {
+    public List<GameSession> getRoomAllSessions(long roomId) throws ClassNotFoundException, SQLException {
+        String sqlSelectAllUsers = "SELECT * FROM " + TABLE_NAME + " WHERE room_id ="  + roomId;
+        List<GameSession> sessionsList = new ArrayList<>();
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sqlSelectAllUsers);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                sessionsList.add(resultSetToGameSessionObject(rs));
+            }
+        } catch (SQLException e) {
+            log.error(e);
+        }
+        return sessionsList;
+    }
+
+    public boolean updateGameSessionStatus(long gsId, String status) {
+        String sqlUpdate = "UPDATE game_sessions SET status = ?  WHERE game_id = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sqlUpdate);
+        ) {
+            ps.setString(1, status);
+            ps.setLong(2, gsId);
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println(">>> Game session updated\n");
+            }
+            return rowsAffected > 0;
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("!!!! Can't save the information\n");
+            log.error("!!!! Can't save the information\n", e);
+        }
+        return false;
+    }
+
+    public Optional<GameSession> getGameSessionBy(Object object, String fieldName) throws SQLException, ClassNotFoundException {
+        if (object == null) {
+            return Optional.empty();
+        }
+        final String sqlSelectUser = "SELECT * FROM game_sessions WHERE " + fieldName + "=?";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sqlSelectUser)) {
+
+            if (object instanceof Integer) {
+                ps.setInt(1, (Integer) object);
+            } else if (object instanceof Long) {
+                ps.setLong(1, (Long) object);
+            } else if (object instanceof String) {
+                ps.setString(1, (String) object);
+            }
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return Optional.of(resultSetToGameSessionObject(rs));
+                } else {
+                    return Optional.empty();
+                }
+            }
+        }
+    }
+
+    public Optional<GameSession> getGameSessionById(Long id){
+        Optional<GameSession> gameSession = Optional.empty();;
+        try{
+            gameSession = getGameSessionBy(id, ID_FIELD_NAME);
+        }catch (SQLException | ClassNotFoundException e) {
+            System.out.println("\n!!!! No gameSession with this id was found.");
+        }
+        return gameSession;
+    }
+
+    public GameSession resultSetToGameSessionObject(ResultSet rs) throws SQLException {
         GameSession gameSession = new GameSession();
         gameSession.setId(rs.getLong("game_id"));
         gameSession.setRoomId(rs.getLong("room_id"));
@@ -83,8 +156,24 @@ public class GameSessionDAO extends GenericDAO {
         return gameSession;
     }
 
+    public void printRoomGameSessionPrices(Room room, List<GameSession> allItems) {
+        System.out.println("\nGame Session of room information: ____________________");
+        System.out.println("Room id : " + room.getRoomId() + "   Name : " + room.getRoomName());
+        System.out.println("            Room Cost Value : " + room.getTotalCostValue());
+        if (allItems.isEmpty()) {
+            System.out.println("            No Game Session items found.");
+            return;
+        }
+        List<CalculablePriceInterface> priceInterfaceItems = new ArrayList<>(allItems);
+        double totalPriceSum = UtilsEscape.sumAllPrices(priceInterfaceItems);
+        System.out.println("            Game sessions sold: " + allItems.size());
+        System.out.println("            Average cost of session: $" + String.format("%.2f", totalPriceSum/allItems.size()));
+        System.out.println("            Game session result: $" + String.format("%.2f", totalPriceSum-room.getTotalCostValue()));
+        System.out.println("\n");
+    }
+
     public void printAllSessions() throws ClassNotFoundException, SQLException {
-        System.out.println("\n    Session list............................");
+        System.out.println("\n    Sessions list............................");
         getAllSessions().forEach(GameSession::printBasicInfoValues);
     }
 

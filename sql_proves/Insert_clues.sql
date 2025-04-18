@@ -2,8 +2,7 @@ INSERT INTO clues (
     clue_title,
     clue_description_user,
     clue_description_admin,
-    clue_theme,
-    clue_level,
+    clue_theme, clue_level,
     clue_game_phase, clue_price
 ) VALUES
     ('Passos a la Foscor',
@@ -67,42 +66,13 @@ INSERT INTO clues (
     'S\'utilitzen tècniques de suggestió hipnòtica, realitat virtual amb escenaris onírics i manipulació de la memòria a curt termini per crear una experiència de confusió i pèrdua d\'identitat.',
     'Terror', 'Hard', 'Mental', 35.00);
 
--- Aquest bloc de Fiction ja s'ha inclòs a continuació amb les traduccions.
--- El deixem comentat o el pots eliminar si el segon bloc de Fiction és idèntic.
-/*
-INSERT INTO clues (
-    clue_title,
-    clue_description_user,
-    clue_description_admin,
-    clue_theme,
-    clue_level,
-    clue_game_phase,
-    clue_price,
-    clue_value
-) VALUES
-(
-    'La Llave Estelar',
-    'Un mapa extraño con símbolos galácticos aparece ante ti. ¿Dónde te lleva?',
-    'El jugador debe interpretar un sencillo mapa estelar para identificar la ubicación de una "llave" oculta en la sala.',
-    'Fiction',
-    'Easy',
-    'Exploración Espacial',
-    8.50,
-    10
-),
-... (resta d'items de Fiction en castellà) ...
-*/
 
--- Segon bloc de Fiction, traduït
 INSERT INTO clues (
     clue_title,
     clue_description_user,
     clue_description_admin,
-    clue_theme,
-    clue_level,
-    clue_game_phase,
-    clue_price,
-    clue_value
+    clue_theme, clue_level,
+    clue_game_phase, clue_price, clue_value
 ) VALUES
 (
     'La Clau Estel·lar',
@@ -181,7 +151,7 @@ INSERT INTO clues (
     'Trobes una tauleta de pedra coberta de símbols estranys.',
     'El jugador ha de fer coincidir 3-4 runes amb una clau de traducció simple proporcionada per trobar una paraula.',
     'Fantasy',
-    'Easy',
+    'Hard',
     'Llenguatge',
     8.00,
     12
@@ -191,7 +161,7 @@ INSERT INTO clues (
     'Un petit follet s\'amaga darrere d\'una planta, mirant-te amb ulls brillants.',
     'El jugador ha d\'oferir un objecte simple (que estigui a la vista) al follet per obtenir a canvi una pista o clau.',
     'Fantasy',
-    'Intermediate', -- Nota: En l'original posava Easy, ho he deixat Intermediate com en l'exemple anterior
+    'Easy',
     'Criatures',
     6.00,
     8
@@ -201,7 +171,7 @@ INSERT INTO clues (
     'Una estàtua amb un aire savi et presenta una endevinalla senzilla.',
     'El jugador ha de resoldre una endevinalla bàsica (pista textual o sonora) per desbloquejar alguna cosa.',
     'Fantasy',
-    'Intermediate', -- Nota: En l'original posava Easy, ho he deixat Intermediate com en l'exemple anterior
+    'Easy',
     'Enigmes',
     9.50,
     15
@@ -211,7 +181,7 @@ INSERT INTO clues (
     'Una petita font on l\'aigua sembla canviar de color.',
     'El jugador ha d\'interactuar amb la font en un ordre simple (basat en colors o símbols) per activar-la.',
     'Fantasy',
-    'Hard', -- Nota: En l'original posava Easy, ho he deixat Hard com en l'exemple anterior
+    'Hard',
     'Elements',
     8.50,
     11

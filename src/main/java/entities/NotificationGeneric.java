@@ -38,4 +38,12 @@ public class NotificationGeneric {
         System.out.println("    Type: " + getType());
     }
 
+    public NotificationGeneric() {
+    }
+
+    public NotificationGeneric(String message, User user, String shippingType) {
+        this.message = message;
+        this.user = user;
+        this.shippingType = shippingType;
+    }
 }
