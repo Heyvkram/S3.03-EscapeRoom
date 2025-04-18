@@ -4,7 +4,7 @@ import lombok.Data;
 import utils.PublisherAgent;
 
 @Data
-public class GameSession{
+public class GameSession implements NotificationSenderInterface, CalculablePriceInterface {
 
     private Long id;
     private Long roomId;
@@ -18,6 +18,7 @@ public class GameSession{
 
     public GameSession() {
     }
+
     public void setPublisherAgent(NotificationSenderInterface publisherAgent) {
         this.publisherAgent=publisherAgent;
     }
@@ -38,4 +39,18 @@ public class GameSession{
         System.out.println("\n");
     }
 
+    @Override
+    public boolean sendNotificationToSubscribers(Long notificationId) {
+        return false;
+    }
+
+    @Override
+    public boolean sendNotificationToSubscribers(NotificationGeneric notification) {
+        return false;
+    }
+
+    @Override
+    public void sendNotificationToSessionSubscribers(Long sessionId, boolean value) {
+
+    }
 }

@@ -2,9 +2,11 @@ package forms;
 
 import daos.ClueDAO;
 import daos.DecorationItemDAO;
+import daos.GameSessionDAO;
 import daos.RoomDAO;
 import entities.Clues;
 import entities.DecorationItem;
+import entities.GameSession;
 import entities.Room;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,7 +34,7 @@ public class RoomForm {
             System.out.println("    2. List rooms");
             System.out.println("    3. Details room");
             System.out.println("    4. Delete room");
-            System.out.println("    5. List of rooms results");
+            System.out.println("    5. List of rooms economic results");
             System.out.println("    6. Back");
 
             option = EntryUtils.readStringLikeInt(scanner, "\n>>> Choose option > ", false);
@@ -111,6 +113,7 @@ public class RoomForm {
                     try {
                         Optional<Room> optRoom = roomDao.getRoomById(EntryUtils.readStringLikeLong(scanner, "Type the room id: ",true));
                         if(optRoom.isPresent()){
+                            GameSessionDAO gsDAO = new GameSessionDAO();
                             optRoom.get().printBasicInfoValues();
                             System.out.println("    Decoration items:");
                             DecorationItemDAO decorationItemDAO = new DecorationItemDAO();
@@ -120,7 +123,8 @@ public class RoomForm {
                             ClueDAO clueDAO = new ClueDAO();
                             List<Clues> clueList = clueDAO.getCluesOfRoom(optRoom.get().getRoomId());
                             clueList.forEach(Clues::printPriceInfoValues);
-
+                            List<GameSession> sessionList = gsDAO.getRoomAllSessions(optRoom.get().getRoomId());
+                            gsDAO.printRoomGameSessionPrices(optRoom.get(), sessionList);
                         }else{
                             System.out.println(">>> Wrong room id");
                         }
@@ -144,11 +148,27 @@ public class RoomForm {
                             System.out.println("Error deleting room.");
                         }
                     } catch (SQLException | ClassNotFoundException e) {
+                        System.out.println("\n   Error: This action could not be performed..");
+                        System.out.println("     (Please contact your system administrator)\n");
                         log.error(e);
                     }
                     break;
                 case 5:
-                    // Detalls de les rooms i els diners generats.
+                    GameSessionDAO gsDAO = new GameSessionDAO();
+                    try {
+                        List<Room> roomList = roomDao.getAllRooms();
+                        for (Room room:roomList){
+                            List<GameSession> sessionList = gsDAO.getRoomAllSessions(room.getRoomId());
+                            gsDAO.printRoomGameSessionPrices(room, sessionList);
+                        }
+
+                    } catch (ClassNotFoundException | SQLException e) {
+                        System.out.println("\n   Error: This action could not be performed..");
+                        System.out.println("     (Please contact your system administrator)\n");
+                        log.error(e);
+                        break;
+                    }
+
                     break;
                 case 6:
                     break;

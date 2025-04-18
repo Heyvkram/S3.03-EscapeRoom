@@ -123,7 +123,8 @@ public class UserForm {
                             userOptUpdated.get().printBasicInfoValues();
                             System.out.println("\n>>> User updated.");
                         }
-
+                    } else {
+                        System.out.println("\n>>> No user with this id was found.");
                     }
                     break;
 

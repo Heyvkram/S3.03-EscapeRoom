@@ -99,22 +99,22 @@ INSERT INTO `notifications` (
     'Alerta de seguretat important',
     'S\'ha detectat una activitat sospitosa al teu compte. Si no has fet aquesta activitat, canvia la teva contrasenya immediatament.',
     'Generic'
-);
+),
+(
+    'Missatge sobre la Sessió',
+    'Missatge personalitzat per a l\'usuari',
+    'Hola usuari, s'ha modificat l'estat de la seva sessió a ',
+    'Personal'
+),;
 
-INSERT INTO `rooms` (`room_name`, `room_theme`, `room_level`, `room_status`, `room_max_players`, `room_date`, `room_price`) VALUES
-('La Mansió Embruixada', 'Terror', 'Intermediate', 'Available', 6, NOW(),10.7),
-('El Laboratori Secret', 'Fiction', 'Hard', 'Not available', 4, NOW(),6.7),
-( 'El Bosc Màgic', 'Fantasy', 'Easy', 'Available', 8, NOW(),0.7),
-( 'La Nau Estelar Perduda', 'Fiction', 'Intermediate', 'Available', 5, NOW(),1.7),
-( 'El Castell del Drac', 'Fantasy', 'Hard', 'Not available', 3, NOW(),6.7);
+INSERT INTO `rooms` (`room_name`, `room_theme`, `room_level`, `room_status`, 
+`room_max_players`, `room_date`, `room_price`, `room_cost_value` ) VALUES
+('La Mansió Embruixada', 'Terror', 'Intermediate', 'Available', 6, NOW(),10.7,60.7),
+('El Laboratori Secret', 'Fiction', 'Hard', 'Not available', 4, NOW(),6.7,34.7),
+( 'El Bosc Màgic', 'Fantasy', 'Easy', 'Available', 8, NOW(),0.7,109.7),
+( 'La Nau Estelar Perduda', 'Fiction', 'Intermediate', 'Available', 5, NOW(),1.7,100.7),
+( 'El Castell del Drac', 'Fantasy', 'Hard', 'Not available', 3, NOW(),6.7,60.0);
 
-
-INSERT INTO `rooms` (`room_name`, `room_theme`, `room_level`, `room_status`, `room_max_players`, `room_date`, `room_price`) VALUES
-('La Mansió Embruixada', 'Terror', 'Intermediate', 'Available', 6, NOW(),10.7),
-('El Laboratori Secret', 'Fiction', 'Hard', 'Not available', 4, NOW(),6.7),
-( 'El Bosc Màgic', 'Fantasy', 'Easy', 'Available', 8, NOW(),0.7),
-( 'La Nau Estelar Perduda', 'Fiction', 'Intermediate', 'Available', 5, NOW(),1.7),
-( 'El Castell del Drac', 'Fantasy', 'Hard', 'Not available', 3, NOW(),6.7);
 
 INSERT INTO game_sessions (
     room_id,
@@ -213,5 +213,5 @@ INSERT INTO game_sessions (
     'GuardiàPortes',
     51.50,
     'Cash',
-    'Consumed'
+    'Unpaied'
 );

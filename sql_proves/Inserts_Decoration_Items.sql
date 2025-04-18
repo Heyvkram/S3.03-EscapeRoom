@@ -42,8 +42,6 @@ INSERT INTO `clues` (`clue_title`, `clue_description_user`, `clue_description_ad
 ('El Jeroglífic de la Criatura Alada', 'Hi ha un escrit amb símbols que representen animals fantàstics. Puc desxifrar-lo?', 'Una sèrie de jeroglífics o pictogrames que representen criatures mítiques (dracs, grifons, etc.). Cada símbol pot correspondre a una lletra o un número.', 'Fantasy', 'Hard', 'Símbol/Text', 23, 12),
 ('L\'Objecte Imbuït de Màgia', 'He trobat un objecte que em transmet una energia estranya. Quines propietats té?', 'Un objecte (un anell, un amulet, etc.) amb un aspecte distintiu. Pot reaccionar a la llum ultraviolada revelant un missatge ocult, o tenir un mecanisme senzill amagat.', 'Fantasy', 'Easy', 'Objecte/Sensorial', 13, 7);
 
-
-
 INSERT INTO decoration_items (
     decoration_item_name,
     decoration_item_description,

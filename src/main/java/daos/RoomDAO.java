@@ -256,6 +256,8 @@ public class RoomDAO extends GenericDAO {
         room.setRoomMaxPlayers(rs.getInt("room_max_players"));
         room.setRoomDate(rs.getTimestamp("room_date").toLocalDateTime());
         room.setPrice(rs.getDouble("room_price"));
+        room.setTotalCostValue(rs.getDouble("room_cost_value"));
+
         return room;
     }
 
