@@ -56,3 +56,25 @@ This exercise involves developing an application to manage a virtual Escape Room
 * The Java code is located in the `src/main/java` directory.
 * The `pom.xml` file contains the project's dependencies and build configurations.
 * Packages are expected to be created for different functionalities.
+
+## Git Workflow
+
+This project follows a Git workflow based on feature branches with a primary `main` branch and a `develop` branch for testing.
+
+1.  **`main` Branch:** Represents the stable, production-ready version of the code. Only thoroughly tested and approved changes should be merged into this branch.
+
+2.  **`develop` Branch:** This is the branch where testing and verification of code functionality occur before it is promoted to the `main` branch.
+
+3.  **Feature Branches:**
+	* For each new feature or bug fix, a separate branch is created from the `main` branch.
+	* The branch name is descriptive and corresponds to the functionality being worked on (e.g., `branch_decorationItem_ML`, `new_UserSession_menu_branch`).
+	* Development work is done on these branches in isolation, with commits made as needed.
+
+4.  **Merge to `develop`:**
+	* Once a feature is complete and tested, the feature branch is merged into the `develop` branch.
+	* After merging, the code is reviewed for errors, and further work continues on other feature branches.
+	* The feature branch can then be deleted after.
+
+5.  **Pull Requests:**
+	* Once the `develop` branch is complete and tested, a Pull Request (PR) is opened to merge it into the `main` branch.
+	* The PR must be reviewed by at least one other team member.
