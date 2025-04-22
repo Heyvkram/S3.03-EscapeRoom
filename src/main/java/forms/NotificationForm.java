@@ -30,8 +30,7 @@ public class NotificationForm {
             System.out.println("    3. Show notification template");
             System.out.println("    4. Delete notification template");
             System.out.println("    5. Send notification to subscribers");
-            System.out.println("    6. Send notification to session players");
-            System.out.println("    7. Back");
+            System.out.println("    6. Back");
 
             System.out.print("\n>>> Choose option > ");
             // option = scanner.nextInt();
@@ -102,12 +101,11 @@ public class NotificationForm {
                     }
                     break;
                 case 6:
-                    // ToDo "Send notification to session players"
                     break;
                 default:
                     System.out.println(">>> Wrong option.");
             }
-        } while (option != 7);
+        } while (option != 6);
     }
 
     public NotificationGeneric newNotificationForm(Scanner scanner) {
